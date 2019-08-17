@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>React App</title>
+     <script src="natty-storage.min.js"></script>
+      <script src="natty-fetch.min.js"></script>
+  </head>
+  <body>
+   
+
+<script type="text/javascript">
+    const context = nattyFetch.context({
+        urlPrefix: '//localhost:8888/',
+        willFetch: () => {
+          console.log("willFetch...")
+        },
+        data:() => {
+            return {
+                '_csrf':"___csrf_____"
+            };
+        },
+        didFetch: () => {
+            console.log("didFetch...")
+        },
+        withCredentials: false,
+        traditional: true,
+        fit(response) {
+            return {
+                "success": response.success,
+                "content": response,
+                "error": response
+            };
+        }
+    });
+
+    const IO = context.api;
+
+    context.create({
+        // 添加商品
+        'cart.add': {
+            url: 'addItem.do',
+            data: {
+                num1:88
+            }
+        },
+        // 删除商品
+        'cart.remove': {
+            url: 'removeItem.do'
+
+        },
+        // 付款
+        'cart.pay': {
+            url: 'pay.do'
+        }
+    });
+
+
+
+
+    IO.cart.add({
+        num: "55"
+    }).then((content) => {
+        console.log("A",content);
+    }).catch((error) => {
+        console.log("A1",error);
+    });
+
+
+    IO.cart.pay({
+        num: "55"
+    }).then((content) => {
+        console.log("A",content);
+    }).catch((error) => {
+        console.log("A1",error);
+    });
+
+
+
+
+</script>
+
+
+
+aaaaaaaaaaaaaaaaa
+   
+  </body>
+</html>

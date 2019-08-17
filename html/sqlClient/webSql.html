@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+    <link href="https://cdn.bootcss.com/jsoneditor/5.13.1/jsoneditor.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jsoneditor/5.13.1/jsoneditor.min.js"></script>
+    <script src="https://mucfpga.github.io/codeEdit/min/vs/loader.js"></script>
+    <script src="https://minglie.github.io/js/M_mock.js"></script>
+    <style>
+        body,html{
+            margin:0;
+            padding:0;
+            height:500000px;
+        }
+        #box{
+            width:100%;
+            height:100%;
+            overflow:hidden;
+        }
+        #left{
+            width:calc(70% - 5px);
+            height:100%;
+            float:left;
+        }
+
+        #resize{
+            width:5px;
+            height:100%;
+            cursor: w-resize;
+            float:left;
+        }
+
+        #right{
+            float:right;
+            width:30%;
+            height:100%;
+        }
+
+    </style>
+</head>
+<body>
+
+<div align="center" style="margin:20px">
+    <input  id="inputHost" placeholder="http://minglie.vaiwan.com"  value="http://minglie.vaiwan.com"  class="form-control" data-toggle="tooltip" data-placement="bottom" title="服务地址"><br/>
+    <input  id="inputDeal" placeholder="d.data" value="d.data" class="form-control" data-toggle="tooltip" data-placement="bottom" title="响应转换"><br/>
+    <button id="btn" align="center"   type="button" class="btn btn-success btn-lg btn-block">Run</button>
+</div>
+
+<div id="box">
+    <div id="left">
+    </div>
+    <div id="resize"></div>
+    <div id="right">
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+<script>
+
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+
+
+    //monaco-editor 常用方法与事件
+    //https://www.jianshu.com/p/260d57dd131a
+    require.config({
+        baseUrl: 'https://mucfpga.github.io/codeEdit/', paths: { 'vs': 'min/vs' }});
+
+    require(['vs/editor/editor.main'], function() {
+        var editor = monaco.editor.create(document.getElementById('left'), {
+            value: [
+                `select sql createSql from sqlite_master where type='table'`
+            ].join('\n'),
+            language: 'mysql',
+            theme:'vs-dark',
+            automaticLayout:true,
+            scrollbar: {
+                useShadows:false,
+                vertical:'visible',
+                horizontal:'visible',
+                horizontalSliderSize:5,
+                verticalSliderSize:5,
+                horizontalScrollbarSize:15,
+                verticalScrollbarSize:15,
+            },
+            quickSuggestions:true,
+            overviewRulerBorder:true,
+            minimap: {
+                enabled:false
+            }
+        });
+
+        M.editor=editor;
+    });
+</script>
+
+
+<script>
+    var jsonEditor = document.getElementById("right");
+    var jsonOptions = {
+        mode: 'code',
+        modes: ['code', 'form', 'text', 'tree', 'view'],
+        onError: function(err) {
+            alert(err.toString());
+        }
+    };
+    //初始化编辑器内容
+    var jsonEditor = new JSONEditor(jsonEditor, jsonOptions, [] );
+    btn.onclick=function () {
+        if(inputHost.value==""){
+            M.host="http://minglie.vaiwan.com";
+        }else{
+            M.host=inputHost.value;
+        }
+        let sql= M.editor.getValue();
+        M.doSql(sql,(d)=>{jsonEditor.set(eval(inputDeal.value));
+        })
+    }
+</script>
+<script>
+    window.onload = function(){
+        var resize = document.getElementById("resize");
+        var left = document.getElementById("left");
+        var right = document.getElementById("right");
+        var box = document.getElementById("box");
+        resize.onmousedown = function(e){
+            var startX = e.clientX;
+            resize.left = resize.offsetLeft;
+            document.onmousemove = function(e){
+                var endX = e.clientX;
+                var moveLen = resize.left + (endX - startX);
+                var maxT = box.clientWidth - resize.offsetWidth;
+                if(moveLen<150) moveLen = 150;
+                if(moveLen>maxT-150) moveLen = maxT-150;
+                resize.style.left = moveLen;
+                left.style.width = moveLen + "px";
+                right.style.width = (box.clientWidth - moveLen - 5) + "px";
+            };
+            document.onmouseup = function(evt){
+                document.onmousemove = null;
+                document.onmouseup = null;
+                resize.releaseCapture && resize.releaseCapture();
+            };
+            resize.setCapture && resize.setCapture();
+            return false;
+        }
+    }
+</script>

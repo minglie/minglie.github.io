@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="example" class="example"></div>
+
+<script type="text/babel">
+
+    //受控组件
+    class NameForm1 extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {value: ''};
+
+            this.handleChange = this.handleChange.bind(this);
+            this.handleSubmit = this.handleSubmit.bind(this);
+        }
+        handleChange(event) {
+            this.setState({value: event.target.value});
+        }
+        handleSubmit(event) {
+            alert('A name was submitted: ' + this.state.value);
+            event.preventDefault();
+        }
+        render() {
+            return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        </label>
+                        <input type="submit" value="Submit" />
+                    </form>
+            );
+        }
+    }
+
+    //非受控组件
+    class NameForm2 extends React.Component {
+        constructor(props) {
+            super(props);
+            this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+        handleSubmit(event) {
+            alert('A name was submitted: ' + this.input.value);
+            event.preventDefault();
+        }
+        render() {
+            return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Name:
+                            <input type="text" ref={(input) => this.input = input} />
+                        </label>
+                        <input type="submit" value="Submit" />
+                    </form>
+            );
+        }
+    }
+
+
+
+
+
+</script>
+
+
+<script type="text/babel">
+    ReactDOM.render(
+        <div>
+            <NameForm1 />
+            <hr/>
+            <NameForm2 />
+        </div>,
+        document.getElementById('example')
+    );
+</script>
+
+
+
+</body>
+</html>

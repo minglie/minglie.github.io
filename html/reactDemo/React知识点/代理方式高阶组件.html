@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="example" class="example"></div>
+
+
+
+<script type="text/babel">
+
+    // 操纵prop
+    //访问ref
+    //抽取状态
+    //包装组件
+
+
+    //删除prop
+    function HocRemoveProp(WrappedComponent) {
+        return class WrappingComPonent extends React.Component {
+            render() {
+                const { age, ...otherProps } = this.props;
+                return <WrappedComponent {...otherProps} />
+            }
+        }
+    }
+
+    //增加prop
+    const HocAddProp = (WrappedComponent,uid) =>class extends React.Component {
+        render() {
+            const newProps = {
+                uid,
+            };
+            return <WrappedComponent sex={'男'} {...this.props}  {...newProps}  />
+        }
+    };
+
+
+    //抽取状态
+    const HocContainer = (WrappedComponent) =>
+        class extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    name1: ''
+                }
+            }
+            onName1Change = (event) => {
+                console.log("HocContainer",event.target.value);
+
+                this.setState({
+                    name1: event.target.value
+                })
+            };
+            render() {
+                const newProps = {
+                    name1: {
+                        value: this.state.name1,
+                        onChange: this.onName1Change
+                    }
+                };
+                return <WrappedComponent {...this.props} {...newProps} />
+            }
+        };
+
+
+
+    //获取组件实例
+    const RefHoc = WrappedComponent => class extends React.Component {
+        componentDidMount() {
+            console.log(this.instanceComponent, 'instanceComponent');
+        }
+        render() {
+            return (<WrappedComponent
+                {...this.props} ref={instanceComponent => this.instanceComponent = instanceComponent}
+            />);
+        }
+    };
+
+    const RefHoc1 = WrappedComponent => class extends React.Component {
+        refc(instance) {
+            console.log(instance, 'instance');
+        }
+        render() {
+            return (<WrappedComponent
+                {...this.props} ref={this.refc.bind(this)}
+            />);
+        }
+    };
+
+
+
+
+    class  SampleComponent  extends React.Component {
+        render() {
+            return (
+                    <div>
+                        name:{this.props.name}<br/>
+                        age:{this.props.age}<br/>
+                        sex:{this.props.sex}  <br/>
+                        return <input name="name1" {...this.props.name1}/>
+                    </div>
+            );
+        }
+    }
+
+
+
+</script>
+
+
+<script type="text/babel">
+
+    const  M_HocRemoveProp = HocRemoveProp(SampleComponent);
+    const  M_HocAddProp = HocAddProp(SampleComponent,'1111111');
+    const  M_HocContainer=HocContainer(SampleComponent);
+    const  M_RefHoc=RefHoc(SampleComponent);
+    const  M_RefHoc1=RefHoc1(SampleComponent);
+
+
+
+
+
+    ReactDOM.render(
+        <div>
+            <M_HocRemoveProp name={'zs'} age="55"/>
+            <hr/>
+            <M_HocAddProp name={'zs'} age="55"/>
+            <hr/>
+            <M_HocContainer name={'zs'} age="55"/>
+            <hr/>
+            <M_RefHoc name={'zs'} age="55"/>
+            <hr/>
+            <M_RefHoc1 name={'zs'} age="55"/>
+        </div>,
+        document.getElementById('example')
+    );
+</script>
+
+
+
+</body>
+</html>

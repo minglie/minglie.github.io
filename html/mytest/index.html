@@ -1,0 +1,53 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>index</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+</div>
+
+<template id="demo">
+    <div>
+        <input/></hr>
+        <h1 style="color: #FF0000">{{msg}}</h1>
+
+    </div>
+
+</template>
+
+
+
+<script>
+
+
+
+
+
+
+
+
+   a= {
+       data () {
+           return {
+
+               msg:'你好vue77dd7'
+           }
+       },
+       components:{   /*前面的组件名称不能和html标签一样*/
+
+       },
+       mounted(){
+           console.log('我是一个声明周期函数');
+       },
+       template:"#demo"
+   };
+
+
+   a.el="#app";
+   new Vue(a)
+</script>
+</body>
+</html>

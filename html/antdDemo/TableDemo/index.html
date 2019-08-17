@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Antd</title>
+    <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.0.2/antd.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/3.0.2/antd.js"></script>
+</head>
+<body>
+
+
+<div id="root"></div>
+
+<script src="./MyTable.jsx" type="text/babel"></script>
+
+
+<script type="text/babel">
+
+    function onChange(current, pageSize) {
+        console.log(current, pageSize);
+    }
+
+
+    ReactDOM.render(
+            <div>
+                  <antd.Table dataSource={dataSource} columns={columns} pagination={false} />
+                  <br/>
+                  <antd.Pagination showSizeChanger showQuickJumper defaultCurrent={2} total={50}  onChange={onChange}/>
+            </div>,
+        document.getElementById('root')
+    );
+
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+将项目安装到本地仓库 mvn  install -DskipTests将项目打成可运行jar:mvn clean install package -DskipTests

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>MCU计算器</title>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.0/math.min.js"></script>-->
+        <!---
+         V0:  原始版本
+         V0.1:增加进制转换按16进制输入,改进输入参数输入方式:可用换行将输入参数分开
+         --->
+        <style type="text/css">
+                      
+            td{
+            	text-align: right;
+            	width: auto;
+           /* 	height: min-intrinsic;*/
+            	/*font-weight: bold ;*/
+            }
+            input {           	
+            /*	font-weight: bold ;*/
+            /*	 color: blue; */
+            }
+            
+            
+        
+            textarea {
+                width: 60%;
+                font-size: 18px;
+                background: rgba(100, 200, 50, 0.3);
+            }
+            
+            #text_input {
+                width: 50%;
+                line-height: 1;
+                background: rgba(100, 200, 50, 0.3);
+                
+            }
+            
+            #text_output {
+                font-size: 24px;
+                color: blue; 
+                width: 100%;
+                line-height: 1;
+                background:rgba(200,100,50,0.3); 
+
+            }
+        </style>
+        <style>
+            .divcss5-right {
+                width: 420px;
+                height: 222px;
+                border: 0px;
+                float: right
+            }
+            
+            .divcss5-left {
+                width: 320px;
+                height: 222px;
+                border: 1px solid #F00;
+                float: left
+            }
+            /* css注释：对divcss5-right设置float:right即可让对象靠右浮动 */
+        </style>
+    </head>
+
+<!--<body onclick="alert(1)" style="background:greenyellow;"> -->
+    <body>
+    	
+	<table id="tb_config" border="1">
+	<caption><h2>参数配置与功能选择</h2></caption>
+		<tr>
+		<td><label><input name="M_radio" type="radio" value="0" checked/>自定义</label></td>		
+		<td>
+			 <input type="file" id="waibujsFile"/>
+		</td>	
+		<td> <input type="button" id="btn_jiazai_js" value="加载外部脚本"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td> <label><input name="M_radio" type="radio" value="10"/>电压->AD</label>
+            <label><input name="M_radio" type="radio" value="11" />AD->电压 </label> </td>		
+		<td>分压比:<input type="text"size="8" maxlength="20" value="1/11" id="con_k"> </td>
+		<td>MCU参考电压:<input type="text" size="8" maxlength="20" value="5"id="con_ad_ref"></td>
+		<td>AD位数:<input type="text"  size="8" maxlength="8"value="12" id="con_ad_bit_num"></td>
+	</tr>
+	<tr>
+		<td> <label><input name="M_radio" type="radio" value="20" />速度->时间 </label>
+            <label><input name="M_radio" type="radio" value="21" />时间->速度</label> </td>
+		<td>极对数:<input type="text"size="8" maxlength="8"value="5"  id="con_p"></td>
+		<td>电周期步数:<input type="text"size="8" maxlength="8"value="6"  id="con_steps"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><label><input name="M_radio" type="radio" value="30" />线性变换</label>  </td>
+		<td> 倍率:<input type="text"size="8" maxlength="8"value="1"  id="con_peilv"></td>
+		<td>偏移:<input type="text"size="8" maxlength="8"value="0"  id="con_pianyi"></td>
+		<td>结果写入输入区<input type="checkbox" id="chk_result2input"></td>
+	</tr>
+	<tr>
+		<td> 
+			<label><input name="M_radio" type="radio" value="40" />频率->周期</label>
+			<label><input name="M_radio" type="radio" value="41" />周期->频率</label>
+		</td>
+		<td>频率单位<select name="频率单位" value="nHz">
+			<option value="pHz">pHz</option>	
+			<option value="nHz">nHz</option>
+			<option value="uHz">uHz</option>
+			<option value="mHz">mHz</option>	
+			<option value="Hz">Hz</option>
+			<option value="KHz">KHz</option>
+			<option value="MHz" selected="selected">MHz</option>
+			<option value="GHz">GHz</option>
+			</select>
+		</td>
+		<td>
+			周期单位<select name="周期单位">
+			<option value="ps">ps</option>	
+			<option value="ns">ns</option>
+			<option value="us"selected="selected">us</option>
+			<option value="ms">ms</option>	
+			<option value="s">s</option>
+			</select>
+			</td>
+		<td>
+			
+		</td>
+			
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td> <label><input name="M_radio" type="radio" value="50" />进制转换</label></td>
+		<td>将输入按16进制处理<input type="checkbox" id="chk_asHEX"></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+
+    	
+        <hr/>
+
+        <h2 align="left">输入区</h2>
+        <textarea id="text_input" rows="10" cols="50"></textarea>        
+        <input type="button" id="btn1" value="执行" style="background:green;color:red;">
+        
+          
+                
+         <hr/>
+         
+        <h2 align="left" id="txt_output_title">输出区</h2>
+        <input type="button" id="btn2" value="清空输出">
+                     执行前清屏<input type="checkbox" id="chk_clr_screen" >
+        <textarea id="text_output" rows="100" cols="100"></textarea>
+        
+        
+ 
+        <script type="text/javascript">//提供DOM操作的函数            
+            var g_args = []; //输入参数
+            function WriteLine(m) {
+            	var k=m;
+            	k=k.toString();
+                document.getElementById('text_output').value = document.getElementById('text_output').value + k.toString() + "\n";
+            }
+            
+            function w(m){WriteLine(m)}
+            //去掉字符串两端空字符 
+            function Trim(m) {
+                var reg = /(^\s*)|(\s*$)/g;
+                var ss = m.replace(reg, "");
+                return ss;
+            }
+            //去掉数组里的空元素 
+            function removeEmptyArrayEle(arr) {
+                for(var i = 0; i < arr.length; i++) {
+                    if(arr[i] == undefined) {
+                        arr.splice(i, 1);
+                        i = i - 1; // i - 1 ,因为空元素在数组下标 2 位置，删除空之后，后面的元素要向前补位， 
+                        // 这样才能真正去掉空元素,觉得这句可以删掉的连续为空试试，然后思考其中逻辑 
+                    }
+                }
+                return arr;
+            }
+        //数字位数对齐
+            function PrefixInteger(num, length) {
+                return(Array(length).join('0') + num).slice(-length);
+            }
+            //得到输入参数，用于直接执行的文本 
+            function get_input_arg() {
+                text = document.getElementById('text_input').value; //得到选中 
+                text=text.replace(/[\r\n]/g, " ");
+                text = Trim(text); //去掉两端空字符 
+                g_args = text;
+            }
+            //得到输入参数,用于将文本直接转换成在函数参数 
+            function get_input_arg1() {
+                text = document.getElementById('text_input').value; //得到选中 
+                text=text.replace(/[\r\n]/g, " ");
+                text = Trim(text); //去掉两端空字符 
+                g_args = text.split(" "); //得到输入参数 
+
+                for(var i = 0; i < g_args.length; i++) {
+                    local1 = parseFloat(g_args[i]);
+                    if(local1 == local1) g_args[i] = local1;
+                    else {
+                        g_args.splice(i, 1);
+                        if(i > 0) i--;
+                    }
+                }
+            }
+
+
+                     
+            function paint_green_tb_config(row) {
+		           var tbl=document.getElementById("tb_config");
+		           var trs=tbl.getElementsByTagName('tr');
+		           for(var i=0;i<trs.length;i++)
+		           {
+		           	   
+		           	  if(i==row) trs[i].style.background="paleturquoise";
+		           	  else       trs[i].style.background="";
+		           	
+		           }
+		          
+                
+                
+            }
+
+            function help() {
+                WriteLine("与MATLAB类似，系统内部有一个变量ans,要进行简单的表达式计算只需输入表达式即可");
+                WriteLine("注意：由于输入区支持代码输入,所以解析到有分号出现就不再输出ans了,此时你可以调用w(ans)函数来输出ans");
+                WriteLine("内部的大多数函数支持数组参数，你也可以再plug.js里添加一些自定义函数");
+                WriteLine("内部函数如下，下面的arg指函数的参数");
+                WriteLine("0.首先支持javascrip语法内部所有的函数,特别是Math.xx()");
+                WriteLine("1.WriteLine(m):或w(m) 打印m");
+                WriteLine("1.dhb():分别打印arg的10进制 16进制 2进制|arg in [0,255]");
+                WriteLine("2.t2s()与s2t():无刷速度与换向时间之间的转换");
+                WriteLine("3.a2v()与v2a():电压与AD值之间的相互转换");
+                WriteLine("4.linspace(a,b,n):a,b指向量的第一个与最后一个元素,n是元素个数,这样向量元素成等差数列");
+            }
+
+            function get_select_frequency() {
+                 var s1=document.getElementsByName("频率单位")[0];
+                  return(s1.value);
+            }
+            function get_select_cycle_time() {
+                  var s1=document.getElementsByName("周期单位")[0];
+                  return(s1.value);
+            }
+            
+            
+            
+            
+               function get_M_radio() {
+                var b1 = document.getElementsByName('M_radio');
+                for(var i = 0; i < b1.length; i++) {
+                    if(b1[i].checked == true) { //如果选中，下面的alert就会弹出选中的值                     
+                        var paint_num=Number(b1[i].value);                       
+	                    switch(paint_num)                        
+	                    {
+	                    case 0:
+	                       document.getElementById('txt_output_title').innerHTML
+	                       ="类似MATLAB用ans打印输入的表达式，或执行一段代码，可添加1个外部脚本,封装一些函数，你可以用w(x)函数打印你需要的";
+	                        break;
+	                    case 10:
+	                       document.getElementById('txt_output_title').innerHTML
+	                       ="输出的格式为：  测量处电压--->MCU引脚处电压     AD转换后的值";
+	                        break;
+	                    case 11:
+	                         document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为：  AD转换后的值--->MCU引脚处电压     测量处电压";	                 
+	                        break;
+	                    case 20:
+	                         document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为： 速度--->时间";	 
+	                        break;
+	                    case 21:
+	                        document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为： 时间--->速度";	
+	                        break;
+	                    case 30:    
+	                       document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为： 经过线性变换后的值，目的是方便对输入区的数据进行线性处理，处理好可直接重新作为输入内容";	                       
+	                        break;
+	                    case 40:    
+	                        document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为:频率--->周期 ";	                       
+
+	                        break;
+	                    case 41:    
+	                      document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为:周期--->频率 ";	
+	                        break;
+	                    case 50:
+	                       document.getElementById('txt_output_title').innerHTML
+	                         ="输出的格式为:十进制---十六进制---二进制,输入的数不能大于255 ";	
+	                        break;
+	                }
+                        paint_green_tb_config(parseInt(Number(b1[i].value/10)));
+                       // w(parseInt(Number(b1[i].value/10)));
+                      // w(Number(b1[i].value));
+                        return(Number(b1[i].value));
+                    }
+                }
+            }
+            
+
+
+            function self_do() {
+                get_input_arg();
+                ans_re = /ans/i; // 创建正则表达式模式。 
+                fenhao_re = /;/i; // 创建正则表达式模式。 
+                ans_r = g_args.search(ans_re); // 查找字符串。 
+                /*如果有分号就不输出ans*/
+                fenhao_r = g_args.search(fenhao_re); // 查找字符串。    
+                if(ans_r == -1) {
+                    var str = "ans=" + g_args
+                } else {
+                    str = g_args
+                }
+                eval(str);
+                if(fenhao_r == -1) {
+                    WriteLine("ans=");
+                    WriteLine(" " + ans);
+                }
+            }
+            
+            //初始化，注册事件
+            function index_init(){
+            	
+            	paint_green_tb_config(0);
+            	var b1 = document.getElementsByName('M_radio');
+                for(var i = 0; i < b1.length; i++) {
+                   b1[i].onclick=get_M_radio;
+                }
+            	
+            }
+            
+            //主函数入口
+            function Main(){
+            var btn1 = document.getElementById('btn1');
+            var text_input = document.getElementById('text_input');
+            var text_output = document.getElementById('text_output');
+                get_input_arg1();
+                var radio_num = get_M_radio();
+                var fun_sel = self_do;
+                switch(radio_num) {
+                    case 0:
+                        fun_sel = self_do;//自定义
+                        break;
+                    case 10:
+                        fun_sel = v2a;//
+                        break;
+                    case 11:
+                        fun_sel = a2v;
+                        break;
+                    case 20:
+                        fun_sel = s2t;
+                        break;
+                    case 21:
+                        fun_sel = t2s;
+                        break;
+                    case 30:    
+                        fun_sel = xxbh;
+                        break;
+                    case 40:    
+                        fun_sel = frequency2cycle_time;
+                        break;
+                    case 41:    
+                        fun_sel = cycle_time2frequency;
+                        break;
+                    case 50:
+                         fun_sel=dhb;
+                        break;
+                }
+                if(chk_clr_screen.checked){btn2.onclick();}
+              
+                fun_sel(g_args);                
+            }
+            
+        </script>
+        
+       <script type="text/javascript">    //AD转换   
+
+    //将电源电压转换为AD值 
+    function v2a(batVol) {
+    
+        var mcu_pin_vol;
+        var con_ad_ref = eval(document.getElementById('con_ad_ref').value); //单片机内部参考电压5V 
+        var con_k = eval(document.getElementById('con_k').value); //分压比(单片机引脚电压/输入电压) 
+        var con_ad_bit_num = eval(document.getElementById('con_ad_bit_num').value); //12位AD     
+        var g_adValue_full = Math.pow(2, con_ad_bit_num); //
+
+
+        for(var i = 0; i < batVol.length; i++) {
+            mcu_pin_vol=batVol[i] * con_k;
+            ret = batVol[i] * con_k * g_adValue_full / con_ad_ref; //计数得到的ad值    
+            if(ret < 0) ret = 0;
+            if(ret > g_adValue_full) ret = g_adValue_full;
+            WriteLine(batVol[i] + "V" + "--->" +mcu_pin_vol+'V'+ '   '+ret);
+        }
+        
+    }
+    // 将AD值转换为电源电压 
+    function a2v(adValue) {
+        
+        var mcu_pin_vol;
+        var con_ad_ref = eval(document.getElementById('con_ad_ref').value); //单片机内部参考电压5V 
+        var con_k = eval(document.getElementById('con_k').value); //分压比(单片机引脚电压/输入电压) 
+        var con_ad_bit_num = eval(document.getElementById('con_ad_bit_num').value); //12位AD     
+        var g_adValue_full = Math.pow(2, con_ad_bit_num); //
+    
+        for(var i = 0; i < adValue.length; i++) {
+            mcu_pin_vol=con_ad_ref * (adValue[i] / g_adValue_full);
+            ret = con_ad_ref * (adValue[i] / g_adValue_full) / con_k; //计数得到对应的源电压    
+            WriteLine(adValue[i] + "--->" +mcu_pin_vol+'V'+ '   '+ ret + "V");
+        }
+        
+    }
+            
+</script>
+
+<script type="text/javascript">    //无刷时间速度转换 
+    // 将换向时间转换成速度(r/min) 
+    function t2s(switch_time) {    
+        var  con_p= eval(document.getElementById('con_p').value); 
+        var con_steps=eval(document.getElementById('con_steps').value);      
+        for (var i = 0; i < switch_time.length; i++) {
+            ret = 60000000 / (con_steps * con_p * switch_time[i]);
+            WriteLine(switch_time[i] + "us" + "---> " + ret + "r/min");
+        }
+        
+    }
+    // 将速度(r/min)转换为换相时间 
+    function s2t(speed) {
+        var  con_p= eval(document.getElementById('con_p').value); 
+        var con_steps=eval(document.getElementById('con_steps').value);                     
+        for (var i = 0; i < speed.length; i++) {
+            ret = 60000000 / (con_steps * con_p * speed[i]);
+            WriteLine(speed[i] + "r/min" + "---> " + ret + "us");
+        }        
+    } 
+    
+    
+     // 将频率转换为周期时间 
+    function frequency2cycle_time(frequency) {
+        var select_frequency_str= get_select_frequency();
+	    var frequency_k;
+	    var select_cycle_time_str=get_select_cycle_time();
+	    var cycle_time_k; 
+	    var cycle_time;
+	    var frequency_temp;
+	    var hx_frequency={
+		    "pHz":0.000000000001,
+		    "nHz":0.000000001,
+		    "uHz":0.000001,
+	        "mHz":0.001,
+	        "Hz":1,
+	        "KHz":1000,
+	        "MHz":1000000,
+	        "GHz":1000000000
+	    };
+        var hx_cycle_time={
+	    "ps":0.000000000001,
+	    "ns":0.000000001,
+	    "us":0.000001,
+        "ms":0.001,
+        "s":1       
+        };	
+       
+//	    WriteLine(hx_frequency[select_frequency_str]);
+//	    WriteLine(select_frequency_str);    
+//	    WriteLine(hx_cycle_time[select_cycle_time_str]);
+//	    WriteLine(select_cycle_time_str);
+
+		 for (var i = 0; i < frequency.length; i++) {	 	   
+		 	   frequency_temp=frequency[i];
+		       frequency[i]=frequency[i]*hx_frequency[select_frequency_str];      
+		       cycle_time=1/frequency[i];
+		       cycle_time=cycle_time/hx_cycle_time[select_cycle_time_str];       
+		       WriteLine(frequency_temp+select_frequency_str+"--->" +cycle_time+select_cycle_time_str);
+		 }
+	     
+    } 
+    
+    //周期时间转换为频率
+    function cycle_time2frequency(cycle_time) {
+	    var select_frequency_str= get_select_frequency();
+	    var frequency_k;
+	    var select_cycle_time_str=get_select_cycle_time();
+	    var cycle_time_k; 
+	    var frequency;
+	    var cycle_time_temp;
+	    var hx_frequency={
+		    "pHz":0.000000000001,
+		    "nHz":0.000000001,
+		    "uHz":0.000001,
+	        "mHz":0.001,
+	        "Hz":1,
+	        "KHz":1000,
+	        "MHz":1000000,
+	        "GHz":1000000000
+	    };
+        var hx_cycle_time={
+	    "ps":0.000000000001,
+	    "ns":0.000000001,
+	    "us":0.000001,
+        "ms":0.001,
+        "s":1       
+        };	
+       
+//	    WriteLine(hx_frequency[select_frequency_str]);
+//	    WriteLine(select_frequency_str);    
+//	    WriteLine(hx_cycle_time[select_cycle_time_str]);
+//	    WriteLine(select_cycle_time_str);
+
+		 for (var i = 0; i < cycle_time.length; i++) {	 	   
+		 	   cycle_time_temp=cycle_time[i];
+		       cycle_time[i]=cycle_time[i]*hx_cycle_time[select_cycle_time_str];      
+		       frequency=1/cycle_time[i];
+		       frequency=frequency/hx_frequency[select_frequency_str];       
+		       WriteLine(cycle_time_temp+select_cycle_time_str+"--->" +frequency+select_frequency_str);
+		 }
+	     
+}        
+   
+
+    
+    
+    
+</script>
+<script type="text/javascript">// 10进制 十六进制  2进制
+function dhb(arr) {
+  
+   if(chk_asHEX.checked)//结果 写入 输入区
+    {          
+          for (var i = 0; i < arr.length; i++){ 
+          arr[i]=parseInt(arr[i], 16); }                    
+    }
+    for (var i = 0; i < arr.length; i++) {
+        WriteLine(PrefixInteger(arr[i].toString(10), 3) + "--" + PrefixInteger(arr[i].toString(16), 2) + "--" + PrefixInteger(arr[i].toString(2), 8));
+    }
+        
+ }
+</script>
+
+
+<script type="text/javascript">//  MATLAB
+function linspace(a, b, n) {
+        if (n < 2) return -1;
+        ret = new Array(n);//返回默认为数组类型 
+        var delt = b - a;
+        delt = delt / (n - 1);
+        for (i = 1; i < ret.length - 1; i++) {
+            ret[i] = a + i * delt;
+        }
+        ret[0] = a;
+        ret[n - 1] = b;
+        for (i = 0; i < ret.length; i++) {
+            WriteLine(ret[i]);
+        }
+   }
+   
+// 线性变换
+    function xxbh(x) {  
+        var con_peilv=eval(document.getElementById('con_peilv').value);//倍率 
+
+        var con_pianyi = eval(document.getElementById('con_pianyi').value);//偏移
+        var y=0;
+        
+        if(chk_result2input.checked)//结果 写入 输入区
+        {          
+           document.getElementById('text_input').value = '';                       
+        }
+
+        for (var i = 0; i < x.length; i++) {            
+            y=con_peilv*x[i]+con_pianyi;
+            WriteLine(x[i]+'--->  '+y);
+            if(chk_result2input.checked){            
+              document.getElementById('text_input').value = document.getElementById('text_input').value+y+' '; 
+            }
+        }  
+        
+       
+
+    }    
+</script>
+       <script>        
+        function loadjs(x)
+        {  
+        	var oHead=document.getElementsByTagName('HEAD').item(0);
+        	var oScrip=document.createElement("script");
+        	oScrip.type="text/javascript";    	
+        	oScrip.src=x;
+        	oHead.appendChild(oScrip);       	
+        }
+       
+       </script>
+   <script type="text/javascript"> 
+        index_init();
+       
+        btn1.onclick = function() {  
+       
+          Main();                      
+        };
+        btn2.onclick = function() {
+            document.getElementById('text_output').value ="";   
+        };
+        var load_js_now;
+        btn_jiazai_js.onclick = function() {           
+			var strfile=document.getElementById('waibujsFile').value;        
+			strfile=strfile.split("\\");
+			strfile=strfile[strfile.length-1];                  
+			if(load_js_now!=strfile)
+			{       	
+				loadjs(strfile);
+			}
+			load_js_now=strfile;                         
+            alert('加载'+load_js_now+'成功！');
+        }  
+</script>                
+    </body>
+</html>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../M_github.js"></script>
+<body>
+
+<button id="btn">AAAAAAAAA</button>
+
+<script>
+
+
+    github=new Github({token:"7bf354dcc05c57171cb518742e9c640647b0de4c",username: 'minglie'});
+
+
+
+    btn.onclick=async function () {
+
+     //  github.reposListAll().then(d=>console.log(d))
+        github.fileContents("ming_node","/index.js").then(d=>console.log(d))
+       // github.createContent("ming_node","/wang/a14.js","网朋飞").then(d=>console.log(d),e=>console.log(e))
+
+       // github.updateContent("ming_node","/wang/a14.js","EEQQQQQQQQ").then(d=>console.log(d.commit.sha),e=>console.log(e))
+
+    }
+
+
+</script>
+
+</body>
+</html>

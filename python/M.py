@@ -1,0 +1,1 @@
+# -*- coding: utf-8 -*-__all__=["M"]class M:    @staticmethod    def log(str):        with open("M.log",'a') as file_object:            file_object.write(str+"\n")

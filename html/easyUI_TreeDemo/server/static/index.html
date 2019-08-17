@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tree数据测试</title>
+    <link rel="stylesheet" type="text/css" href="https://minglie.github.io/public/easyui/css/easyui.css">
+    <link rel="stylesheet" type="text/css" href="https://minglie.github.io/public/css/icon.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script type="text/javascript" src="https://minglie.github.io/public/easyui/js/jquery.easyui.min.js"></script>
+    <script src="https://minglie.github.io/js/M_mock.js"></script>
+<script>
+
+var resData=
+{"success":true,"code":3002,"message":"操作成功","data":[{"id":362,"resName":"mingie","childrens":[{"id":1128,"resName":"minglie01","sortNum":null,"icon":"","childrens":[{"id":1129,"resName":"minglie01_01"}]}]}]};
+
+  ids= {"success":true,"code":3002,"message":"操作成功","data":[362,1129]};
+
+
+  resData=resData.data;
+  ids=ids.data;
+
+               //转换为easyUI所需要的格式
+                function convertEasyUITree(resList,resultRes,ids) {
+                    if(resList){
+                        for (let i=0;i<resList.length;i++){
+                            if(1){
+                                var r={};
+                                r.id=resList[i].id;
+                                r.text=resList[i].id+"  "+resList[i].resName;
+                                r.checked=false;
+                                r.state=null; 
+                                 if(ids.indexOf(resList[i].id)>=0)r.checked=true;
+                                 else   r.checked=false;
+                             
+                                resultRes.push(r);
+                                r.children=[];
+                                convertEasyUITree(resList[i].childrens,r.children,ids)
+                            }
+                        }
+                    }
+                }
+</script>
+
+
+
+
+
+</head>
+<body>
+        <ul id="tt"></ul>
+
+<script>
+
+
+          app.post("/tree_data",function  (req,res) {
+                nodes=[ ];
+                convertEasyUITree(resData, nodes,  ids);
+                res.send(nodes);
+          });
+
+
+          $.ajax=M.ajax;
+
+
+         $('#tt').tree({
+               url:'/tree_data',
+               checkbox: true,
+               onlyLeafCheck: false,//仅叶子节点可以被选中
+               cascadeCheck : false,//false取消关联, true可以关联
+         });
+
+</script>
+
+</body>
+

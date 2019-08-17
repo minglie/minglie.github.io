@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="example" class="example"></div>
+
+
+
+<script type="text/babel">
+
+    // 操纵prop
+    //操作生命周期
+
+    const modifyPropsHOC = (WrappedComponent) => {
+        return class NewComponent extends WrappedComponent {
+            render() {
+
+                super.inc();
+
+                const elements = super.render();
+                const newStyle = {
+                    color: (elements && elements.type === 'div') ? 'red' : 'green'
+                };
+                const newProps = {...this.props, style: newStyle};
+                return React.cloneElement(elements, newProps, elements.props.children);
+            }
+        };
+    };
+
+
+    class  E extends React.Component {
+        inc(){
+            console.log("EEE");
+        }
+        render() {
+            return (
+                    <div>
+                        wossssssssssss
+                    </div>
+
+
+            );
+        }
+    }
+
+
+
+</script>
+
+
+<script type="text/babel">
+
+    const E1=modifyPropsHOC(E);
+
+    ReactDOM.render(
+        <div>
+            <E1 />
+        </div>,
+        document.getElementById('example')
+    );
+</script>
+
+
+
+</body>
+</html>

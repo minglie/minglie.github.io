@@ -1,0 +1,1 @@
+M=require("ming_node");app=M.server();app.listen(8888);token="abcdefg";app.get("/getUserById",(req,res)=>{    console.log(req.params);    if(req.headers["authorization"]==token){        id=req.params.id;        res.send(M.result("ok"));    }else{        res.send(M.result("Œﬁ»®∑√Œ "));    }});

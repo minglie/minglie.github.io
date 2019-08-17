@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>文字转语音</title>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+	<script src="https://minglie.github.io/js/M_mock.js"></script>
+	<style type="text/css">
+		#text_input {
+			width: 50%;
+			font-size: 18px;
+			line-height: 1;
+			background: rgba(100, 200, 50, 0.3);
+		}
+		#text_output {
+			font-size: 18px;
+			width: 100%;
+			line-height: 1;
+			background: rgba(200, 100, 50, 0.3);
+		}
+	</style>
+</head>
+<body>
+
+<label><input name="M_radio" type="radio" value="0" checked/>孤奋</label>
+<label><input name="M_radio" type="radio" value="1" />汉家寨 大漠</label>
+<label><input name="M_radio" type="radio" value="2" />贵妃怨 芃叶</label>
+<label><input name="M_radio" type="radio" value="3" />雨铃霖</label>
+
+<pre>
+这是百度提供的说话函数
+function speck(speakStr) {
+        var myAudio = document.createElement("AUDIO");
+        myAudio.src = "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=9&text=" + speakStr;
+        myAudio.type = "audio/mpeg";
+        myAudio.play();
+};
+</pre>
+<hr/>
+<h2 align="left">输入区</h2>
+<textarea id="text_input" rows="25" style=" width: 1000px; height: 300px"></textarea>
+<input type="button" id="btn1" value="执行" style="background:green;color:red;">
+<hr/>
+<h2 align="left" id="txt_output_title">输出区</h2>
+<input type="button" id="btn2" value="清空输出">
+执行前清屏<input type="checkbox" id="chk_clr_screen">
+<textarea id="text_output" rows="100" cols="100"></textarea>
+
+<script type="text/javascript">//提供DOM操作的函数
+
+function w(m) {
+    text_output.value = text_output.value + m.toString() + "\n";
+}
+
+function get_M_radio() {
+    // console.log(1);
+    var b1 = document.getElementsByName('M_radio');
+    for(var i = 0; i < b1.length; i++) {
+        if(b1[i].checked == true) { //如果选中，下面的alert就会弹出选中的值
+            var num=Number(b1[i].value);
+            if(window.minglie_isINBtn1Click==false){
+                switch(num) {
+                    case 0:
+                        text_input.value =`
+                        		  孤奋
+   孤奋者必怜于天下而不得志，恨于己却极力攀。天强者究不知奋为何物。奋者少，孤奋更少，孤奋多缘能梦不和，不甘平庸，马老一句“物质实在而无他物”惊醒万灵，达老“胜者存而败者汰”警戒世人，二老之语，自然无情也。穷思物因，以观待之。观，观念之集也，法，方法之库也。以Œ标之。吾观之物质，无始，无终，无因，先验。而非无中生有也。明物之性观，列法理之运筹。无明列，难清必混。道德伦理维系和平。恶者欲恶而善不公。天下大乱，纳粹合理，人之多愿哉否也，善恶美丑自在人心。多同而稀异。
+   孤奋者明存世贵，而时又短。人死同而生不同。追求誉荣之名，否也。仅存世而无留，憾也。死同，留世与否有异？虽无异，何不留？况且梦崔芃而难不顾，趣诱芃而乐于世。爱其生愁抛更愁，前佳。
+天下多孤者不奋，奋者不孤，孤奋者多缘于心理。孤者，无亲，无友，无知音，亦缘于心理。奋者，动力加身，梦诱之，此为益。孤奋虽痴而有小益，多众则少思，孤能独立，却乏其身，损其脑不得。吾反孤奋，请必改之。回想惊恐在心，效低习困，杂点无限，自问懂多乎，哀叹朦懂而不知其为何，望知其所以然也。人世烦忧必存，心怀死又何如，事来我当，自能力由事效而现，吾有何罪？吾处世盛衰皆在于我，盛享衰受八杆难达于他人，学海无涯而人有涯，人有爱兴之物，不得贪。宽平而尖佳，世之所需也。世间美物繁灿弃而惜恋，不觉白头催弃，离世之时叹生之失得，此我所愿则安乐死，心中有悔则晚矣。生苦难则侥幸死，奋未终却死不甘。细想生有何求，幸福所求而问其意，幸福乃自感也，此感之美乐不倦，忧愁烦闷尽散，自信满满，世尽如意，人之需得以满而极兴之致。此乃先辈皆经，模糊而重平，我乃爱学之人，却因疑点犹星，己能滞，怨生入Œ。
+   凭一己经历，沾沾自以为独具冷眼，阅尽人间，安知不招人暗笑
+`;
+
+                        break;
+                    case 1:
+                        text_input.value = `
+   汉家寨
+蜃气迷蒙寸草干,
+异乡人至愁难眠。
+仙人难居戈壁滩，
+懂得坚守天地间
+
+
+大漠    崔佳亮
+大漠黄昏烟冲天,
+金鹰临空翼自展。
+一朝临云万人晓，
+敢笑天下无齐肩。
+                        `;
+
+                        break;
+                    case 2:
+                        text_input.value = `
+         贵妃怨
+寒窗秋雨泪绵绵，杨家之女心里寒。
+泪流销魂失桂香，粉装素衣可断墙。
+招宫六日人皆沸，天地反转宇发新。
+岁月如刀邹欲深，人面黄花狂断肠。
+无限时间无限分，无限分离无限长。
+本是柔弱倾城面，无辜却得后人怨。
+
+     芃叶
+凋叶茂松和吾主,
+芾师何培自定王。
+人盛人衰终归土,
+理缘生芃难思由。
+                        `;
+
+                        break;
+
+                    case 3:
+                        text_input.value = `
+                             雨铃霖•傻愁
+    天色突暗,仰天无日,雷雨突降。愁云积于天际,伤心时, 慈母鄙视,转头泪眼怕见,悲愧无奈何。 心颤颤,眶难容泪，无情抛撒伤心雨。
+   面恨无言长久尽，实不知世间有谁依,天下何以寄托,造物主万能耶稣,即己悲已,问自然我生究为何？天地不变我痛悲，万恶逼绝路。
+
+                             雨铃霖•混生
+    荒地孤坟,童稚嬉戏,生死轮回。午夜苦思不解，愁闷时,睡意滋生,此日相继而去，却不可阻挡。心颤颤，旧照入眼,往事泪滴浸融下。
+    古往多少家存灭？各自兴衰一瞬即过。今我旧事重演。有何奇异而存世。此去一走，长眠地下，感生前觉。纵便有前功伟业，亦归于自然。
+                        `;
+
+                        break;
+            	}
+            	return(Number(b1[i].value));
+        	}
+    	}
+	}
+}
+
+//事件绑定初始化
+function init(){
+    var b1 = document.getElementsByName('M_radio');
+    for(var i = 0; i < b1.length; i++) {
+        b1[i].onclick=get_M_radio;
+    }
+    window.minglie_isINBtn1Click=false;
+}
+</script>
+
+
+<script>
+
+    init();
+    get_M_radio();
+    btn1.onclick = function () {
+        window.minglie_isINBtn1Click=true;
+        if (chk_clr_screen.checked) text_output.value = "";
+        var text=text_input.value.trim();
+        main(text,get_M_radio());
+        window.minglie_isINBtn1Click=false;
+    };
+    btn2.onclick = function () {
+        document.getElementById('text_output').value = "";
+    }
+</script>
+
+<script>
+   function main(text) {
+		M.speak(text);
+   }
+
+</script>
+
+
+</body>
+</html>

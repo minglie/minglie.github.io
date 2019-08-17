@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redux basic</title>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+</head>
+<body>
+<div>
+    <p><span id="colorEl">Watch my color.</span>
+        <button id="red">RED</button>
+        <button id="green">GREEN</button>
+        <button id="toggle">TOGGLE</button>
+</div>
+<script type="text/javascript">
+    var initialState = {
+        color: 'red'
+    }
+
+
+    var store= Redux.createStore(
+        function (state, action) {
+            if(typeof state === 'undefined') {
+                return initialState
+            }
+
+
+            alert(action.text);
+
+            switch(action.type) {
+                case 'RED' :
+                    return { color: 'red'}
+                case 'GREEN' :
+                    return { color: 'green'}
+                case 'TOGGLE' :
+                    return state.color === 'red' ? {color:'green'} : {color:'red'}
+                default :
+                    return state
+            }
+        }
+    )
+
+
+    var colorEl = document.getElementById('colorEl')
+
+
+    function renderValue() {
+        colorEl.style.color = store.getState().color
+    }
+
+    renderValue()
+    //注册监听器
+    store.subscribe(renderValue)
+
+
+
+    red.addEventListener('click', function(){
+        store.dispatch({
+            type: 'RED',
+            text:"红色"
+        })
+    })
+
+    green.addEventListener('click', function(){
+        store.dispatch({
+            type: 'GREEN',
+            text:"绿色"
+        })
+    })
+
+    toggle.addEventListener ('click', function(){
+        store.dispatch({
+            type: 'TOGGLE',
+            text:"变色"
+        })
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .red{
+            background:#FF0000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+</div>
+
+</body>
+</html>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script>
+    //组件定义
+    like={
+        template: '<button :class="{red: liked}" @click="zan">赞{{liked_count}}</button>',
+        data: function(){
+            return {
+                liked_count: 10,
+                liked: false
+            }
+        },
+        methods: {
+            zan: function(){
+                if(!this.liked){
+                    this.liked_count++;
+                    this.liked = true
+                }else{
+                    this.liked_count--;
+                    this.liked = false;
+                }
+            }
+        }
+    };
+
+
+    //组件定义
+    var like1 = {
+        template: "<a >{{vb}}---{{va}}</a>",
+        props:["va","vb"]
+    };
+
+    //组件定义
+    var app={
+        el: '#app',
+            template: `
+          <div>
+            <like/>
+            <br/>  {{dd}}
+            <like1 :vb="dd" va="qwe"/>
+         </div>
+`,
+        components: {
+        "like1": like1
+    },
+        data:{
+            dd:88
+        }
+    };
+
+
+
+    //全局注册组件
+    Vue.component('like', like);
+    //new Vue的参数是一个组件
+    a=new Vue(app)
+
+
+
+</script>
+
+
+

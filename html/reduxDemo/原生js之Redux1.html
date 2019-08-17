@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redux basic</title>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+</head>
+<body>
+<div>
+    <p><span id="colorEl">Watch my color.</span>
+        <button id="red">RED</button>
+        <button id="green">GREEN</button>
+        <button id="toggle">TOGGLE</button>
+</div>
+<script type="text/javascript">
+
+    const model={
+        reducer:(defaultState = {
+                color: 'red'
+          },action)=>{
+            console.log(action.type)
+            switch(action.type) {
+                case 'RED' :
+                    return { color: 'red'}
+                case 'GREEN' :
+                    return { color: 'green'}
+                case 'TOGGLE' :
+                    return defaultState.color === 'red' ? {color:'green'}:{color:'red'}
+            }
+            return defaultState;
+        },
+        action:(dispatch)=> {
+            return {
+                setRed: () => {
+                    //这里调用ajax
+                    //text可能是来自服务端的数据
+                    dispatch({
+                        type: 'RED',
+                        text: "红色"
+                    });
+                },
+                setGreen: () => {
+                    dispatch({
+                        type: 'GREEN',
+                        text:"绿色"
+                    });
+                },
+                setToggle: () => {
+                    dispatch({
+                        type: 'TOGGLE',
+                        text:"变色"
+                    });
+                }
+            }
+        }
+    }
+
+
+
+    var store= Redux.createStore(
+        model.reducer
+    );
+
+    //注册监听器, store的dispatch引起state变化,state变化-->循环调用监听器里的方法
+    store.subscribe(()=>{colorEl.style.color = store.getState().color})
+
+
+
+    red.addEventListener('click', function(){
+       model.action(store.dispatch).setRed();
+    })
+
+    green.addEventListener('click', function(){
+        model.action(store.dispatch).setGreen();
+    })
+
+    toggle.addEventListener ('click', function(){
+        model.action(store.dispatch).setToggle();
+    })
+
+</script>
+</body>
+</html>
