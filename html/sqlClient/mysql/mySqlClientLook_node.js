@@ -1,1 +1,0 @@
-app.post("/doSql", async function (req, res) {    try {        let sql= req.params.sql ;        var rows = await Db.doSql(sql);        res.send(M.result(rows));    } catch (e) {        res.send(M.result(e, false));    }})
