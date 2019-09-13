@@ -29,15 +29,15 @@
 //列
             columns:[[
                 {checkbox:true},
-                {field:'id',title:'id',width:100},
-                {field:'parent_id',title:'父id',width:100},
+               // {field:'id',title:'id',width:100},
+                //{field:'parent_id',title:'父id',width:100},
                 {field:'name',title:'资源名字',width:200},
                 {field:'res_url',title:'资源地址',width:500,formatter: function(value,row,index){
                         return `<a href="${value}">${value}</a>`;
 
                     }
                 },
-                {field:'description',title:'说明',width:200}
+                {field:'description',title:'说明',width:1000}
             ]]
         });
 
@@ -49,7 +49,7 @@
 //列
             columns:[[
                 {checkbox:false},
-                {field:'id',title:'id',width:50},
+              //  {field:'id',title:'id',width:50},
                 {field:'name',title:'类别',width:200}
             ]],
             onClickRow:function (index, row) {
