@@ -24,13 +24,9 @@
 
 <label><input name="M_radio" type="radio" value="0" />一般</label>
 <label><input name="M_radio" type="radio" value="1" />初始化实体类</label>
-<label><input name="M_radio" type="radio" value="2" checked />高级(多表)</label>
-<label><input name="M_radio" type="radio" value="3"  />JSON转实体初始化</label>
-
+<label><input name="M_radio" type="radio" value="2" checked />JSON转实体初始化</label>
+<label><input name="M_radio" type="radio" value="3"  />通用表语句</label>
 <br/><br/><br/><br/>
-<a href="../img/table_sql.png">excel表格格式</a>
-
-
 <hr/>
 <h2 align="left">输入区</h2>
 <textarea id="text_input" rows="25" style=" width: 1000px; height: 500px"></textarea>
@@ -67,9 +63,6 @@ function get_M_radio() {
                             "\tmodify_user_id\tbigint\t否\t\t修改人\n" +
                             "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\n" +
                             "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\n";
-
-
-
                         break;
                     case 1:
 							text_input.value = "public class User implements Serializable{\n" +
@@ -80,132 +73,8 @@ function get_M_radio() {
                             "\tprivate Date createDate;\n" +
                             "}";
                         break;
+
                     case 2:
-                        text_input.value ="数据表(系统账户表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_account\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\tname\tvarchar\t否\t\t用户名\t\n" +
-                            "\tpassword\tvarchar\t否\t\t密码\t\n" +
-                            "\tuser_id\tbigint\t否\t\t用户ID\taos_sys_use.id\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_use_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(系统用户表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_user\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\tuser_name\tvarchar\t否\t\t用户姓名\t\n" +
-                            "\tsex\tsmallint\t是\t\t性别 1:男  0:女\t\n" +
-                            "\tage\tsmallint\t是\t\t年龄\t\n" +
-                            "\tid_card_type\tsmallint\t否\t\t证件类型\t\n" +
-                            "\tid_card_no\tvarchar\t否\t\t证件号码\t\n" +
-                            "\tmobile_area\tint\t否\t\t归属地\t\n" +
-                            "\tmobile_phone1\tvarchar\t否\t\t手机号码\t\n" +
-                            "\tmobile_phone2\tvarchar\t否\t\t手机号码2\t\n" +
-                            "\thire_date\ttimestamp\t是\t\t入职日期\t\n" +
-                            "\tleave_date\ttimestamp\t是\t\t离职日期\t\n" +
-                            "\tnation\tvarchar\t是\t\t民族\t\n" +
-                            "\tHealth\tvarchar\t是\t\t健康状况\t\n" +
-                            "\tEducation\tvarchar\t是\t\t学历\t\n" +
-                            "\tbirthday\ttimestamp\t是\t\t生日\t\n" +
-                            "\tEmergency_contact_name\tvarchar\t是\t\t紧急联系人姓名\t\n" +
-                            "\tEmergency_contact_phone\tvarchar\t是\t\t紧急联系人电话\t\n" +
-                            "\tjob\tvarchar\t是\t\t工种\t\n" +
-                            "\tremark\tvarchar\t是\t\t备注\t\n" +
-                            "\ttype\tsmallint\t是\t\t类型: 1.临时工 2.社员\t\n" +
-                            "\temail\tvarchar\t是\t\t电子邮件\t\n" +
-                            "\tcountry\tvarchar\t是\t\t国籍\t\n" +
-                            "\tprovince\tvarchar\t是\t\t省份\t\n" +
-                            "\tcity\tvarchar\t是\t\t城市\t\n" +
-                            "\taddress\tvarchar\t是\t\t住址\t\n" +
-                            "\tdingtalk_id\tvarchar\t是\t\t钉钉账号关联\t\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(系统组织表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_org\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\tcompany_id\tbigint\t否\t\t所属公司id\taos_sys_company.id\n" +
-                            "\torg_code\tvarchar\t否\t\t组织代码\t\n" +
-                            "\torg_name\tvarchar\t否\t\t组织名称\t\n" +
-                            "\tparent_id\tbigint\t否\t\t上级组织id\taos_sys_org.id\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(公司信息表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_company\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\tcompany_name\tvarchar\t否\t\t公司名称\t\n" +
-                            "\tcompany_type\tint\t否\t\t公司类型:1:农企 2:散户 3:政府机构\t\n" +
-                            "\treg_code\tvarchar\t是\t\t工商注册号\t\n" +
-                            "\torg_code\tvarchar\t是\t\t组织机构代码\t\n" +
-                            "\tcredit_code\tvarchar\t是\t\t统一信用代码\t\n" +
-                            "\ttax_code\tvarchar\t是\t\t纳税人识别号\t\n" +
-                            "\treg_auth\tvarchar\t是\t\t登记机关\t\n" +
-                            "\treg_add\tvarchar\t是\t\t注册地址\t\n" +
-                            "\treg_industry\tvarchar\t是\t\t注册行业\t\n" +
-                            "\treg_type\tvarchar\t是\t\t注册公司类型\t\n" +
-                            "\tgmt_reg\tdate\t是\t\t注册时间\t\n" +
-                            "\treg_capital\tbigint\t是\t\t注册资本(单位万)\t\n" +
-                            "\treg_scope\ttext\t是\t\t注册经营范围\t\n" +
-                            "\tgmt_approval\tdate\t是\t\t核准日期\t\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(角色表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_role\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\trole_code\tvarchar\t否\t\t角色编码 \t\n" +
-                            "\trole_name  \tvarchar\t否\t\t角色名称\t\n" +
-                            "\tdescription\tvarchar\t否\t\t描述信息\t\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(资源表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_resource\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\tparent_id\tbigint\t否\t\t上级资源ID\t\n" +
-                            "\tresource_code\tvarchar\t否\t\t资源编码\taos_sys_resource.id\n" +
-                            "\tres_name  \tvarchar\t否\t\t资源名称\t\n" +
-                            "\tres_url\tvarchar\t否\t\t资源页url\t\n" +
-                            "\tres_type\tvarchar\t否\t\t资源类型/ menu,function\t\n" +
-                            "\tsort_num\tint\t否\t\t资源排序\t\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(用户组织关系表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_user_org\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\tuser_id\tbigint\t否\t\t用户id\taos_sys_use.id\n" +
-                            "\torg_id\tbigint\t否\t\t组织id\taos_sys_org.id\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n" +
-                            "数据表(角色资源关系表)\t字段名\t字段类型\t是否可为空\t是否主键\t字段注释\t关联外键\n" +
-                            "aos_sys_role_resource\tid\tbigint\t否\t是\t自增主键ID\t\n" +
-                            "\trole_code \tvarchar\t否\t\t角色编码 \taos_sys_role.role_code\n" +
-                            "\tresource_code\tvarchar\t否\t\t资源id\taos_sys_resource.resource_code\n" +
-                            "\tgmt_create\ttimestamp\t否\t\t创建时间\t\n" +
-                            "\tgmt_modified\ttimestamp\t否\t\t修改时间\t\n" +
-                            "\tcreate_user_id\tbigint\t否\t\t创建人\taos_sys_use.id\n" +
-                            "\tmodify_user_id\tbigint\t否\t\t修改人\taos_sys_use.id\n" +
-                            "\tdeleted\tsmallint\t否\t\t删除状态 0 正常 1 删除 默认0\t\n" +
-                            "\tstauts\tsmallint\t否\t\t状态表 0 正常 1 禁用   默认0\t\n";
-                        break;
-                    case 3:
                         text_input.value="Coder" +
                             "" +
                             "{\n" +
@@ -213,6 +82,20 @@ function get_M_radio() {
                             "        sex:\"男\",\n" +
                             "        hobby:\"乒乓\"\n" +
                             "    }"
+                        break;
+                    case 3:
+                        text_input.value=
+`sys_dict 字典
+id	bigint(20)	父级字典id
+NAME	varchar(255)	字典名称
+CODE	varchar(255)	字典的编码
+DESCRIPTION	varchar(255)	字典描述
+SORT	int(11)	排序
+CREATE_TIME	datetime	创建时间
+UPDATE_TIME	datetime	修改时间
+CREATE_USER	bigint(20)	创建人
+UPDATE_USER	bigint(20)	修改人
+                        `
                 }
             }
             return(Number(b1[i].value));

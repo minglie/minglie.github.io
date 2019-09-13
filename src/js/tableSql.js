@@ -9,10 +9,10 @@ function main(text,num){
         entityInit(text);
     }
     if(num==2){
-        mainC(text);
+        jsonToJavaInit(text);
     }
     if(num==3){
-        jsonToJavaInit(text);
+        main3(text);
     }
 }
 
@@ -42,7 +42,7 @@ function main2(arr){
     for(i=0;i<arr.length;i++){
         var arr1=arr[i].split("@");
         arr1.shift(1);
-        //console.log(arr1);
+        //w(arr1);
         if(arr1[1]=="varchar"){
             arr1[1]="varchar(200)";
         }
@@ -67,7 +67,7 @@ function main1(arr){
     w("CREATE TABLE Table"+tabName+"(\n");
      for(i=0;i<arr.length;i++){
      	var arr1=arr[i].split("@");
-     	//console.log(arr1);
+     	//w(arr1);
      	if(arr1[1]=="varchar"){
    			arr1[1]="varchar(200)";   			
    		}
@@ -162,6 +162,66 @@ function jsonToJavaInit(text){
     }
 
 }
+
+
+function main3(text) {
+    arr=text.split(/[\r\n]/g);
+    tableName="";
+    tableComment=""
+    fieldList=[];
+    field={
+        fieldName:"",
+        fieldType:"",
+        fieldCommont:""
+    }
+
+    for (let i=0;i<arr.length;i++){
+        line=arr[i];
+        split=line.split(/\s/);
+        if(i==0){
+            tableName=split[0];
+            tableComment=split[1]
+        }
+        if(i>0){
+            let field={};
+            field.fieldName=split[0]
+            field.fieldType=split[1]
+            let s=""
+            for (let j=2;j<split.length;j++){
+                s+=split[j];
+            }
+            field.fieldCommont=s
+            fieldList.push(field)
+        }
+    }
+
+        let sql=`CREATE TABLE ${tableName} (\n`;
+       // w("---------------------------------")
+        //w(fieldList)
+      //  w("---------------------------------")
+        for (let i=0;i<fieldList.length;i++){
+            let field = fieldList[i];
+            if(i==0){
+                sql+=`\`${field.fieldName}\`  ${field.fieldType} NOT NULL AUTO_INCREMENT COMMENT '${field.fieldCommont.replace('\r',"")}',\n`
+            }else {
+                sql+=`\`${field.fieldName}\`  ${field.fieldType}   COMMENT '${field.fieldCommont.replace('\r',"")}',\n`;
+            }
+        }
+        sql+=`PRIMARY KEY (id)\n`
+        sql+=`)COMMENT='${tableComment.replace('\r',"")}'`
+      // w("---------------sql------------------")
+        w(sql)
+
+
+}
+
+
+
+
+
+
+
+
 
 
 
