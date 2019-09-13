@@ -32,11 +32,12 @@
                 {field:'id',title:'id',width:100},
                 {field:'parent_id',title:'父id',width:100},
                 {field:'name',title:'资源名字',width:200},
-                {field:'res_url',title:'资源地址',width:800,formatter: function(value,row,index){
+                {field:'res_url',title:'资源地址',width:500,formatter: function(value,row,index){
                         return `<a href="${value}">${value}</a>`;
 
                     }
-                }
+                },
+                {field:'description',title:'说明',width:200}
             ]]
         });
 
@@ -119,7 +120,7 @@
                 $.messager.confirm('温馨提示', '确认删除选择的内容？', function(r) {
                     if(r){
                         let ids=row.map(u=>u.id);
-                        M.IO.delete({ids});
+                        MIO.delete({ids});
                         $('#resourceDataGrid').datagrid('reload');// 重新载入数据
                     }
                 });
@@ -131,7 +132,7 @@
                 $.messager.confirm('温馨提示', '确认删除选择的内容？'+JSON.stringify(row), function(r) {
                     if(r){
                         let ids=row.map(u=>u.id);
-                        M.IO.delete({ids});
+                        MIO.delete({ids});
                         $('#resourceDataGrid').datagrid('reload');// 重新载入数据
                         $('#leftMeau').datagrid('reload');// 重新载入数据
                     }
@@ -169,8 +170,10 @@
 
 
         $("#resourceDataGridToolButton [name='removeAll']").click(function() {
-            M.Db().doSql("delete from resource;");
-            location.reload()
+            M.Db().doSql("delete from resource",function (d) {
+                location.reload()
+            });
+
         });
 
         $("#resourceDataGridToolButton [name='lookAll']").click(function() {
@@ -250,6 +253,7 @@
                     $("#updateDialog [name='res_url']").val(row[0].res_url);
                     $("#updateDialog [name='parent_id']").val(row[0].parent_id);
                     $("#updateDialog [name='name']").val(row[0].name);
+                    $("#updateDialog [name='description']").val(row[0].description);
                     $('#updateDialog').dialog("open");//打开添加对话框
                     return;
                 }
@@ -260,14 +264,12 @@
                     $("#updateDialog [name='res_url']").val(row[0].res_url);
                     $("#updateDialog [name='parent_id']").val(row[0].parent_id);
                     $("#updateDialog [name='name']").val(row[0].name);
+                    $("#updateDialog [name='description']").val(row[0].description);
                     $('#updateDialog').dialog("open");//打开添加对话框
 
                 }else{//不是选择了一行
                     $.messager.alert('我的消息','请选择一行进行修改！','info');
                 }
-
-
-
             }
         );
 
@@ -277,12 +279,14 @@
             function(){
                 var name=$("#addForm [name='name']").val();
                 var res_url=$("#addForm [name='res_url']").val();
-                parent_id=$("#addForm [name='parent_id']").val();
-                M.IO.add(
+                var parent_id=$("#addForm [name='parent_id']").val();
+                var description=$("#addForm [name='description']").val();
+                MIO.add(
                     {
                         parent_id,
                         res_url,
-                        name
+                        name,
+                        description
                     }
                 ).then((d)=>{
                     if(d.success==false){
@@ -311,11 +315,13 @@
                 var id=$("#updateForm [name='res_id']").val();
                 var name=$("#updateForm [name='name']").val();
                 var res_url=$("#updateForm [name='res_url']").val();
-                M.IO.update(
+                var description=$("#updateForm [name='description']").val();
+                MIO.update(
                     {
                         id,
                         res_url,
-                        name
+                        name,
+                        description
                     }
                 );
                 $('#resourceDataGrid').datagrid('reload');// 重新载入数据
@@ -334,24 +340,19 @@
 //事件绑定END
 
 //页面初始化
-    $(function(){
-
+    $( function(){
         M.uploadJsonStr=function (str) {
             var list=JSON.parse(str);
             let sql="";
             for(let i=0;i<list.length;i++){
                 let oi=list[i];
                 sql= M.Db().getInsertObjSql("resource",oi)+";";
-                M.Db().doSql(sql).then(d=>{})
+                M.Db().doSql(sql).then(d=>{if(i==list.length-1){ $.messager.alert('我的消息','导入成功！','info');}})
             }
         };
-
         init();//初始化DataGrid
         initAddDialog();//初始化添加对话框
         initUpdateDialog();//初始化修改对话框
-
-
-
     })
 
 })();

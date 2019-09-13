@@ -1,6 +1,6 @@
 
 M.Db().doSql("select count(1) c from resource").catch(d=>{
-    M.Db().doSql("CREATE TABLE resource (id INTEGER NOT NULL, name varchar (200) DEFAULT NULL, res_url varchar (200) DEFAULT NULL, parent_id INTEGER NOT NULL,sort_num INTEGER, PRIMARY KEY (id))")
+    M.Db().doSql("CREATE TABLE resource (id INTEGER NOT NULL, name varchar(200) DEFAULT NULL, res_url varchar (200) DEFAULT NULL, parent_id INTEGER NOT NULL,description varchar(200), PRIMARY KEY (id))")
 });
 
 app.post("/listByPage", function (req, res) {
@@ -38,11 +38,11 @@ app.post("/listAllRoot", function (req, res) {
 
 
 app.post("/add", function (req, res) {
-    const {parent_id, res_url, name} = req.params;
+    const {parent_id, res_url, name,description} = req.params;
     sql = `
-insert into resource(parent_id,res_url,name) values
+insert into resource(parent_id,res_url,name,description) values
 (
-'${parent_id}','${res_url}', '${name}'
+'${parent_id}','${res_url}', '${name}','${description}'
 )
 ;
 `;
