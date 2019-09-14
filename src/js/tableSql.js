@@ -165,6 +165,7 @@ function jsonToJavaInit(text){
 
 
 function main3(text) {
+    text=text.replace(/"|'/g,"");
     arr=text.split(/[\r\n]/g);
     tableName="";
     tableComment=""
@@ -177,7 +178,7 @@ function main3(text) {
 
     for (let i=0;i<arr.length;i++){
         line=arr[i];
-        split=line.split(/\s/);
+        split=line.split(/\s+/);
         if(i==0){
             tableName=split[0];
             tableComment=split[1]
