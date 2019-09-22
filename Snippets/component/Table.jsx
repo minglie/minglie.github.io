@@ -33,7 +33,7 @@ class Table extends React.Component {
 
             return(
                      <tr key={i} className="col-lg-2" >
-                         <td><a href={d.res_url}>{d.name}</a></td>
+                         <td><a href={d.res_url} title={d.description}>{d.name}</a></td>
                      </tr>
             )
         });
