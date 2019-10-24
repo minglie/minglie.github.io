@@ -7,7 +7,7 @@
 
 <script>
 
-document.body.innerText=location.href.split("?t=")[1];
+document.body.innerText=decodeURI(location.href.split("?t=")[1]);
 
 </script>
 </body>
