@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL建表助手</title>
+    <script id="defaultJsId" src="js/ming_node_generator_web.js"></script>
+    <style type="text/css">
+        #text_input {
+            width: 50%;
+            font-size: 18px;
+            line-height: 1;
+            background: rgba(100, 200, 50, 0.3);
+        }
+
+        #text_output {
+            font-size: 18px;
+            width: 100%;
+            line-height: 1;
+            background: rgba(200, 100, 50, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<input type="file" id="waibujsFile"/>
+<input type="button" id="btn_jiazai_js" value="加载外部脚本"><br/><br/><br/><br/>
+<script>
+       function loadjs(x)
+        {  
+        	var oHead=document.getElementsByTagName('HEAD').item(0);
+        	var oScrip=document.createElement("script");
+        	oScrip.type="text/javascript";    	
+            oScrip.src=x;
+            oHead.removeChild(defaultJsId)
+        	oHead.appendChild(oScrip);       	
+        }
+        var load_js_now;
+   btn_jiazai_js.onclick = function() {   
+
+			var strfile=document.getElementById('waibujsFile').value;        
+			strfile=strfile.split("\\");
+			strfile=strfile[strfile.length-1];                  
+			if(load_js_now!=strfile)
+			{       	
+				loadjs(strfile);
+			}
+			load_js_now=strfile;                         
+            alert('加载'+load_js_now+'成功！');
+        }  
+</script>
+
+
+
+
+<label><input name="M_radio" type="radio" value="0" />Entity.java</label>
+<label><input name="M_radio" type="radio" value="1" />Dao.java</label>
+<label><input name="M_radio" type="radio" value="2" checked />Mapper.xml</label>
+<label><input name="M_radio" type="radio" value="3"  />Service.java</label>
+<label><input name="M_radio" type="radio" value="4"  />ServiceImpl.java</label>
+<label><input name="M_radio" type="radio" value="5"  />Controller.java</label>
+<label><input name="M_radio" type="radio" value="6"  />Controller.js</label>
+<label><input name="M_radio" type="radio" value="7"  />ddl</label>
+
+<br/><br/><br/><br/>
+<hr/>
+<h2 align="left">输入区</h2>
+<textarea id="text_input" rows="25" style=" width: 1000px; height: 500px"></textarea>
+<input type="button" id="btn1" value="执行" style="background:green;color:red;">
+<hr/>
+<h2 align="left" id="txt_output_title">输出区</h2>
+<input type="button" id="btn2" value="清空输出">
+ 执行前清屏<input type="checkbox" id="chk_clr_screen">
+<textarea id="text_output" rows="100" cols="100"></textarea>
+
+
+<script type="text/javascript">//提供DOM操作的函数
+function w(m) {
+    text_output.value = text_output.value + m.toString() + "\n";
+}
+
+function get_M_radio() {
+    var b1 = document.getElementsByName('M_radio');
+    for(var i = 0; i < b1.length; i++) {
+        if(b1[i].checked == true) { //如果选中，下面的alert就会弹出选中的值
+            return(Number(b1[i].value));
+        }
+    }
+}
+
+//事件绑定初始化
+function init(){
+        text_input.value =`sys_dict 字典
+id	bigint(20)	父级字典id
+name	varchar(255)	字典名称
+code	varchar(255)	字典的编码
+description	varchar(255)	字典描述
+sort	int(11)	排序
+create_time	datetime	创建时间
+update_time	datetime	修改时间
+create_user	bigint(20)	创建人
+update_user	bigint(20)	修改人
+                        `;
+    var b1 = document.getElementsByName('M_radio');
+    for(var i = 0; i < b1.length; i++) {
+        b1[i].onclick=get_M_radio;
+    }
+    window.minglie_isINBtn1Click=false;
+}
+</script>
+
+
+<script>
+    init();
+    get_M_radio();
+    btn1.onclick = function () {
+        window.minglie_isINBtn1Click=true;
+        if (chk_clr_screen.checked) text_output.value = "";
+        var text=text_input.value.trim();
+        main(text,get_M_radio());
+        window.minglie_isINBtn1Click=false;
+    };
+    btn2.onclick = function () {
+        document.getElementById('text_output').value = "";
+    }
+</script>
+
+
+</body>
+</html>
