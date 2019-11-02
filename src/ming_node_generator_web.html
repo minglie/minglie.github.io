@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SQL建表助手</title>
-    <script id="defaultJsId" src="js/ming_node_generator_web.js"></script>
+    <title>springboot</title>
     <style type="text/css">
         #text_input {
             width: 50%;
@@ -22,44 +21,19 @@
 </head>
 <body>
 
-<input type="file" id="waibujsFile"/>
-<input type="button" id="btn_jiazai_js" value="加载外部脚本"><br/><br/><br/><br/>
-<script>
-       function loadjs(x)
-        {  
-        	var oHead=document.getElementsByTagName('HEAD').item(0);
-        	var oScrip=document.createElement("script");
-        	oScrip.type="text/javascript";    	
-            oScrip.src=x;
-            oHead.removeChild(defaultJsId)
-        	oHead.appendChild(oScrip);       	
-        }
-        var load_js_now;
-   btn_jiazai_js.onclick = function() {   
-
-			var strfile=document.getElementById('waibujsFile').value;        
-			strfile=strfile.split("\\");
-			strfile=strfile[strfile.length-1];                  
-			if(load_js_now!=strfile)
-			{       	
-				loadjs(strfile);
-			}
-			load_js_now=strfile;                         
-            alert('加载'+load_js_now+'成功！');
-        }  
-</script>
-
-
-
-
-<label><input name="M_radio" type="radio" value="0" />Entity.java</label>
+<input id="projectNameId"  value="ming" placeholder="项目名称" /> <br/>
+<label><input name="M_radio" type="radio" value="0" checked />Entity.java</label>
 <label><input name="M_radio" type="radio" value="1" />Dao.java</label>
-<label><input name="M_radio" type="radio" value="2" checked />Mapper.xml</label>
+<label><input name="M_radio" type="radio" value="2"  />Mapper.xml</label>
 <label><input name="M_radio" type="radio" value="3"  />Service.java</label>
 <label><input name="M_radio" type="radio" value="4"  />ServiceImpl.java</label>
 <label><input name="M_radio" type="radio" value="5"  />Controller.java</label>
-<label><input name="M_radio" type="radio" value="6"  />Controller.js</label>
-<label><input name="M_radio" type="radio" value="7"  />ddl</label>
+<label><input name="M_radio" type="radio" value="6"  />Application.java</label>
+<label><input name="M_radio" type="radio" value="7"  />application.properties</label>
+<label><input name="M_radio" type="radio" value="8"  />logback-spring.xml</label>
+<label><input name="M_radio" type="radio" value="9"  />pom.xml</label>
+<label><input name="M_radio" type="radio" value="10"  />Controller.js</label>
+<label><input name="M_radio" type="radio" value="11"  />ddl</label>
 
 <br/><br/><br/><br/>
 <hr/>
@@ -69,7 +43,7 @@
 <hr/>
 <h2 align="left" id="txt_output_title">输出区</h2>
 <input type="button" id="btn2" value="清空输出">
- 执行前清屏<input type="checkbox" id="chk_clr_screen">
+ 执行前清屏<input type="checkbox" checked id="chk_clr_screen">
 <textarea id="text_output" rows="100" cols="100"></textarea>
 
 
@@ -127,3 +101,13 @@ update_user	bigint(20)	修改人
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+<script id="defaultJsId" src="js/ming_node_generator_web.js"></script>
