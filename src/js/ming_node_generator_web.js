@@ -17,7 +17,8 @@ context.getEntityDescsByTableName = function (tableName) {
  * 根据sql类型获取java类型
  */
 context.getJavaTypeBySqlType = function (sqlType) {
-    if (sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
+    sqlType=sqlType.toLowerCase();
+    if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
         return "String";
     } else if (sqlType.indexOf("int") >= 0) {
         return "Integer";
@@ -39,14 +40,15 @@ context.getJavaTypeBySqlType = function (sqlType) {
  * 根据sql类型获取JDBC类型
  */
 context.getJdbcTypeBySqlType = function (sqlType) {
-    if (sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
+	sqlType=sqlType.toLowerCase();
+    if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
         return "VARCHAR";
     } else if (sqlType.indexOf("int") >= 0) {
         return "BIGINT";
     } else if (sqlType.indexOf("date") >= 0 || sqlType.indexOf("time") >= 0) {
         return "TIMESTAMP";
     } else if (sqlType.indexOf("double") >= 0) {
-        return "Double";
+        return "DOUBLE";
     } else if (sqlType.indexOf("float") >= 0) {
         return "FLOAT";
     } else if (sqlType.indexOf("decimal") >= 0) {
