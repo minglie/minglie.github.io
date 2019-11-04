@@ -18,14 +18,20 @@
 			line-height: 1;
 			background: rgba(200, 100, 50, 0.3);
 		}
+        label{
+           color: black;
+           font-weight : 700;
+
+        }
 	</style>
 </head>
 <body>
 
 <label><input name="M_radio" type="radio" value="0" checked/>孤奋</label>
-<label><input name="M_radio" type="radio" value="1" />汉家寨 大漠</label>
-<label><input name="M_radio" type="radio" value="2" />贵妃怨 芃叶</label>
-<label><input name="M_radio" type="radio" value="3" />雨铃霖</label>
+<label><input name="M_radio" type="radio" value="1" />汉家寨*大漠</label>
+<label><input name="M_radio" type="radio" value="2" />贵妃怨*芃叶</label>
+<label><input name="M_radio" type="radio" value="3" />雨铃霖*傻愁|混生</label>
+<label><input name="M_radio" type="radio" value="4" />青玉案*小院夜思</label>
 
 <pre>
 这是百度提供的说话函数
@@ -116,7 +122,14 @@ function get_M_radio() {
     荒地孤坟,童稚嬉戏,生死轮回。午夜苦思不解，愁闷时,睡意滋生,此日相继而去，却不可阻挡。心颤颤，旧照入眼,往事泪滴浸融下。
     古往多少家存灭？各自兴衰一瞬即过。今我旧事重演。有何奇异而存世。此去一走，长眠地下，感生前觉。纵便有前功伟业，亦归于自然。
                         `;
+                case 4: 
+                text_input.value = `
 
+                夜深小院净如羽,仙飞逝,流光彩,曾记当年欢乐事.满月高照，暗香云动,昼夜难眠奇。
+
+
+                桑叶落花情依依,迁客骚人花不许.众人属于东门去,可莫即应,省得无奈，失信万人敌。
+                        `;
                         break;
             	}
             	return(Number(b1[i].value));
