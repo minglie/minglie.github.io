@@ -69,15 +69,15 @@ function get_M_radio() {
 //事件绑定初始化
 function init(){
         text_input.value =`sys_dict 字典
-id	bigint(20)	父级字典id
+id	bigint(20)	自增主键
 name	varchar(255)	字典名称
 code	varchar(255)	字典的编码
 description	varchar(255)	字典描述
 sort	int(11)	排序
-create_time	datetime	创建时间
-update_time	datetime	修改时间
-create_user	bigint(20)	创建人
-update_user	bigint(20)	修改人
+gmt_create	datetime	创建时间
+gmt_motify	datetime	修改时间
+create_user	bigint(20)	创建人id
+update_user	bigint(20)	修改人id
                         `;
     var b1 = document.getElementsByName('M_radio');
     for(var i = 0; i < b1.length; i++) {

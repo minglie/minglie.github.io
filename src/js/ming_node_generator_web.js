@@ -20,7 +20,9 @@ context.getJavaTypeBySqlType = function (sqlType) {
     sqlType=sqlType.toLowerCase();
     if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
         return "String";
-    } else if (sqlType.indexOf("int") >= 0) {
+    }  else if (sqlType.indexOf("bigint") >= 0) {
+        return "Long";
+    }else if (sqlType.indexOf("int") >= 0) {
         return "Integer";
     } else if (sqlType.indexOf("date") >= 0 || sqlType.indexOf("time") >= 0) {
         return "Date";
@@ -112,7 +114,7 @@ public interface ${entityClassName}Mapper{
      * @param
      * @return
      */
-    void insertBatch(@Param("${entityClassName1}List") List<${entityClassName}> ${entityClassName1}List);
+    void batchInsert(@Param("${entityClassName1}List") List<${entityClassName}> ${entityClassName1}List);
 
     /**
      * 修改
@@ -126,7 +128,7 @@ public interface ${entityClassName}Mapper{
      * @param
      * @return
      */
-    Integer delete(Integer id);
+    Integer delete(Long id);
 
 
     /**
@@ -142,7 +144,7 @@ public interface ${entityClassName}Mapper{
      * @param
      * @return
      */
-    ${entityClassName} getById(Integer id);
+    ${entityClassName} getById(Long id);
 
  
 
@@ -170,14 +172,14 @@ public interface ${entityClassName}Mapper{
          insert into ${tableName} (${mapper_baseColumn})
          values(${insertIfProps}
          )
-         <selectKey resultType="java.lang.Integer" order="AFTER"
+         <selectKey resultType="java.lang.Long" order="AFTER"
                     keyProperty="id">
              SELECT LAST_INSERT_ID()
          </selectKey>
      </insert>
  
  
-     <insert id="insertBatch">
+     <insert id="batchInsert">
          insert into ${tableName}
          (${mapper_baseColumn})
          values
@@ -254,7 +256,7 @@ public interface ${entityClassName}Service {
      * 删除
      * @param
      */
-    Integer delete(Integer id);
+    Integer delete(Long id);
 
 
     /**
@@ -268,7 +270,7 @@ public interface ${entityClassName}Service {
      * 根据id获取
      * @param
      */
-    ${entityClassName} getById(Integer id);
+    ${entityClassName} getById(Long id);
 
 }
 `)
@@ -297,12 +299,8 @@ public class  ${entityClassName}ServiceImpl  implements ${entityClassName}Servic
 
     @Override
     public ${entityClassName} insert(${entityClassName} ${entityClassName1}) {
-        Integer insert = ${entityClassName1}Mapper.insert(${entityClassName1});
-        if(insert==0) {
-            return null;
-        } else {
-            return ${entityClassName1};
-        }
+        ${entityClassName1}Mapper.insert(${entityClassName1});
+         return ${entityClassName1}; 
     }
 
 
@@ -313,7 +311,7 @@ public class  ${entityClassName}ServiceImpl  implements ${entityClassName}Servic
 
 
     @Override
-    public Integer delete(Integer id) {
+    public Integer delete(Long id) {
         return ${entityClassName1}Mapper.delete(id);
     }
 
@@ -325,7 +323,7 @@ public class  ${entityClassName}ServiceImpl  implements ${entityClassName}Servic
 
 
     @Override
-    public ${entityClassName} getById(Integer id) {
+    public ${entityClassName} getById(Long id) {
         return ${entityClassName1}Mapper.getById(id);
     }
 }
@@ -354,7 +352,7 @@ public class ${entityClassName}Controller{
 
 
     @GetMapping(value = "/getById")
-    public ${entityClassName} getById(Integer id) {
+    public ${entityClassName} getById(Long id) {
         ${entityClassName} ${entityClassName1} =${entityClassName1}Service.getById(id);
         return ${entityClassName1};
     }
@@ -382,7 +380,7 @@ public class ${entityClassName}Controller{
     }
 
     @GetMapping(value = "/delete")
-    public String delete(Integer id){
+    public String delete(Long id){
         Integer i =${entityClassName1}Service.delete(id);
         return i+"";
     }
@@ -763,12 +761,12 @@ function ddl() {
     for (let i = 0; i < fieldList.length; i++) {
         let field = fieldList[i];
         if (i == 0) {
-            sql += `${field.column_name}  ${field.column_type} NOT NULL AUTO_INCREMENT COMMENT '${field.column_comment.replace('\r', "")}',\n`
+            sql += `  ${field.column_name}  ${field.column_type} NOT NULL AUTO_INCREMENT COMMENT '${field.column_comment.replace('\r', "")}',\n`
         } else {
-            sql += `${field.column_name}  ${field.column_type}   COMMENT '${field.column_comment.replace('\r', "")}',\n`;
+            sql += `  ${field.column_name}  ${field.column_type}   COMMENT '${field.column_comment.replace('\r', "")}',\n`;
         }
     }
-    sql += `PRIMARY KEY (id)\n`
+    sql += `  PRIMARY KEY (id)\n`
     sql += `)COMMENT='${tableComment.replace('\r', "")}'`
     w(sql)
 }
