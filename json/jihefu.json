@@ -571,6 +571,6 @@
         "res_url": "https://minglie.github.io/html/index.html?t=curl https://minglie.github.io/js/ming_mockServer0.js > index.js && node index.js",
         "parent_id": 267,
         "description": ""
-    },
+    }
 
 ]
