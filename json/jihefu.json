@@ -565,5 +565,12 @@
         "res_url": "https://minglie.github.io/html/index.html?t=docker run -ti -p 8888:8888 --name node-1 minglie/ming_mockserver0 node index.js ",
         "parent_id": 267,
         "description": ""
-    }
+    }, {
+        "id": 275,
+        "name": "curl启动ming_mock_server0",
+        "res_url": "curl https://minglie.github.io/js/ming_mockServer0.js > index.js && node index.js",
+        "parent_id": 267,
+        "description": ""
+    },
+
 ]
