@@ -572,5 +572,12 @@
         "parent_id": 267,
         "description": ""
     }
+, {
+        "id": 276,
+        "name": "UzerMe云端办公工具",
+        "res_url": "https://uzer.me/z/apps",
+        "parent_id": 212,
+        "description": ""
+    }
 
 ]
