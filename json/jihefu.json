@@ -578,6 +578,13 @@
         "res_url": "https://uzer.me/z/apps",
         "parent_id": 212,
         "description": ""
+    },
+    {
+        "id": 277,
+        "name": "在线ming_mock_server0",
+        "res_url": "https://minglie.github.io/html/index.html?t=curl https://minglie.github.io/js/ming_mockServer0.js > index.js && node index.js",
+        "parent_id": 267,
+        "description": "需在localStorage配置host"
     }
 
 ]
