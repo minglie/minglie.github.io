@@ -40,13 +40,14 @@
 <script>
   function ming_alert(str) {
     btn.innerHTML = str;
-    //设置关闭时间  
     window.setTimeout(() => {
       btn.innerHTML = "Run";
     }, 500);
   }
   M = {};
   M.fun=localStorage.fun;
+  M.host=localStorage.host||"";
+
   if(!M.fun){
     M.fun=      `
               app.get("/getById",(req,res)=>{ 
@@ -60,7 +61,7 @@
     localStorage.fun=fun;
     $.ajax({
              type: "post",
-             url: "http://localhost:8888/_run_",
+             url: M.host+ "/_run_",
              data: {fun},
              dataType: "json",
              success: function(data){
