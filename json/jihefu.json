@@ -582,7 +582,7 @@
     {
         "id": 277,
         "name": "在线ming_mock_server0",
-        "res_url": "https://minglie.github.io/html/index.html?t=curl https://minglie.github.io/js/ming_mockServer0.js > index.js && node index.js",
+        "res_url": "https://minglie.github.io/html/ming_mockServer0/ming_mockServer0.html",
         "parent_id": 267,
         "description": "需在localStorage配置host"
     }
