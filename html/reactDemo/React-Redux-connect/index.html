@@ -7,34 +7,256 @@
     <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
     <!--<script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>-->
 
-  <!--https://github.com/minglie/minglie.github.io/blob/master/html/reactDemo/React-Redux-connect/components/CommentList.jsx-->
-
-
 
 </head>
 
-
-
 <body>
-
 
 <div id="example" class="example"></div>
 
+</body>
+</html>
 
-<script src="components/CommentList.jsx" type="text/babel"></script>
+
+
+
+
+
+
+
+
+
+<script  type="text/babel">
+    //返回函数集 functions 组合后的复合函数, 也就是一个函数执行完之后把返回的结果再作为参数赋给下一个函数来执行.
+    const compose = (...func) => (...init) => {
+        let result;
+        switch (func.length) {
+            case 0:
+                result = func; break;
+            case 1:
+                result = func[0](...init); break;
+            default:
+                result = func.reduce((x, y) => {
+                    return typeof x === 'function' ? y(x(...init)) : y(x);
+                }); break;
+        }
+        return result;
+    }
+
+
+    //添加中间件
+    function applyMiddleware(...middlewares) {
+        return createStore => (reducer, preloadedState, enhancer) => {
+            const store = createStore(reducer, preloadedState, enhancer)
+            let dispatch = store.dispatch
+            let chain = [] //用于存放中间件
+            const middlewareAPI = {
+                getState: store.getState,
+                dispatch: (action) => store.dispatch(action)
+            }
+            chain = middlewares.map(middleware => middleware(middlewareAPI))
+            dispatch = compose(...chain)(store.dispatch)
+            return {
+                ...store,
+                dispatch
+            }
+        }
+    }
+    //Redux核心代码
+    const Redux={
+        currentReducer:{},
+        currentState:{},
+        currentListeners:{},
+        createStore: function createStore(reducer, preloadedState, enhancer) {
+            // 如果 preloadedState类型是function，enhancer类型是undefined，那认为用
+            // 户没有传入preloadedState，就将preloadedState的值传给
+            // enhancer，preloadedState值设置为undefined
+            if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+                enhancer = preloadedState
+                preloadedState = undefined
+            }
+            // enhancer类型必须是一个function
+            if (typeof enhancer !== 'undefined') {
+                if (typeof enhancer !== 'function') {
+                    throw new Error('Expected the enhancer to be a function.')
+                }
+                // 返回使用enhancer增强后的store
+                return enhancer(Redux.createStore)(reducer, preloadedState)
+            }
+            // reducer必须是一个function
+            if (typeof reducer !== 'function') {
+                throw new Error('Expected the reducer to be a function.')
+            }
+            Redux.currentState=reducer(preloadedState,{type:0});
+            Redux.currentReducer = reducer;
+            Redux.currentListeners = [];
+            let isDispatching = false
+
+
+            function dispatch(action) {
+                if (typeof action.type === 'undefined') {
+                    throw new Error(
+                        'Actions may not have an undefined "type" property. ' +
+                        'Have you misspelled a constant?'
+                    )
+                }
+                // reducer内部不允许再次调用dispatch，否则抛出异常
+                if (isDispatching) {
+                    throw new Error('Reducers may not dispatch actions.')
+                }
+                try {
+                    isDispatching = true
+                    Redux.currentState = Redux.currentReducer(Redux.currentState, action);
+                } finally {
+                    isDispatching = false
+                }
+                var listeners = Redux.currentListeners;
+                for (var i = 0; i < listeners.length; i++) {
+                    var listener = listeners[i];
+                    listener();
+                }
+                return action;
+            }
+
+
+            function subscribe(listener) {
+                Redux.currentListeners.push(listener);
+            }
+            function getState() {
+                return Redux.currentState;
+            }
+            return{
+                dispatch, subscribe, getState
+            }
+        }
+    };
+    //redux 中间件例子
+    const myMiddleware = (store) => (next) => (action) => {
+        console.log('进入了我自己定义的中间件');
+        let result = next(action);    // 执行下一步
+        // let result = store.dispatch(action); //不调用next，直接使用store.dispatch调用原生。然后是不行的，会陷入dispatch死循环。
+        return result;
+    }
+
+    ////////////////下面两个是action/////////////////////////////////////////
+    const increment = (num)=> {
+        return {
+            type: 'INCREMENT_COUNTER',
+            num:num
+        }
+    };
+    const decrement = ()=> {
+        return {type: 'DECREMENT_COUNTER'}
+    };
+
+    const actions={
+        increment,
+        decrement
+    };
+    //定义一个计数reduce,用于创建store
+    const counterReduce= (defaultState={count: 10}, action)=> {
+        console.log("进入reducer 状态：",defaultState);
+        switch (action.type) {
+            case 'INCREMENT_COUNTER':
+                return {
+                    count: defaultState.count+action.num
+                };
+            case 'DECREMENT_COUNTER':
+                return {
+                    count: defaultState.count-1
+                };
+            default:
+                return defaultState;
+        }
+    };
+
+    //创建全局唯一store
+    let store =  Redux.createStore(counterReduce,applyMiddleware(myMiddleware));
+
+
+   //connect是一个高阶组件(输入输出都是组件的函数)
+    // 1，接受一个组件，把数据放到组件内部，返回一个组件
+    // 2，数据发生变化的时候，通知到组件
+    const connect =(mapStateToProps, mapDispatchToProps) => (WrappedComponent) => {
+        class Connect extends React.Component {
+            constructor () {
+                super();
+                this.state = {
+                    allProps: {}
+                }
+            }
+            componentWillMount () {
+                this._updateProps();
+                store.subscribe(() => this._updateProps())
+            }
+            _updateProps () {
+                let stateProps = mapStateToProps ? mapStateToProps(store.getState(), this.props):{}; // 防止 mapStateToProps 没有传入
+                let dispatchProps = mapDispatchToProps ? mapDispatchToProps(store.dispatch, this.props):{}; // 防止 mapDispatchToProps 没有传入
+                this.setState({
+                    allProps: {
+                        ...stateProps,
+                        ...dispatchProps,
+                        ...this.props
+                    }
+                })
+            }
+            render () {
+                return <WrappedComponent {...this.state.allProps} />
+            }
+        }
+        return Connect
+    };
+
+   //测试用的计数组件
+    class Counter extends React.Component {
+        render() {
+            //从组件的props属性中导入四个方法和一个变量
+            const {increment, decrement, counter} = this.props;
+            //渲染组件，包括一个数字，四个按钮
+            return(
+                    <div>
+                        Clicked: {counter} times
+                        <button onClick={()=>{increment(3)}}>+</button>
+                        {' '}
+                        <button onClick={decrement}>-</button>
+                        {' '}
+                    </div>
+            )
+        }
+    }
+    //将state.counter绑定到props的counter
+    //这个函数允许我们将 store 中的数据作为 props 绑定到组件上。
+    const mapStateToProps = (state) => {
+        return {
+            counter: state.count
+        }
+    };
+
+    //它的功能是，将 触发action的函数 作为props 绑定到组件上,
+    const mapDispatchToProps = (dispatch, ownProps) => {
+        return {
+            increment: (...args) => dispatch(actions.increment(...args)),
+            decrement: (...args) => dispatch(actions.decrement(...args))
+        }
+    };
+    //Counter 经过 connect 加强得到 App
+    const App=connect(mapStateToProps, mapDispatchToProps)(Counter);
+</script>
 
 
 
 <script type="text/babel">
     ReactDOM.render(
-        <div>
-            <App />
-        </div>,
+            <div>
+                <App />
+            </div>,
         document.getElementById('example')
     );
 </script>
 
 
 
-</body>
-</html>
+
+
+
+
