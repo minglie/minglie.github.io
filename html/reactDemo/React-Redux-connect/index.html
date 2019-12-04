@@ -1,33 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
     <!--<script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>-->
-
-
 </head>
 
 <body>
-
-<div id="example" class="example"></div>
-
+    <div id="example" class="example"></div>
 </body>
+
 </html>
 
 
+<script type="text/babel">
 
-
-
-
-
-
-
-
-<script  type="text/babel">
-    //返回函数集 functions 组合后的复合函数, 也就是一个函数执行完之后把返回的结果再作为参数赋给下一个函数来执行.
+    /**
+       返回函数集 functions 组合后的复合函数, 也就是一个函数执行完之后把返回的结果再作为参数赋给下一个函数来执行.
+    */
     const compose = (...func) => (...init) => {
         let result;
         switch (func.length) {
@@ -43,8 +36,10 @@
         return result;
     }
 
-
-    //添加中间件
+    /*
+    *
+      添加中间件
+    */
     function applyMiddleware(...middlewares) {
         return createStore => (reducer, preloadedState, enhancer) => {
             const store = createStore(reducer, preloadedState, enhancer)
@@ -62,11 +57,14 @@
             }
         }
     }
-    //Redux核心代码
-    const Redux={
-        currentReducer:{},
-        currentState:{},
-        currentListeners:{},
+    /**
+        Redux核心代码
+    
+    */
+    const Redux = {
+        currentReducer: {},
+        currentState: {},
+        currentListeners: [],
         createStore: function createStore(reducer, preloadedState, enhancer) {
             // 如果 preloadedState类型是function，enhancer类型是undefined，那认为用
             // 户没有传入preloadedState，就将preloadedState的值传给
@@ -87,12 +85,10 @@
             if (typeof reducer !== 'function') {
                 throw new Error('Expected the reducer to be a function.')
             }
-            Redux.currentState=reducer(preloadedState,{type:0});
+            Redux.currentState = reducer(preloadedState, { type: 0 });
             Redux.currentReducer = reducer;
             Redux.currentListeners = [];
             let isDispatching = false
-
-
             function dispatch(action) {
                 if (typeof action.type === 'undefined') {
                     throw new Error(
@@ -125,73 +121,46 @@
             function getState() {
                 return Redux.currentState;
             }
-            return{
+            return {
                 dispatch, subscribe, getState
             }
         }
     };
-    //redux 中间件例子
-    const myMiddleware = (store) => (next) => (action) => {
-        console.log('进入了我自己定义的中间件');
-        let result = next(action);    // 执行下一步
-        // let result = store.dispatch(action); //不调用next，直接使用store.dispatch调用原生。然后是不行的，会陷入dispatch死循环。
-        return result;
+
+
+    /**
+    thunk 中间件
+    */
+    function createThunkMiddleware(extraArgument) {
+        return ({ dispatch, getState }) => next => action => {
+            console.log('进入了thunk中间件');
+            if (typeof action === 'function') {
+                return action(dispatch, getState, extraArgument);
+            }
+            return next(action);
+        };
     }
-
-    ////////////////下面两个是action/////////////////////////////////////////
-    const increment = (num)=> {
-        return {
-            type: 'INCREMENT_COUNTER',
-            num:num
-        }
-    };
-    const decrement = ()=> {
-        return {type: 'DECREMENT_COUNTER'}
-    };
-
-    const actions={
-        increment,
-        decrement
-    };
-    //定义一个计数reduce,用于创建store
-    const counterReduce= (defaultState={count: 10}, action)=> {
-        console.log("进入reducer 状态：",defaultState);
-        switch (action.type) {
-            case 'INCREMENT_COUNTER':
-                return {
-                    count: defaultState.count+action.num
-                };
-            case 'DECREMENT_COUNTER':
-                return {
-                    count: defaultState.count-1
-                };
-            default:
-                return defaultState;
-        }
-    };
-
-    //创建全局唯一store
-    let store =  Redux.createStore(counterReduce,applyMiddleware(myMiddleware));
-
-
-   //connect是一个高阶组件(输入输出都是组件的函数)
-    // 1，接受一个组件，把数据放到组件内部，返回一个组件
-    // 2，数据发生变化的时候，通知到组件
-    const connect =(mapStateToProps, mapDispatchToProps) => (WrappedComponent) => {
+    const thunk = createThunkMiddleware();
+    /*
+        connect是一个高阶组件(输入输出都是组件的函数)
+        1，接受一个组件，把数据放到组件内部，返回一个组件
+        2，数据发生变化的时候，通知到组件
+    */
+    const connect = (mapStateToProps, mapDispatchToProps) => (WrappedComponent) => {
         class Connect extends React.Component {
-            constructor () {
+            constructor() {
                 super();
                 this.state = {
                     allProps: {}
                 }
             }
-            componentWillMount () {
+            componentWillMount() {
                 this._updateProps();
                 store.subscribe(() => this._updateProps())
             }
-            _updateProps () {
-                let stateProps = mapStateToProps ? mapStateToProps(store.getState(), this.props):{}; // 防止 mapStateToProps 没有传入
-                let dispatchProps = mapDispatchToProps ? mapDispatchToProps(store.dispatch, this.props):{}; // 防止 mapDispatchToProps 没有传入
+            _updateProps() {
+                let stateProps = mapStateToProps ? mapStateToProps(store.getState(), this.props) : {}; // 防止 mapStateToProps 没有传入
+                let dispatchProps = mapDispatchToProps ? mapDispatchToProps(store.dispatch, this.props) : {}; // 防止 mapDispatchToProps 没有传入
                 this.setState({
                     allProps: {
                         ...stateProps,
@@ -200,27 +169,82 @@
                     }
                 })
             }
-            render () {
+            render() {
                 return <WrappedComponent {...this.state.allProps} />
             }
         }
         return Connect
     };
 
-   //测试用的计数组件
+
+
+
+
+    /**
+    ---------------------------------------------------------------------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+         下面是项目中自己写的代码
+    **/
+
+    //redux 中间件例子
+    const myMiddleware = (store) => (next) => (action) => {
+        console.log('进入了我自己定义的中间件');
+        let result = next(action);    // 执行下一步
+        // let result = store.dispatch(action); //不调用next，直接使用store.dispatch调用原生。然后是不行的，会陷入dispatch死循环。
+        return result;
+    }
+
+    //下面两个是action
+    const increment = (num) => {
+        return {
+            type: 'INCREMENT_COUNTER',
+            num: num
+        }
+    };
+    const decrement = () => {
+        return { type: 'DECREMENT_COUNTER' }
+    };
+
+    const actions = {
+        increment,
+        decrement
+    };
+    //定义一个计数reduce,用于创建store
+    const counterReduce = (defaultState = { count: 10 }, action) => {
+        console.log("进入reducer, 状态：", defaultState);
+        switch (action.type) {
+            case 'INCREMENT_COUNTER':
+                return {
+                    count: defaultState.count + action.num
+                };
+            case 'DECREMENT_COUNTER':
+                return {
+                    count: defaultState.count - 1
+                };
+            default:
+                return defaultState;
+        }
+    };
+
+    //创建全局唯一store
+    let store = Redux.createStore(counterReduce, applyMiddleware(myMiddleware, thunk));
+
+
+
+    //测试用的计数组件
     class Counter extends React.Component {
         render() {
             //从组件的props属性中导入四个方法和一个变量
-            const {increment, decrement, counter} = this.props;
+            const { increment, decrement, counter } = this.props;
             //渲染组件，包括一个数字，四个按钮
-            return(
-                    <div>
-                        Clicked: {counter} times
-                        <button onClick={()=>{increment(3)}}>+</button>
-                        {' '}
-                        <button onClick={decrement}>-</button>
-                        {' '}
-                    </div>
+            return (
+                <div>
+                    Clicked: {counter} times
+                        <button onClick={() => { increment(3) }}>+</button>
+                    {' '}
+                    <button onClick={decrement}>-</button>
+                    {' '}
+                </div>
             )
         }
     }
@@ -235,28 +259,26 @@
     //它的功能是，将 触发action的函数 作为props 绑定到组件上,
     const mapDispatchToProps = (dispatch, ownProps) => {
         return {
-            increment: (...args) => dispatch(actions.increment(...args)),
-            decrement: (...args) => dispatch(actions.decrement(...args))
+            increment: (num) => {
+                fetch('https://api.apiopen.top/EmailSearch?number=1012002')
+                    .then(res => {
+                        return res.json();
+                    }).then(data => {
+                        dispatch(actions.increment(Number.parseInt(data.code) + num))
+                    })
+            },
+            decrement: () => dispatch(actions.decrement())
         }
     };
     //Counter 经过 connect 加强得到 App
-    const App=connect(mapStateToProps, mapDispatchToProps)(Counter);
+    const App = connect(mapStateToProps, mapDispatchToProps)(Counter);
 </script>
-
-
 
 <script type="text/babel">
     ReactDOM.render(
-            <div>
-                <App />
-            </div>,
+        <div>
+            <App />
+        </div>,
         document.getElementById('example')
     );
 </script>
-
-
-
-
-
-
-
