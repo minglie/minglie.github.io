@@ -299,5 +299,13 @@
         "res_url": "https://minglie.github.io/src/ming_node_generator_web.html",
         "parent_id": 206,
         "description": ""
+    },
+{ 
+        "id": 320,
+        "name": "Jasmine测试demo",
+        "res_url": "https://minglie.github.io/js/test/m_jasmine.html",
+        "parent_id": 206,
+        "description": ""
     }
+
 ]
