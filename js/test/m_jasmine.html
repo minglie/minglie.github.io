@@ -1,1 +1,74 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>crossTest</title><script src="https://minglie.github.io/js/m_jasmine.js"></script></head><body>	<script>		// Ã¿Ò»¸ö²âÊÔÓÃÀıµÄ³¬Ê±Ê±¼ä		jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;		// ÇëÇóµÄ½Ó¿ÚµÄÇ°×º // http://localhost:8888		var base = "";		//²âÊÔÄ£¿é		describe("first mode1", function() {			  beforeAll(function(){				console.log("beforeAll");			  });			  beforeEach(function() {				console.log("beforeEach");			  });			  afterAll(function(){				console.log("afterAll");			  });			  afterEach(function(){				console.log("afterEach");			  });					// ²âÊÔ·½·¨			it("test01", function(done) {			        var result=  {"data" : "get1 ok"}					expect(result).toEqual({						"data" : "get1 ok"					});					done();					console.log("test01");								});			it("test02", function(done) {					foo = [1, 2, 3, 4];  					expect(foo).toEqual(jasmine.arrayContaining([3, 1]));  					console.log("test02");					done();			});			});						 		describe("second mode1", function() {			it("test03", function(done) {				expect({foo: 'bar'}).toEqual({foo: jasmine.stringMatching(/^bar$/)});  				expect('foobarbaz').toEqual('foobarbaz'); 				 //Èç¹ûÊµ¼ÊÖµ²»ÊÇnull»òÕßundefinedÔò·µ»Øtrue:				 expect(1).toEqual(jasmine.anything());				done();			});					it("test04", function(done) {			        var pi = 3.1415926,					e = 2.78;					//ÊÇ·ñ×ã¹»½Ó½ü					//µÚ¶ş¸öexpect¾ÍÊÇÈç¹ûpi-eµÄ¾ø¶ÔÖµĞ¡ÓÚ10µÄ-0´Î·½³ıÒÔ2µÄÖµ					expect(pi).not.toBeCloseTo(e, 1);					expect(pi).toBeCloseTo(e, 0);					  done();			});			});						</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>crossTest</title>
+
+<script src="https://minglie.github.io/js/m_jasmine.js"></script>
+
+</head>
+<body>
+	<script>
+		// æ¯ä¸€ä¸ªæµ‹è¯•ç”¨ä¾‹çš„è¶…æ—¶æ—¶é—´
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
+		// è¯·æ±‚çš„æ¥å£çš„å‰ç¼€ // http://localhost:8888
+		var base = "";
+		//æµ‹è¯•æ¨¡å—
+		describe("first mode1", function() {
+			  beforeAll(function(){
+				console.log("beforeAll");
+			  });
+			  beforeEach(function() {
+				console.log("beforeEach");
+			  });
+			  afterAll(function(){
+				console.log("afterAll");
+			  });
+			  afterEach(function(){
+				console.log("afterEach");
+			  });
+		
+			// æµ‹è¯•æ–¹æ³•
+			it("test01", function(done) {
+			        var result=  {"data" : "get1 ok"}
+					expect(result).toEqual({
+						"data" : "get1 ok"
+					});
+					done();
+					console.log("test01");
+					
+			});
+			it("test02", function(done) {
+					foo = [1, 2, 3, 4];  
+					expect(foo).toEqual(jasmine.arrayContaining([3, 1]));  
+					console.log("test02");
+					done();
+			});	
+		});
+					
+	 
+		describe("second mode1", function() {
+			it("test03", function(done) {
+				expect({foo: 'bar'}).toEqual({foo: jasmine.stringMatching(/^bar$/)});  
+				expect('foobarbaz').toEqual('foobarbaz'); 
+				 //å¦‚æœå®é™…å€¼ä¸æ˜¯nullæˆ–è€…undefinedåˆ™è¿”å›true:
+				 expect(1).toEqual(jasmine.anything());
+				done();
+			});
+	
+	
+			it("test04", function(done) {
+			        var pi = 3.1415926,
+					e = 2.78;
+					//æ˜¯å¦è¶³å¤Ÿæ¥è¿‘
+					//ç¬¬äºŒä¸ªexpectå°±æ˜¯å¦‚æœpi-eçš„ç»å¯¹å€¼å°äº10çš„-0æ¬¡æ–¹é™¤ä»¥2çš„å€¼
+					expect(pi).not.toBeCloseTo(e, 1);
+					expect(pi).toBeCloseTo(e, 0);
+					  done();
+			});	
+		});
+					
+
+	</script>
+</body>
+</html>
