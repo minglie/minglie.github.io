@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>springboot</title>
@@ -19,56 +20,64 @@
         }
     </style>
 </head>
+
 <body>
 
-<input id="projectNameId"  value="ming" placeholder="项目名称" /> <br/>
-<label><input name="M_radio" type="radio" value="0" checked />Entity.java</label>
-<label><input name="M_radio" type="radio" value="1" />Dao.java</label>
-<label><input name="M_radio" type="radio" value="2"  />Mapper.xml</label>
-<label><input name="M_radio" type="radio" value="3"  />Service.java</label>
-<label><input name="M_radio" type="radio" value="4"  />ServiceImpl.java</label>
-<label><input name="M_radio" type="radio" value="5"  />Controller.java</label>
-<label><input name="M_radio" type="radio" value="6"  />Application.java</label>
-<label><input name="M_radio" type="radio" value="7"  />application.properties</label>
-<label><input name="M_radio" type="radio" value="8"  />logback-spring.xml</label>
-<label><input name="M_radio" type="radio" value="9"  />pom.xml</label>
-<label><input name="M_radio" type="radio" value="10"  />Controller.js</label>
-<label><input name="M_radio" type="radio" value="11"  />ddl</label>
-<br/><br/><br/>
-<a href="http://www.txttool.com/wenben_delvbcrlf2.asp" target="_blank">去掉换行</a> &nbsp;&nbsp;&nbsp;
-<a href="http://www.bejson.com/jsoneditoronline/"  target="_blank">编辑json</a> &nbsp;&nbsp;&nbsp;
-<a href="http://cg.lazy-monkey.com/template/2/v1.0.0"  target="_blank">懒猴子 json sql解析</a> &nbsp;&nbsp;&nbsp;
-<a href="https://minglie.github.io/html/index.html?t=select COLUMN_NAME,COLUMN_TYPE,COLUMN_COMMENT from information_schema.columns where table_schema ='ming-lie'  and table_name = 'ming_mysql_mq_config';"  target="_blank">查表结构</a> &nbsp;&nbsp;&nbsp;
+    <input id="projectNameId" value="ming" placeholder="项目名称" /> <br />
+    <label><input name="M_radio" type="radio" value="0" checked />Entity.java</label>
+    <label><input name="M_radio" type="radio" value="1" />Dao.java</label>
+    <label><input name="M_radio" type="radio" value="2" />Mapper.xml</label>
+    <label><input name="M_radio" type="radio" value="3" />Service.java</label>
+    <label><input name="M_radio" type="radio" value="4" />ServiceImpl.java</label>
+    <label><input name="M_radio" type="radio" value="5" />Controller.java</label>
+    <label><input name="M_radio" type="radio" value="6" />Application.java</label>
+    <label><input name="M_radio" type="radio" value="7" />application.properties</label>
+    <label><input name="M_radio" type="radio" value="8" />logback-spring.xml</label>
+    <label><input name="M_radio" type="radio" value="9" />pom.xml</label>
+    <label><input name="M_radio" type="radio" value="10" />Controller.js</label>
+    <label><input name="M_radio" type="radio" value="11" />ddl</label>
+    <label><input name="M_radio" type="radio" value="12" />LogAspect.java</label>
+    <label><input name="M_radio" type="radio" value="13" />Config.java</label>
+    <label><input name="M_radio" type="radio" value="14" />ConfigController.java</label>
+    <label><input name="M_radio" type="radio" value="15" />JdbcTemplateTest.java</label>
+    <label><input name="M_radio" type="radio" value="16" />ServiceTestDemoTest.java</label>
+    <label><input name="M_radio" type="radio" value="17" />SpringBootTestDemo.java</label>
+    <br /><br /><br />
+    <a href="http://www.txttool.com/wenben_delvbcrlf2.asp" target="_blank">去掉换行</a> &nbsp;&nbsp;&nbsp;
+    <a href="http://www.bejson.com/jsoneditoronline/" target="_blank">编辑json</a> &nbsp;&nbsp;&nbsp;
+    <a href="http://cg.lazy-monkey.com/template/2/v1.0.0" target="_blank">懒猴子 json sql解析</a> &nbsp;&nbsp;&nbsp;
+    <a href="https://minglie.github.io/html/index.html?t=select COLUMN_NAME,COLUMN_TYPE,COLUMN_COMMENT from information_schema.columns where table_schema ='ming-lie'  and table_name = 'ming_mysql_mq_config';"
+        target="_blank">查表结构</a> &nbsp;&nbsp;&nbsp;
 
 
-<br/><br/>
-<h2 align="left">输入区</h2>
-<textarea id="text_input" rows="25" style=" width: 1000px; height: 500px"></textarea>
-<input type="button" id="btn1" value="执行" style="background:green;color:red;">
-<hr/>
-<h2 align="left" id="txt_output_title">输出区</h2>
-<input type="button" id="btn2" value="清空输出">
- 执行前清屏<input type="checkbox" checked id="chk_clr_screen">
-<textarea id="text_output" rows="100" cols="100"></textarea>
+    <br /><br />
+    <h2 align="left">输入区</h2>
+    <textarea id="text_input" rows="25" style=" width: 1000px; height: 500px"></textarea>
+    <input type="button" id="btn1" value="执行" style="background:green;color:red;">
+    <hr />
+    <h2 align="left" id="txt_output_title">输出区</h2>
+    <input type="button" id="btn2" value="清空输出">
+    执行前清屏<input type="checkbox" checked id="chk_clr_screen">
+    <textarea id="text_output" rows="100" cols="100"></textarea>
 
 
-<script type="text/javascript">//提供DOM操作的函数
-function w(m) {
-    text_output.value = text_output.value + m.toString() + "\n";
-}
-
-function get_M_radio() {
-    var b1 = document.getElementsByName('M_radio');
-    for(var i = 0; i < b1.length; i++) {
-        if(b1[i].checked == true) { //如果选中，下面的alert就会弹出选中的值
-            return(Number(b1[i].value));
+    <script type="text/javascript">//提供DOM操作的函数
+        function w(m) {
+            text_output.value = text_output.value + m.toString() + "\n";
         }
-    }
-}
 
-//事件绑定初始化
-function init(){
-        text_input.value =`sys_dict 字典
+        function get_M_radio() {
+            var b1 = document.getElementsByName('M_radio');
+            for (var i = 0; i < b1.length; i++) {
+                if (b1[i].checked == true) { //如果选中，下面的alert就会弹出选中的值
+                    return (Number(b1[i].value));
+                }
+            }
+        }
+
+        //事件绑定初始化
+        function init() {
+            text_input.value = `sys_dict 字典
 id	bigint(20)	自增主键
 name	varchar(255)	字典名称
 code	varchar(255)	字典的编码
@@ -79,119 +88,347 @@ gmt_motify	datetime	修改时间
 create_user	bigint(20)	创建人id
 update_user	bigint(20)	修改人id
                         `;
-    var b1 = document.getElementsByName('M_radio');
-    for(var i = 0; i < b1.length; i++) {
-        b1[i].onclick=get_M_radio;
-    }
-    window.minglie_isINBtn1Click=false;
-}
-</script>
+            var b1 = document.getElementsByName('M_radio');
+            for (var i = 0; i < b1.length; i++) {
+                b1[i].onclick = get_M_radio;
+            }
+            window.minglie_isINBtn1Click = false;
+        }
+    </script>
 
 
-<script>
-    init();
-    get_M_radio();
-    btn1.onclick = function () {
-        window.minglie_isINBtn1Click=true;
-        if (chk_clr_screen.checked) text_output.value = "";
-        var text=text_input.value.trim();
-        main(text,get_M_radio());
-        window.minglie_isINBtn1Click=false;
-    };
-    btn2.onclick = function () {
-        document.getElementById('text_output').value = "";
-    }
-</script>
-
-
+    <script>
+        init();
+        get_M_radio();
+        btn1.onclick = function () {
+            window.minglie_isINBtn1Click = true;
+            if (chk_clr_screen.checked) text_output.value = "";
+            var text = text_input.value.trim();
+            main(text, get_M_radio());
+            window.minglie_isINBtn1Click = false;
+        };
+        btn2.onclick = function () {
+            document.getElementById('text_output').value = "";
+        }
+    </script>
 </body>
 </html>
 
 
 
+<script>
+    context = {}
+    /**
+     * 根据表名获取实体名
+     */
+    context.getEntityClassNameByTableName = function (tableName) {
+        return tableName.underlineToHump().firstChartoUpper()
+    }
+    /**
+     * 根据表名获取实体描述
+     */
+    context.getEntityDescsByTableName = function (tableName) {
+        return tableComment;
+    }
+
+    /**
+     * 根据sql类型获取java类型
+     */
+    context.getJavaTypeBySqlType = function (sqlType) {
+        sqlType = sqlType.toLowerCase();
+        if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
+            return "String";
+        } else if (sqlType.indexOf("bigint") >= 0) {
+            return "Long";
+        } else if (sqlType.indexOf("int") >= 0) {
+            return "Integer";
+        } else if (sqlType.indexOf("date") >= 0 || sqlType.indexOf("time") >= 0) {
+            return "Date";
+        } else if (sqlType.indexOf("float") >= 0) {
+            return "Float";
+        } else if (sqlType.indexOf("double") >= 0) {
+            return "Double";
+        } else if (sqlType.indexOf("decimal") >= 0) {
+            return "BigDecimal";
+        }
+        return "Object";
+    }
 
 
+
+    /**
+     * 根据sql类型获取JDBC类型
+     */
+    context.getJdbcTypeBySqlType = function (sqlType) {
+        sqlType = sqlType.toLowerCase();
+        if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
+            return "VARCHAR";
+        } else if (sqlType.indexOf("int") >= 0) {
+            return "BIGINT";
+        } else if (sqlType.indexOf("date") >= 0 || sqlType.indexOf("time") >= 0) {
+            return "TIMESTAMP";
+        } else if (sqlType.indexOf("double") >= 0) {
+            return "DOUBLE";
+        } else if (sqlType.indexOf("float") >= 0) {
+            return "FLOAT";
+        } else if (sqlType.indexOf("decimal") >= 0) {
+            return "DECIMAL";
+        }
+        return "Object";
+    }
+
+    function main(text, num) {
+        tableName = "";
+        tableComment = ""
+        fieldList = [];
+        before(text);
+        switch (num) {
+            case 0: run_0(); break;
+            case 1: run_1(); break;
+            case 2: run_2(); break;
+            case 3: run_3(); break;
+            case 4: run_4(); break;
+            case 5: run_5(); break;
+            case 6: run_6(); break;
+            case 7: run_7(); break;
+            case 8: run_8(); break;
+            case 9: run_9(); break;
+            case 10: run_10(); break;
+            case 11: run_11(); break;
+            case 12: run_12(); break;
+            case 13: run_13(); break;
+            case 14: run_14(); break;
+            case 15: run_15(); break;
+            case 16: run_16(); break;
+            case 17: run_17(); break;
+            case 18: run_18(); break;
+        }
+    }
+
+
+    function before(text) {
+
+        //实体配置
+        context.entity = {};
+        context.entity.packageStr = `com.${projectNameId.value}.dao.model`
+
+        //dao配置
+        context.dao = {};
+        context.dao.packageStr = `com.${projectNameId.value}.dao.mapper`
+
+        //mapper配置
+        context.mapper = {};
+        context.mapper.packageStr = `com.${projectNameId.value}.dao.mapper`
+
+        //service配置
+        context.service = {};
+        context.service.packageStr = `com.${projectNameId.value}.service`
+
+        //serviceImpl配置
+        context.serviceImpl = {};
+        context.serviceImpl.packageStr = `com.${projectNameId.value}.service.impl`;
+
+        //controller配置
+        context.controller = {};
+        context.controller.packageStr = `com.${projectNameId.value}.controller`
+
+        text = text.replace(/"|'/g, "");
+        let arr = text.split(/[\r\n]/g);
+        field = {
+            fieldName: "",
+            fieldType: "",
+            fieldCommont: ""
+        }
+        for (let i = 0; i < arr.length; i++) {
+            line = arr[i].trim();
+            split = line.split(/\s+/);
+            if (i == 0) {
+                tableName = split[0];
+                tableComment = split[1]
+            }
+            if (i > 0) {
+                let field = {};
+                field.column_name = split[0]
+                field.column_type = split[1]
+                let s = ""
+                for (let j = 2; j < split.length; j++) {
+                    s += split[j];
+                }
+                field.column_comment = s
+                fieldList.push(field)
+            }
+        }
+        table = {}
+        table.tableName = tableName;
+        table.tableInfo = fieldList;
+        tableName = table.tableName;
+        entityClassName = context.getEntityClassNameByTableName(table.tableName);
+        entityDesc = context.getEntityDescsByTableName(table.tableName);
+        time = new Date().format("yyyy-MM-dd");
+        entity_importStr = "";
+        entity_importStrArray = [];
+        propertiesStr = "";//属性字符串
+        methodStr = "";//方法字符串
+        mapper_baseColumn = "";
+        mapper_resultMap = "";
+        insertIfProps = "";
+        batchInsertIfProps = ""
+        updateColProps = "";
+        entityClassName1 = entityClassName.firstChartoLower();
+        table.tableInfo.forEach(
+            (u, index) => {
+                javaType = context.getJavaTypeBySqlType(u.column_type);
+                jdbcType = context.getJdbcTypeBySqlType(u.column_type);
+                if (javaType == "Date") {
+                    if (entity_importStrArray.indexOf("import java.util.Date;\n") < 0) {
+                        entity_importStrArray.push("import java.util.Date;\n");
+                    }
+                }
+                propertiesStr +=
+                    `   
+    /**
+     * ${u.column_comment}
+     */
+    private ${javaType} ${u.column_name.underlineToHump()};`;
+
+                methodStr += `
+    public ${javaType} get${u.column_name.firstChartoUpper().underlineToHump()}(){return ${u.column_name.underlineToHump()};}                  
+    public void set${u.column_name.firstChartoUpper().underlineToHump()}(${javaType} ${u.column_name.underlineToHump()}){this.${u.column_name.underlineToHump()}=${u.column_name.underlineToHump()};}                                   
+`;
+                mapper_resultMap += `
+        <result column="${u.column_name}" jdbcType="${jdbcType}" property="${u.column_name.underlineToHump()}"/>`;
+
+                mapper_baseColumn += u.column_name;
+                if (index != table.tableInfo.length - 1) {
+                    mapper_baseColumn += ",";
+                }
+                if (u.column_name.underlineToHump() == "id") {
+                    insertIfProps += `
+             null,`;
+                    if (index == table.tableInfo.length - 1) {
+                        insertIfProps = insertIfProps.substr(0, insertIfProps.lastIndexOf(","));
+                    }
+
+                    batchInsertIfProps += `
+             null,`;
+                    if (index == table.tableInfo.length - 1) {
+                        batchInsertIfProps = batchInsertIfProps.substr(0, batchInsertIfProps.lastIndexOf(","));
+                    }
+                } else {
+
+
+                    insertIfProps += `
+         #{${u.column_name.underlineToHump()},jdbcType=${jdbcType}},`;
+
+                    if (index == table.tableInfo.length - 1) {
+                        insertIfProps = insertIfProps.substr(0, insertIfProps.lastIndexOf(","));
+                    }
+
+
+                    batchInsertIfProps += `
+             #{${entityClassName1}.${u.column_name.underlineToHump()},jdbcType=${jdbcType}},`;
+
+                    if (index == table.tableInfo.length - 1) {
+                        batchInsertIfProps = batchInsertIfProps.substr(0, batchInsertIfProps.lastIndexOf(","));
+                    }
+
+                }
+                if (u.column_name != "id") {
+                    updateColProps += `
+                 ${u.column_name}=#{${u.column_name.underlineToHump()},jdbcType=${jdbcType}},`
+                }
+                if (index == table.tableInfo.length - 1) {
+                    updateColProps = updateColProps.substr(0, updateColProps.lastIndexOf(","));
+                }
+            }
+        )
+        //去除重复导入的包,合并字符串
+        entity_importStr = entity_importStrArray.filter((element, index, self) => self.indexOf(element) === index).join("");
+        //console.log(insertIfProps)
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //移除空行
+    String.prototype.removeBlankLine = function () {
+        return this.replace(/\n(\s)*( )*(\s)*/g, "\n");
+    };
+
+    //移除分号多余空格
+    String.prototype.removeBlankAtFenhao = function () {
+        return this.replace(/(\s)*;/g, ";");
+    };
+
+
+    //首字母变大写
+    String.prototype.firstChartoUpper = function () {
+        return this.replace(/^([a-z])/g, function (word) {
+            return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
+        });
+    };
+
+    //首字母变小写
+    String.prototype.firstChartoLower = function () {
+        return this.replace(/^([A-Z])/g, function (word) {
+            return word.replace(word.charAt(0), word.charAt(0).toLowerCase());
+        });
+    };
+
+
+    String.prototype.underlineToHump = function () {
+        var re = /_(\w)/g;
+        str = this.replace(re, function ($0, $1) {
+            return $1.toUpperCase();
+        });
+        return str;
+    }
+
+
+    String.prototype.humpToUnderline = function () {
+        var re = /_(\w)/g;
+        str = this.replace(/([A-Z])/g, "_$1").toLowerCase();
+        return str;
+    }
+
+    //格式化日期
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份
+            "d+": this.getDate(),                    //日
+            "h+": this.getHours(),                   //小时
+            "m+": this.getMinutes(),                 //分
+            "s+": this.getSeconds(),                 //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+
+</script>
 
 
 
 
 <script>
 
-context = {}
-/**
- * 根据表名获取实体名
- */
-context.getEntityClassNameByTableName = function (tableName) {
-    return tableName.underlineToHump().firstChartoUpper()
-}
-/**
- * 根据表名获取实体描述
- */
-context.getEntityDescsByTableName = function (tableName) {
-    return tableComment;
-}
 
-/**
- * 根据sql类型获取java类型
- */
-context.getJavaTypeBySqlType = function (sqlType) {
-    sqlType=sqlType.toLowerCase();
-    if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
-        return "String";
-    }  else if (sqlType.indexOf("bigint") >= 0) {
-        return "Long";
-    }else if (sqlType.indexOf("int") >= 0) {
-        return "Integer";
-    } else if (sqlType.indexOf("date") >= 0 || sqlType.indexOf("time") >= 0) {
-        return "Date";
-    } else if (sqlType.indexOf("float") >= 0) {
-        return "Float";
-    } else if (sqlType.indexOf("double") >= 0) {
-        return "Double";
-    } else if (sqlType.indexOf("decimal") >= 0) {
-        return "BigDecimal";
-    }
-    return "Object";
-}
-
-
-
-/**
- * 根据sql类型获取JDBC类型
- */
-context.getJdbcTypeBySqlType = function (sqlType) {
-	sqlType=sqlType.toLowerCase();
-    if (sqlType.indexOf("string") >= 0 || sqlType.indexOf("varchar") >= 0 || sqlType.indexOf("text") >= 0) {
-        return "VARCHAR";
-    } else if (sqlType.indexOf("int") >= 0) {
-        return "BIGINT";
-    } else if (sqlType.indexOf("date") >= 0 || sqlType.indexOf("time") >= 0) {
-        return "TIMESTAMP";
-    } else if (sqlType.indexOf("double") >= 0) {
-        return "DOUBLE";
-    } else if (sqlType.indexOf("float") >= 0) {
-        return "FLOAT";
-    } else if (sqlType.indexOf("decimal") >= 0) {
-        return "DECIMAL";
-    }
-    return "Object";
-}
-
-
-
-
-
-
-
-
-
-function main(text, num) {
-    tableName = "";
-    tableComment = ""
-    fieldList = [];
-    before(text);
-
-    if (num == 0) {
+    function run_0() {
         w(`package ${context.entity.packageStr};
 import java.io.Serializable;
 ${entity_importStr}
@@ -204,8 +441,11 @@ public class ${entityClassName} implements Serializable {
     ${propertiesStr}
     ${methodStr}
 }`)
+
     }
-    if (num == 1) {
+
+    function run_1() {
+
         w(`package ${context.dao.packageStr};
 import ${context.entity.packageStr}.${entityClassName};
 import org.apache.ibatis.annotations.Mapper;
@@ -222,28 +462,28 @@ public interface ${entityClassName}Mapper{
 
     /**
      * 添加
-     * @param
+     * @param ${entityClassName1}
      * @return
      */
     Integer insert(${entityClassName}  ${entityClassName1});
 
     /**
      * 批量添加
-     * @param
+     * @param ${entityClassName1}List
      * @return
      */
     void batchInsert(@Param("${entityClassName1}List") List<${entityClassName}> ${entityClassName1}List);
 
     /**
      * 修改
-     * @param
+     * @param  ${entityClassName1}
      * @return
      */
     Integer update(${entityClassName}  ${entityClassName1});
 
     /**
      * 删除
-     * @param
+     * @param id
      * @return
      */
     Integer delete(Long id);
@@ -251,7 +491,6 @@ public interface ${entityClassName}Mapper{
 
     /**
      * 获取所有
-     * @param
      * @return
      */
     List<${entityClassName}> listAll();
@@ -259,7 +498,7 @@ public interface ${entityClassName}Mapper{
 
     /**
      * 根据id获取
-     * @param
+     * @param id
      * @return
      */
     ${entityClassName} getById(Long id);
@@ -270,8 +509,10 @@ public interface ${entityClassName}Mapper{
 `)
 
 
+
     }
-    if (num == 2) {
+    function run_2() {
+
         w(`<?xml version="1.0" encoding="UTF-8"?>
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="${context.dao.packageStr}.${entityClassName}Mapper">
@@ -345,7 +586,7 @@ public interface ${entityClassName}Mapper{
  
  `)
     }
-    if (num == 3) {
+    function run_3() {
         w(`package ${context.service.packageStr};
 import ${context.entity.packageStr}.${entityClassName};
 import java.util.List;
@@ -358,7 +599,7 @@ import java.util.List;
 public interface ${entityClassName}Service {
     /**
      * 添加
-     * @param
+     * @param ${entityClassName1}
      * @return
      */
     ${entityClassName} insert(${entityClassName} ${entityClassName1});
@@ -366,27 +607,30 @@ public interface ${entityClassName}Service {
 
     /**
      * 修改
-     * @param
+     * @param ${entityClassName1}
+     * @return
      */
     Integer update(${entityClassName} ${entityClassName1});
 
     /**
      * 删除
-     * @param
+     * @param id
+     * @return
      */
     Integer delete(Long id);
 
 
     /**
      * 获取所有
-     * @param
+     * @return
      */
     List<${entityClassName}> listAll();
 
 
     /**
      * 根据id获取
-     * @param
+     * @param id
+     * @return
      */
     ${entityClassName} getById(Long id);
 
@@ -395,7 +639,7 @@ public interface ${entityClassName}Service {
 
 
     }
-    if (num == 4) {
+    function run_4() {
         w(`package ${context.serviceImpl.packageStr};
 import ${context.service.packageStr}.${entityClassName}Service;
 import ${context.entity.packageStr}.${entityClassName};
@@ -447,8 +691,9 @@ public class  ${entityClassName}ServiceImpl  implements ${entityClassName}Servic
 }
  `)
 
+
     }
-    if (num == 5) {
+    function run_5() {
         w(`package ${context.controller.packageStr};
 import ${context.entity.packageStr}.${entityClassName};
 import ${context.service.packageStr}.${entityClassName}Service;
@@ -504,11 +749,10 @@ public class ${entityClassName}Controller{
     }
 }
  `)
+
     }
-
-
-if(num==6){
-    w(`package com.${projectNameId.value};
+    function run_6() {
+        w(`package com.${projectNameId.value};
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -521,463 +765,454 @@ public class Application {
 
 }
     `)
-}
 
-if(num==7){
-    w(`server.port=8888
+    }
+    function run_7() {
+        w(`server.port=8888
 spring.datasource.url =jdbc:mysql://127.0.0.1:3306/ming-lie
 spring.datasource.username=root
 spring.datasource.password=123456
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.type=org.springframework.jdbc.datasource.DriverManagerDataSource
 
 
 # mybatis
 mybatis.mapper-locations=mybatis/*Mapper.xml
 logging.level.com.${projectNameId.value}.dao=debug
-    `)}
+#logging.level.org.springframework.web=DEBUG
+    `)
 
-if(num==8){
-    w("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-    "<configuration>\n" +
-    "    <property name=\"server_name\" value=\"operation\" />\n" +
-    "    <property name=\"log_dir\" value=\"/data/logs/operation-service\" />\n" +
-    "    <property name=\"maxFileSize\" value=\"50MB\" />\n" +
-    "    <property name=\"maxHistory\" value=\"180\" />\n" +
-    "\n" +
-    "    <!-- 控制台输出 -->\n" +
-    "    <appender name=\"STDOUT\" class=\"ch.qos.logback.core.ConsoleAppender\">\n" +
-    "        <encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\">\n" +
-    "            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->\n" +
-    "            <pattern>%date [%thread] %-5level %logger %msg%n</pattern>\n" +
-    "        </encoder>\n" +
-    "    </appender>\n" +
-    "\n" +
-    "    <!-- info日志 appender  -->\n" +
-    "    <appender name=\"INFO\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n" +
-    "        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n" +
-    "            <!-- 按天回滚 daily -->\n" +
-    "            <fileNamePattern>${log_dir}/${server_name}-info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>\n" +
-    "            <!-- 日志最大的历史 180天 -->\n" +
-    "            <maxHistory>${maxHistory}</maxHistory>\n" +
-    "            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n" +
-    "                <!-- maxFileSize:这是活动文件的大小，默认值是10MB，这里设置为50MB -->\n" +
-    "                <maxFileSize>${maxFileSize}</maxFileSize>\n" +
-    "            </timeBasedFileNamingAndTriggeringPolicy>\n" +
-    "        </rollingPolicy>\n" +
-    "        <encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\">\n" +
-    "            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->\n" +
-    "            <pattern>%date{yyyy-MM-dd HH:mm:ss}%msg%n</pattern>\n" +
-    "        </encoder>\n" +
-    "        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n" +
-    "            <!-- 只打印info日志 -->\n" +
-    "            <level>INFO</level>\n" +
-    "            <onMatch>ACCEPT</onMatch>\n" +
-    "            <onMismatch>DENY</onMismatch>\n" +
-    "        </filter>\n" +
-    "    </appender>\n" +
-    "\n" +
-    "    <!-- 出错日志 appender  -->\n" +
-    "    <appender name=\"ERROR\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n" +
-    "        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n" +
-    "            <!-- 按天回滚 daily -->\n" +
-    "            <fileNamePattern>${log_dir}/${server_name}-error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>\n" +
-    "            <!-- 日志最大的历史 180天 -->\n" +
-    "            <maxHistory>${maxHistory}</maxHistory>\n" +
-    "            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n" +
-    "                <!-- maxFileSize:这是活动文件的大小，默认值是10MB，这里设置为50MB -->\n" +
-    "                <maxFileSize>${maxFileSize}</maxFileSize>\n" +
-    "            </timeBasedFileNamingAndTriggeringPolicy>\n" +
-    "        </rollingPolicy>\n" +
-    "        <encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\">\n" +
-    "            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->\n" +
-    "            <pattern>%msg%n</pattern>\n" +
-    "        </encoder>\n" +
-    "        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n" +
-    "            <!-- 只打印错误日志 -->\n" +
-    "            <level>ERROR</level>\n" +
-    "            <onMatch>ACCEPT</onMatch>\n" +
-    "            <onMismatch>DENY</onMismatch>\n" +
-    "        </filter>\n" +
-    "    </appender>\n" +
-    "\n" +
-    "\n" +
-    "    <!--控制台和日志文件输出级别-->\n" +
-    "    <root level=\"INFO\" additivity = \"false\">\n" +
-    "        <appender-ref ref=\"STDOUT\" />\n" +
-    "        <appender-ref ref=\"INFO\" />\n" +
-    "        <appender-ref ref=\"ERROR\" />\n" +
-    "    </root>\n" +
-    "\n" +
-    "</configuration>\n" +
-    "\n");
-}
-if(num==9){
-    w("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-    "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-    "         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n" +
-    "    <modelVersion>4.0.0</modelVersion>\n" +
-    "    <parent>\n" +
-    "        <groupId>org.springframework.boot</groupId>\n" +
-    "        <artifactId>spring-boot-starter-parent</artifactId>\n" +
-    "        <version>2.0.1.RELEASE</version>\n" +
-    "        <relativePath/> <!-- lookup parent from repository -->\n" +
-    "    </parent>\n" +
-    "    <groupId>ming</groupId>\n" +
-    "    <artifactId>demo</artifactId>\n" +
-    "    <version>0.0.1-SNAPSHOT</version>\n" +
-    "    <name>demo</name>\n" +
-    "    <description>Demo project for Spring Boot</description>\n" +
-    "\n" +
-    "    <properties>\n" +
-    "        <java.version>1.8</java.version>\n" +
-    "    </properties>\n" +
-    "\n" +
-    "    <dependencies>\n" +
-    "        <dependency>\n" +
-    "            <groupId>org.springframework.boot</groupId>\n" +
-    "            <artifactId>spring-boot-starter-web</artifactId>\n" +
-    "        </dependency>\n" +
-    "\n" +
-    "        <dependency>\n" +
-    "            <groupId>org.springframework.boot</groupId>\n" +
-    "            <artifactId>spring-boot-starter-test</artifactId>\n" +
-    "            <scope>test</scope>\n" +
-    "        </dependency>\n" +
-    "\n" +
-    "        <dependency>\n" +
-    "            <groupId>com.alibaba</groupId>\n" +
-    "            <artifactId>fastjson</artifactId>\n" +
-    "            <version>1.2.55</version>\n" +
-    "        </dependency>\n" +
-    "\n" +
-    "        <dependency>\n" +
-    "            <groupId>org.mybatis.spring.boot</groupId>\n" +
-    "            <artifactId>mybatis-spring-boot-starter</artifactId>\n" +
-    "            <version>1.3.2</version>\n" +
-    "        </dependency>\n" +
-    "\n" +
-    "        <dependency>\n" +
-    "            <groupId>mysql</groupId>\n" +
-    "            <artifactId>mysql-connector-java</artifactId>\n" +
-    "            <version>5.1.46</version>\n" +
-    "        </dependency>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "    </dependencies>\n" +
-    "\n" +
-    "    <build>\n" +
-    "        <plugins>\n" +
-    "            <plugin>\n" +
-    "                <groupId>org.springframework.boot</groupId>\n" +
-    "                <artifactId>spring-boot-maven-plugin</artifactId>\n" +
-    "            </plugin>\n" +
-    "        </plugins>\n" +
-    "    </build>\n" +
-    "\n" +
-    "\n" +
-    "</project>\n");
-}
+    }
+    function run_8() {
+        w("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<configuration>\n" +
+            "    <property name=\"server_name\" value=\"operation\" />\n" +
+            "    <property name=\"log_dir\" value=\"/data/logs/operation-service\" />\n" +
+            "    <property name=\"maxFileSize\" value=\"50MB\" />\n" +
+            "    <property name=\"maxHistory\" value=\"180\" />\n" +
+            "\n" +
+            "    <!-- 控制台输出 -->\n" +
+            "    <appender name=\"STDOUT\" class=\"ch.qos.logback.core.ConsoleAppender\">\n" +
+            "        <encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\">\n" +
+            "            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->\n" +
+            "            <pattern>%date [%thread] %-5level %logger %msg%n</pattern>\n" +
+            "        </encoder>\n" +
+            "    </appender>\n" +
+            "\n" +
+            "    <!-- info日志 appender  -->\n" +
+            "    <appender name=\"INFO\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n" +
+            "        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n" +
+            "            <!-- 按天回滚 daily -->\n" +
+            "            <fileNamePattern>${log_dir}/${server_name}-info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>\n" +
+            "            <!-- 日志最大的历史 180天 -->\n" +
+            "            <maxHistory>${maxHistory}</maxHistory>\n" +
+            "            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n" +
+            "                <!-- maxFileSize:这是活动文件的大小，默认值是10MB，这里设置为50MB -->\n" +
+            "                <maxFileSize>${maxFileSize}</maxFileSize>\n" +
+            "            </timeBasedFileNamingAndTriggeringPolicy>\n" +
+            "        </rollingPolicy>\n" +
+            "        <encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\">\n" +
+            "            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->\n" +
+            "            <pattern>%date{yyyy-MM-dd HH:mm:ss}%msg%n</pattern>\n" +
+            "        </encoder>\n" +
+            "        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n" +
+            "            <!-- 只打印info日志 -->\n" +
+            "            <level>INFO</level>\n" +
+            "            <onMatch>ACCEPT</onMatch>\n" +
+            "            <onMismatch>DENY</onMismatch>\n" +
+            "        </filter>\n" +
+            "    </appender>\n" +
+            "\n" +
+            "    <!-- 出错日志 appender  -->\n" +
+            "    <appender name=\"ERROR\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n" +
+            "        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n" +
+            "            <!-- 按天回滚 daily -->\n" +
+            "            <fileNamePattern>${log_dir}/${server_name}-error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>\n" +
+            "            <!-- 日志最大的历史 180天 -->\n" +
+            "            <maxHistory>${maxHistory}</maxHistory>\n" +
+            "            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n" +
+            "                <!-- maxFileSize:这是活动文件的大小，默认值是10MB，这里设置为50MB -->\n" +
+            "                <maxFileSize>${maxFileSize}</maxFileSize>\n" +
+            "            </timeBasedFileNamingAndTriggeringPolicy>\n" +
+            "        </rollingPolicy>\n" +
+            "        <encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\">\n" +
+            "            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->\n" +
+            "            <pattern>%msg%n</pattern>\n" +
+            "        </encoder>\n" +
+            "        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n" +
+            "            <!-- 只打印错误日志 -->\n" +
+            "            <level>ERROR</level>\n" +
+            "            <onMatch>ACCEPT</onMatch>\n" +
+            "            <onMismatch>DENY</onMismatch>\n" +
+            "        </filter>\n" +
+            "    </appender>\n" +
+            "\n" +
+            "\n" +
+            "    <!--控制台和日志文件输出级别-->\n" +
+            "    <root level=\"INFO\">\n" +
+            "        <appender-ref ref=\"STDOUT\" />\n" +
+            "        <appender-ref ref=\"INFO\" />\n" +
+            "        <appender-ref ref=\"ERROR\" />\n" +
+            "    </root>\n" +
+            "\n" +
+            "</configuration>\n" +
+            "\n" +
+            "\n");
 
-    if (num == 10) {
+    }
+
+    function run_9() {
+        w(`
+    <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.0.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>ming</groupId>
+	<artifactId>demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>demo</name>
+	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.55</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.46</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+    </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
+
+
+
+`);
+
+    }
+
+    function run_10() {
         w(`M = require("ming_node")
 
- M.host="http://127.0.0.1:8888";
- 
- if(1)
- M.get0("/${entityClassName1}/listAll")
- 
- 
- if(0)
- M.post0("/${entityClassName1}/add", {
-     id: "id"
- })
- 
- 
- if(0)
- M.get0("/${entityClassName1}/delete", {
-     id: 40
- })
- 
- 
- if(0)
- M.post0("/${entityClassName1}/update", {
-     id: 39
- })
- 
- 
- if(0)
- M.get0("/${entityClassName1}/listByPage", {
-     startPage: 1,
-     limit: 2
- })`)
+M.host="http://127.0.0.1:8888";
+
+if(1)
+M.get0("/${entityClassName1}/listAll")
+
+
+if(0)
+M.post0("/${entityClassName1}/add", {
+    id: "id"
+})
+
+
+if(0)
+M.get0("/${entityClassName1}/delete", {
+    id: 40
+})
+
+
+if(0)
+M.post0("/${entityClassName1}/update", {
+    id: 39
+})
+
+
+if(0)
+M.get0("/${entityClassName1}/listByPage", {
+    startPage: 1,
+    limit: 2
+})`)
+
     }
-    if (num == 11) {
-        ddl(text);
-    }
-    
-}
 
-
-function before(text) {
-
-//实体配置
-context.entity = {};
-context.entity.packageStr = `com.${projectNameId.value}.dao.model`
-
-//dao配置
-context.dao = {};
-context.dao.packageStr = `com.${projectNameId.value}.dao.mapper`
-
-//mapper配置
-context.mapper = {};
-context.mapper.packageStr = `com.${projectNameId.value}.dao.mapper`
-
-//service配置
-context.service = {};
-context.service.packageStr = `com.${projectNameId.value}.service`
-
-//serviceImpl配置
-context.serviceImpl = {};
-context.serviceImpl.packageStr = `com.${projectNameId.value}.service.impl`;
-
-//controller配置
-context.controller = {};
-context.controller.packageStr = `com.${projectNameId.value}.controller`
-
-
-
-
-
-
-
-
-
-    text = text.replace(/"|'/g, "");
-    let arr = text.split(/[\r\n]/g);
-    field = {
-        fieldName: "",
-        fieldType: "",
-        fieldCommont: ""
-    }
-    for (let i = 0; i < arr.length; i++) {
-        line = arr[i].trim();
-        split = line.split(/\s+/);
-        if (i == 0) {
-            tableName = split[0];
-            tableComment = split[1]
-        }
-        if (i > 0) {
-            let field = {};
-            field.column_name = split[0]
-            field.column_type = split[1]
-            let s = ""
-            for (let j = 2; j < split.length; j++) {
-                s += split[j];
-            }
-            field.column_comment = s
-            fieldList.push(field)
-        }
-    }
-    table = {}
-    table.tableName = tableName;
-    table.tableInfo = fieldList;
-    tableName = table.tableName;
-    entityClassName = context.getEntityClassNameByTableName(table.tableName);
-    entityDesc = context.getEntityDescsByTableName(table.tableName);
-    time = new Date().format("yyyy-MM-dd");
-    entity_importStr = "";
-    entity_importStrArray = [];
-    propertiesStr = "";//属性字符串
-    methodStr = "";//方法字符串
-    mapper_baseColumn = "";
-    mapper_resultMap = "";
-    insertIfProps = "";
-    batchInsertIfProps = ""
-    updateColProps = "";
-    entityClassName1 = entityClassName.firstChartoLower();
-    table.tableInfo.forEach(
-        (u, index) => {
-            javaType = context.getJavaTypeBySqlType(u.column_type);
-            jdbcType = context.getJdbcTypeBySqlType(u.column_type);
-            if (javaType == "Date") {
-                if (entity_importStrArray.indexOf("import java.util.Date;\n") < 0) {
-                    entity_importStrArray.push("import java.util.Date;\n");
-                }
-            }
-            propertiesStr +=
-                `   
-    /**
-     * ${u.column_comment}
-     */
-    private ${javaType} ${u.column_name.underlineToHump()};`;
-
-            methodStr += `
-    public ${javaType} get${u.column_name.firstChartoUpper().underlineToHump()}(){return ${u.column_name.underlineToHump()};}                  
-    public void set${u.column_name.firstChartoUpper().underlineToHump()}(${javaType} ${u.column_name.underlineToHump()}){this.${u.column_name.underlineToHump()}=${u.column_name.underlineToHump()};}                                   
-`;
-            mapper_resultMap += `
-        <result column="${u.column_name}" jdbcType="${jdbcType}" property="${u.column_name.underlineToHump()}"/>`;
-
-            mapper_baseColumn += u.column_name;
-            if (index != table.tableInfo.length - 1) {
-                mapper_baseColumn += ",";
-            }
-            if (u.column_name.underlineToHump() == "id") {
-                insertIfProps += `
-             null,`;
-                if (index == table.tableInfo.length - 1) {
-                    insertIfProps = insertIfProps.substr(0, insertIfProps.lastIndexOf(","));
-                }
-
-                batchInsertIfProps += `
-             null,`;
-                if (index == table.tableInfo.length - 1) {
-                    batchInsertIfProps = batchInsertIfProps.substr(0, batchInsertIfProps.lastIndexOf(","));
-                }
+    function run_11() {
+        let sql = `CREATE TABLE ${tableName} (\n`;
+        for (let i = 0; i < fieldList.length; i++) {
+            let field = fieldList[i];
+            if (i == 0) {
+                sql += `  ${field.column_name}  ${field.column_type} NOT NULL AUTO_INCREMENT COMMENT '${field.column_comment.replace('\r', "")}',\n`
             } else {
+                sql += `  ${field.column_name}  ${field.column_type}   COMMENT '${field.column_comment.replace('\r', "")}',\n`;
+            }
+        }
+        sql += `  PRIMARY KEY (id)\n`
+        sql += `)COMMENT='${tableComment.replace('\r', "")}'`
+        w(sql)
+
+    }
+    function run_12() {
+       w(`package com.ming.aspect;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ming.config.Config;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
-                insertIfProps += `
-         #{${u.column_name.underlineToHump()},jdbcType=${jdbcType}},`;
+import javax.servlet.http.HttpServletRequest;
 
-                if (index == table.tableInfo.length - 1) {
-                    insertIfProps = insertIfProps.substr(0, insertIfProps.lastIndexOf(","));
+@Aspect
+@Component
+@EnableAspectJAutoProxy
+public class LogAspect {
+
+    private static Logger logger= LoggerFactory.getLogger(Config.class);
+
+    @Pointcut("execution(public * com.ming.controller..*.*(..))")
+    public void addAdvice(){}
+
+
+    @Around("addAdvice()")
+    public Object Interceptor(ProceedingJoinPoint pjp){
+
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+
+
+        Object result = null;
+        Object[] args = pjp.getArgs();
+        Signature signature = pjp.getSignature();
+        String simpleName = signature.getDeclaringType().getSimpleName();
+        logger.info("[{}]_[{}].[{}]:{}",request.getRequestURI(),simpleName,signature.getName(), JSON.toJSONString(args));
+        try {
+            result =pjp.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+}
+`)
+
+    }
+    function run_13() {
+           w(`package com.ming.config;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+import javax.annotation.PostConstruct;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@Configuration
+public class Config extends WebMvcConfigurationSupport {
+
+    private static Logger logger= LoggerFactory.getLogger(Config.class);
+
+
+    @Autowired
+    private RequestMappingHandlerAdapter handlerAdapter;
+
+
+    @PostConstruct
+    public void initEditableAvlidation() {
+        ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer)handlerAdapter.getWebBindingInitializer();
+        if(initializer.getConversionService()!=null) {
+            GenericConversionService genericConversionService = (GenericConversionService)initializer.getConversionService();
+            genericConversionService.addConverter(new Converter<String, Date>(){
+                @Override
+                public Date convert(String source) {
+                    if (com.mysql.jdbc.StringUtils.isStrictlyNumeric(source)) {
+                        return new Date(Long.parseLong(source));
+                    } else {
+                        try {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            return sdf.parse(source);
+                        } catch (ParseException ex) {
+                            logger.error("params date convert exceptions " + source, ex);
+                        }
+                    }
+                    return null;
                 }
+                   });
 
+        }}
+}`)
 
-                batchInsertIfProps += `
-             #{${entityClassName1}.${u.column_name.underlineToHump()},jdbcType=${jdbcType}},`;
-
-                if (index == table.tableInfo.length - 1) {
-                    batchInsertIfProps = batchInsertIfProps.substr(0, batchInsertIfProps.lastIndexOf(","));
-                }
-
-            }
-            if (u.column_name != "id") {
-                updateColProps += `
-                 ${u.column_name}=#{${u.column_name.underlineToHump()},jdbcType=${jdbcType}},`
-            }
-            if (index == table.tableInfo.length - 1) {
-                updateColProps = updateColProps.substr(0, updateColProps.lastIndexOf(","));
-            }
-        }
-    )
-    //去除重复导入的包,合并字符串
-    entity_importStr = entity_importStrArray.filter((element, index, self) => self.indexOf(element) === index).join("");
-
-
-
-    console.log(insertIfProps)
-
-
-}
-
-
-
-function ddl() {
-    let sql = `CREATE TABLE ${tableName} (\n`;
-    for (let i = 0; i < fieldList.length; i++) {
-        let field = fieldList[i];
-        if (i == 0) {
-            sql += `  ${field.column_name}  ${field.column_type} NOT NULL AUTO_INCREMENT COMMENT '${field.column_comment.replace('\r', "")}',\n`
-        } else {
-            sql += `  ${field.column_name}  ${field.column_type}   COMMENT '${field.column_comment.replace('\r', "")}',\n`;
-        }
     }
-    sql += `  PRIMARY KEY (id)\n`
-    sql += `)COMMENT='${tableComment.replace('\r', "")}'`
-    w(sql)
-}
+    function run_14() {
+       w(`package com.ming.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.env.Environment;
 
+@RestController
+@RequestMapping("/")
+public class ConfigController {
+    
+    @Autowired
+    private Environment env;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//移除空行
-String.prototype.removeBlankLine = function () {
-    return this.replace(/\n(\s)*( )*(\s)*/g, "\n");
-};
-
-//移除分号多余空格
-String.prototype.removeBlankAtFenhao = function () {
-    return this.replace(/(\s)*;/g, ";");
-};
-
-
-//首字母变大写
-String.prototype.firstChartoUpper = function () {
-    return this.replace(/^([a-z])/g, function (word) {
-        return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
-    });
-};
-
-//首字母变小写
-String.prototype.firstChartoLower = function () {
-    return this.replace(/^([A-Z])/g, function (word) {
-        return word.replace(word.charAt(0), word.charAt(0).toLowerCase());
-    });
-};
-
-
-String.prototype.underlineToHump = function () {
-    var re = /_(\w)/g;
-    str = this.replace(re, function ($0, $1) {
-        return $1.toUpperCase();
-    });
-    return str;
-}
-
-
-String.prototype.humpToUnderline = function () {
-    var re = /_(\w)/g;
-    str = this.replace(/([A-Z])/g, "_$1").toLowerCase();
-    return str;
-}
-
-//格式化日期
-Date.prototype.format = function (fmt) {
-    var o = {
-        "M+": this.getMonth() + 1,                 //月份
-        "d+": this.getDate(),                    //日
-        "h+": this.getHours(),                   //小时
-        "m+": this.getMinutes(),                 //分
-        "s+": this.getSeconds(),                 //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-        "S": this.getMilliseconds()             //毫秒
-    };
-    if (/(y+)/.test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    @GetMapping("/g")
+    String g(String key){
+        String property = env.getProperty(key);
+        return property;
     }
-    for (var k in o) {
-        if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        }
+
+}`)
+
     }
-    return fmt;
+    function run_15() {
+       w(`package com.ming.service.impl;
+
+import com.alibaba.fastjson.JSON;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import java.util.List;
+import java.util.Map;
+
+public class JdbcTemplateTest {
+    public static void main(String[] args) {
+        DriverManagerDataSource dataSource=new DriverManagerDataSource();
+        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/ming-lie");
+        dataSource.setUsername("root");
+        dataSource.setPassword("123456");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+        String sql="select 3 from dual";
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);
+        System.out.println(JSON.toJSON(maps));
+    }
+
 }
+`)
+
+    }
+    function run_16() {
+       
+       w(`package com.ming.service.impl;
+
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {SysDictServiceImpl.class})
+@TestPropertySource("classpath:application.properties")
+public class ServiceTestDemoTest {
+
+    @Autowired
+    SysDictServiceImpl sysDictService;
+
+    @Test
+    public void delete() {
+        Integer delete = sysDictService.delete(1L);
+
+        System.out.println(77);
+
+
+    }
+
+}`)
+
+    }
+    function run_17() {
+       w(`package com.ming.service.impl;
+
+import com.ming.Application;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = {Application.class})
+public class SpringBootTestDemo {
+
+    @Autowired
+    SysDictServiceImpl sysDictService;
+
+    @Test
+    public void delete() {
+        Integer delete = sysDictService.delete(1L);
+
+        System.out.println(77);
+
+
+    }
+
+}`)
+
+    }
 
 </script>
