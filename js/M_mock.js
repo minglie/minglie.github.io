@@ -1,5 +1,9 @@
-//20190811
-
+/**
+ * File : M_mock.js
+ * By : Minglie
+ * QQ: 934031452
+ * Date :2019.9.28
+ */
 (function (window, undefined) {
 
     var M = {};
@@ -300,23 +304,26 @@
 
 
     M.doSql = function (sql, callback) {
-        fetch(M.host + '/doSql', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: M.encodeURIComponentObj({sql})
-        }).then(function (response) {
-            return response.json();
-        }).then((resonseData) => {
-            if(callback){
-                callback(resonseData);
-            }
-        })
-            .catch((error) => {
-                console.error(error)
-            });
+      return   new Promise(function (reslove, reject) {
+            fetch(M.host + '/doSql', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: M.encodeURIComponentObj({sql})
+            }).then(function (response) {
+                return response.json();
+            }).then((resonseData) => {
+                if(callback){
+                    callback(resonseData);
+                }
+                reslove(resonseData)
+            }).catch((error) => {
+                    console.error(error)
+                    reject(error)
+                });
+        });
     };
 
 
@@ -706,11 +713,12 @@
 
 
         Db.doSql = function (sql) {
-            if (Db.display_sql_enable) console.log(sql + ";");
+            if (true) console.log(">>>>",sql);
             var promise = new Promise(function (reslove, reject) {
                 Db.transaction(function (context) {
                     context.executeSql(sql, [], function (context, results) {
-                        reslove(results);
+                        if (true) console.log("<<<<<",results.rows);
+                        reslove(Array.from(results.rows));
                     });
                 }, function (error) {
                     reject(error);
