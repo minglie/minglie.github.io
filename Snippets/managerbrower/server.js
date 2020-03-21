@@ -18,7 +18,7 @@ app.post("/listByPage", function (req, res) {
         select * from resource where ${whereCase};
         `;
         M.Db().doSql(sql1).then(d=>{
-            let rows = d.rows;
+            let rows = d;
             let total = 500000;
             res.send({rows, total});
         })
@@ -31,7 +31,7 @@ app.post("/listAllRoot", function (req, res) {
     select * from resource where parent_id=-1;
     `;
     M.Db().doSql(sql).then(d=>{
-            rows = d.rows;
+            rows = d;
             res.send({rows});
     })
 });
