@@ -713,18 +713,16 @@
 
 
         Db.doSql = function (sql) {
-            if (true) console.log(">>>>",sql);
             var promise = new Promise(function (reslove, reject) {
                 Db.transaction(function (context) {
                     context.executeSql(sql, [], function (context, results) {
-                        if (true) console.log("<<<<<",results.rows);
                         reslove(Array.from(results.rows));
                     });
                 }, function (error) {
                     reject(error);
                     console.error(error.message);
                 }, function (a) {
-                    console.log(a)
+                    //console.log(a)
                 });
 
             });
