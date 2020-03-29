@@ -310,7 +310,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: M.encodeURIComponentObj(data)
+             body: JSON.stringify(data)
         }).then(function (response) {
             return response.json();
         }).then((resonseData) => {
