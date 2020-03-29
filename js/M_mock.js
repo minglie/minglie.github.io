@@ -302,6 +302,25 @@
             });
     };
 
+    
+    M.fetchPostJson = function (url, callback, data) {
+        fetch(M.host + url, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: M.encodeURIComponentObj(data)
+        }).then(function (response) {
+            return response.json();
+        }).then((resonseData) => {
+            callback(resonseData);
+        })
+            .catch((error) => {
+                console.error(error)
+            });
+    };
+
 
     M.doSql = function (sql, callback) {
       return   new Promise(function (reslove, reject) {
