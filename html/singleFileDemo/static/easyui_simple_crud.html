@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>easyui_极简crud</title>
@@ -9,43 +10,96 @@
   <script src="https://minglie.github.io/js/M_mock.js"></script>
   <script type="text/javascript" src="https://minglie.github.io/public/easyui/js/jquery.easyui.min.js"></script>
 </head>
+
 <body>
   <div id="root">
-    <a name="add" href="javascript:void(0)" class="easyui-linkbutton"data-options="iconCls:'icon-add'">添加</a>
+    id<input name="id" disabled><br>
+    名字<input name="name" style="width: 500px"><br>
+    <a name="add" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+    <a name="delete" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+    <a name="update" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
     <table id="resourceDataGrid" width="100%"></table>
   </div>
-  
 
-
-
-
-
-
-<script>
-    app.post("/listByPage", function (req, res) {
-          let rows= M.listAll()
-          res.send({rows});
-    }
-);
-</script>
 
 
   <script>
-       $('#resourceDataGrid').datagrid({
-            url:"/listByPage",
-            width:10000,
-            rownumbers:true,//使能行号列
-            rowStyler:function(rowIndex,rowData){
-                if(rowData.id%2==0){
-                    return "background-color:pink";
-                }
-            },
-            columns:[[
-                {checkbox:true},
-                {field:'id',title:'id',width:200},
-                {field:'name',title:'资源名字',width:200}
-            ]]
-        });
+    app.post("/listByPage", function (req, res) {
+      let rows = M.listAll()
+      res.send({ rows });
+    }
+    );
+  </script>
+
+
+  <script>
+    $('#resourceDataGrid').datagrid({
+      url: "/listByPage",
+      width: 10000,
+      rownumbers: true,//使能行号列
+      rowStyler: function (rowIndex, rowData) {
+        if (rowData.id % 2 == 0) {
+          return "background-color:pink";
+        }
+      },
+      columns: [[
+        { checkbox: true },
+        { field: 'id', title: 'id', width: 200 },
+        { field: 'name', title: '资源名字', width: 200 }
+      ]]
+    });
+
+    $("[name='add']").click(
+      function () {
+        var name = $("[name='name']").val();
+        M.add({ name })
+        $('#resourceDataGrid').datagrid('reload');// 重新载入数据
+      }
+    );
+
+    $("[name='delete']").click(
+      function () {
+        var row = $('#resourceDataGrid').datagrid("getSelections");
+        if (row.length > 0) {
+          $.messager.confirm('温馨提示', '确认删除选择的内容？', function (r) {
+            if (r) {
+              let ids = row.map(u => {
+                M.deleteById(u.id)
+                return u.id
+              }
+              );
+              $('#resourceDataGrid').datagrid('reload');// 重新载入数据
+            }
+          });
+          return;
+        }
+        $('#resourceDataGrid').datagrid('reload');// 重新载入数据
+      }
+    );
+
+    $("[name='add']").click(
+      function () {
+        var name = $("[name='name']").val();
+        M.add({ name })
+        $('#resourceDataGrid').datagrid('reload');// 重新载入数据
+      }
+    );
+
+    $("[name='update']").click(
+      function () {
+        var row = $('#resourceDataGrid').datagrid("getSelections");
+        if (row.length == 1) {
+          var name = $("[name='name']").val();
+          var id = row[0].id;
+          $("[name='id']").val(row[0].id);
+          console.log({ id, name })
+          M.update({ id, name })
+          $('#resourceDataGrid').datagrid('reload');// 重新载入数据
+        }
+
+      }
+    );
   </script>
 </body>
+
 </html>
