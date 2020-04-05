@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue_antd分页</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ant-design-vue@1.4.10/dist/antd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/ant-design-vue@1.4.10/dist/antd.min.css" rel="stylesheet"
+  type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://minglie.github.io/js/M_mock.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <a-table :columns="columns" :data-Source="data">
+            <a slot="name" slot-scope="text">{{text}}</a>
+        </a-table>
+    </div>
+    <script type="application/javascript">
+
+const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      scopedSlots: { customRender: 'name' },
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+      width: 80,
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address 1',
+      ellipsis: true,
+    },
+    {
+      title: 'Long Column Long Column Long Column',
+      dataIndex: 'address',
+      key: 'address 2',
+      ellipsis: true,
+    },
+    {
+      title: 'Long Column Long Column',
+      dataIndex: 'address',
+      key: 'address 3',
+      ellipsis: true,
+    },
+    {
+      title: 'Long Column',
+      dataIndex: 'address',
+      key: 'address 4',
+      ellipsis: true,
+    },
+  ];
+
+  const data = [
+    {
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      address: 'New York No. 1 Lake Park, New York No. 1 Lake Park',
+      tags: ['nice', 'developer'],
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 2 Lake Park, London No. 2 Lake Park',
+      tags: ['loser'],
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
+      tags: ['cool', 'teacher'],
+    },
+  ];
+
+
+       let vm= new Vue({
+            el: '#app',
+            data() {
+                return {
+                    data,
+                    columns,
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>

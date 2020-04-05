@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://minglie.github.io/js/M_mock.js"></script>
+    <title>react_及简crud</title>
+</head>
+
+<body>
+
+<div id="example" class="example"></div>
+
+<script type="text/babel">
+
+    class TodoItem extends React.Component {
+        constructor(props){
+            super(props);
+        }
+
+        handleDelete(id){
+            this.props.delete(id)
+        }
+
+        render() {
+            const {content}= this.props;
+            const r= content.map((u,index)=>{
+                    return(
+                        <li key={u.id}>
+                            {u.id} {u.name}   {u.age}
+                            <button onClick={this.handleDelete.bind(this,u.id)}>删除</button>
+
+                        </li>
+                    )
+                }
+            );
+            return (
+                <div>{r}</div>
+            )
+        }
+    }
+
+
+
+    var M_this={};
+    class TodoList extends React.Component {
+        // 初始化数据
+        constructor(props){
+            super(props);
+            this.state={
+                list:[],
+            };
+
+            M_this=this;
+        }
+
+        componentDidMount() {
+            this.setState({
+                list:M.listAll()
+            });
+        };
+        handleAdd(e) {
+            M.add({
+                name:this.refs.name.value,
+                age:this.refs.age.value,
+            });
+            this.setState({
+                list:M.listAll()
+            });
+        }
+
+        handleUpdate(e) {
+            M.update({
+                id:this.refs.id.value,
+                name:this.refs.name.value,
+                age:this.refs.age.value,
+            });
+            this.setState({
+                list:M.listAll()
+            });
+        }
+
+        handledelete(e) {
+            M.deleteById(e);
+            M_this.setState({
+                list:M.listAll()
+            });
+        }
+
+        render() {
+            return (
+                <div>
+                    <input type="text" ref="id" id="id" placeholder="id" autoComplete="off"/>
+                    <input type="text" ref="name" id="name" placeholder="name" autoComplete="off"/>
+                    <input type="text" ref="age" id="age" placeholder="age" autoComplete="off"/>
+                    <button onClick={this.handleAdd.bind(this)}>添加</button>
+                    <button onClick={this.handleUpdate.bind(this)}>修改</button>
+                    <TodoItem content={this.state.list} delete={this.handledelete}/>
+                </div>
+            );
+        }
+    }
+
+
+
+
+    ReactDOM.render(
+        <div>
+            <TodoList />
+        </div>,
+        document.getElementById('example')
+    );
+</script>
+
+
+
+</body>
+</html>
