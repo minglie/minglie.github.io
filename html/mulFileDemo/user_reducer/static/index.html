@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ming_autotest</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 500000px;
+        }
+    </style>
+
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.0.2/antd.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/3.0.2/antd.min.js"></script>
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/react-router-dom/4.4.0-beta.6/react-router-dom.min.js"></script>
+
+
+    <script src="./lib/M_mock.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    </div>
+
+    <script>
+        M.doSql = M.Db().doSql
+        M.Db().doSql("select count(1) c from mi_api").catch(async d => {
+            await M.Db().doSql(`
+                CREATE TABLE "mi_api" (
+                    "id" INTEGER NOT NULL,
+                    "name" varchar(200) DEFAULT NULL,
+                    "request_path" varchar (200) DEFAULT NULL,
+                    "parent_id" INTEGER DEFAULT NULL,
+                    "description" varchar(200) DEFAULT NULL,
+                    "payload" text DEFAULT NULL,
+                    "gmt_create" varchar(200) DEFAULT NULL,
+                    "gmt_modified" varchar(200) DEFAULT NULL,
+                    "status" varchar(200) DEFAULT NULL,
+                    "leaf" varchar,
+                    "long_code" varchar,
+                    "request_method" varchar,
+                    "request_headers" varchar,
+                    "request_url" varchar,
+                    PRIMARY KEY ("id")
+                    ); 
+                    `
+            )
+            await M.Db().doSql(`
+              CREATE TABLE "mi_env" (
+                "id" INTEGER NOT NULL,
+                "env_key" varchar(200) DEFAULT NULL,
+                "description" varchar(200) DEFAULT NULL,
+                "payload" text DEFAULT NULL,
+                "env_value" varchar,
+                "name" varchar,
+                PRIMARY KEY ("id")
+                );
+                    `
+            )
+
+            await M.Db().doSql(`
+                    CREATE TABLE "mi_file" (
+                    "id" INTEGER NOT NULL,
+                    "name" varchar(200) DEFAULT NULL,
+                    "file_key" varchar(200) DEFAULT NULL,
+                    "api_id" INTEGER DEFAULT NULL,
+                    "description" varchar(200) DEFAULT NULL,
+                    "payload" text DEFAULT NULL,
+                    "gmt_create" varchar(200) DEFAULT NULL,
+                    "gmt_modified" varchar(200) DEFAULT NULL,
+                    "status" varchar(200) DEFAULT NULL,
+                    "file_content" text,
+                    "file_type" varchar,
+                    "biz_type" varchar,
+                    "is_default" integer,
+                    PRIMARY KEY ("id")
+                    );
+                    `
+            )
+
+
+            await M.Db().doSql(`
+                CREATE TABLE "mi_log" (
+                    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    "content" TEXT
+                );
+                    `
+            )
+
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+    <!-- 公共js -->
+    <script src="./common/common.js"></script>
+
+    <!-- API管理 -->
+    <script src="./pages/miApi/server.js"></script>
+    <script src="./pages/miApi/model.js"></script>
+    <script src="./pages/miApi/miApiForm.jsx" type="text/babel"></script>
+    <script src="./pages/miApi/miApiTree.jsx" type="text/babel"></script>
+    <script src="./pages/miApi/index.jsx" type="text/babel"></script>
+
+
+
+    <!-- 环境变量 -->
+    <script src="./pages/miEnv/server.js"></script>
+    <script src="./pages/miEnv/miEnvForm.jsx" type="text/babel"></script>
+    <script src="./pages/miEnv/index.jsx" type="text/babel"></script>
+
+
+    <script src="./pages/mingCount/index.jsx" type="text/babel"></script>
+
+    <script src="./pages/mingColour/index.jsx" type="text/babel"></script>
+
+
+    
+    <script src="./App.jsx" type="text/babel"></script>
+    <script type="text/babel">
+        ReactDOM.render(
+            <div>
+                <App />
+            </div>
+            ,
+            document.getElementById('root')
+        );
+    </script>
+
+</body>
+
+</html>
