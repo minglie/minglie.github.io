@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+
+      <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+      <script type="text/javascript" src="https://cn.vuejs.org/js/vue.js"></script>
+
+  </head>
+  <body>
+    <div id="root">
+      <div>
+          id <input disabled  name="id" v-model="updateId">
+          name <input  name="name" v-model="inputName">
+        <button @click="handleSubmit">add</button>
+      </div>
+      <ul>
+        <li v-for="(item,index) of listData" :key="index">
+             {{item.id}} ----------- {{item.name}} 
+             <button v-on:click="editItem(item.id)">edit</button>
+             <button v-on:click="deleteItem(item.id)">delete</button>  
+        </li>
+      </ul>
+    </div>
+  
+    <script>
+      new Vue({
+        el: "#root",
+        data: {
+          inputName:"zs",
+          updateId:-1,
+          listData: []
+        },
+        mounted(){
+          window.db = new Dexie("friend_database");
+          db.version(1).stores({
+              friends: 'id++'
+          });
+           this.listItems();
+        },
+        methods: {
+              handleSubmit: function(){
+                  db.friends.put({name:this.inputName});
+                  this.listItems()
+              },
+              listItems: function () {//列出需要的数据
+                db.friends.toArray().then(d=>this.listData=d)    
+              },
+              editItem:function ($id) {//编辑操作在这儿哟
+                      this.updateId=$id;
+                      let obj={id:$id,name:this.inputName};
+                      db.friends.update($id,obj).then(()=>{
+                        this.listItems();
+                      })
+                  },
+              deleteItem:function ($id) {//这里可以删除数据
+                 db.friends.delete($id).then(()=>{
+                  this.listItems();
+                 })
+                
+              },
+        }
+      })
+    </script>
+  </body>
+  </html>
+
+</html>

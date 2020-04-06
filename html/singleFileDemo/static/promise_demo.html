@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>promise_demo</title>
+  <script src="https://minglie.github.io/js/M_mock.js"></script>
+</head>
+<body>
+  <div id="root">
+    
+  </div>
+
+  <script>
+       var p1=()=>{
+           return new Promise((res,rej)=>{
+              setTimeout(()=>res(100),1000)
+           })    
+       }
+
+       var p1r=async ()=>{
+          var res=await p1()
+          console.log(res)
+       }
+
+
+       var p2=async ()=>{
+            let r=1;
+            setTimeout(()=>{r=7},1000)
+            return r;
+       }
+
+       var p2r=async ()=>{
+          var res= p2()
+          console.log(res)
+       }
+
+
+   
+  </script>
+</body>
+</html>

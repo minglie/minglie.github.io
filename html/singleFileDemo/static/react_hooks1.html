@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/react/16.8.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.8.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://minglie.github.io/js/M_mock.js"></script>
+    <title>react_hooks</title>
+</head>
+
+<body>
+
+<div id="app" class="app"></div>
+
+<script type="text/babel">
+
+const {useState}=React;
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+    ReactDOM.render(
+        <div>
+            <Example />
+        </div>,
+        document.getElementById('app')
+    );
+</script>
+
+
+
+</body>
+</html>

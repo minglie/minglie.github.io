@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue_极简crud</title>
+  <script type="text/javascript" src="https://cn.vuejs.org/js/vue.js"></script>
+  <script src="https://minglie.github.io/js/M_mock.js"></script>
+</head>
+<body>
+  <div id="root">
+    <iframe width="100%" height="100%" src="//player.bilibili.com/player.html?aid=96738879&bvid=BV1z7411o7yz&cid=165147078&page=8" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+    <div>
+        id <input disabled  name="id" v-model="updateId">
+        名字 <input  name="name" v-model="inputName">
+      <button @click="handleSubmit">添加</button>
+    </div>
+    <ul>
+      <li v-for="(item,index) of listData" :key="index">
+           {{item.id}} ----------- {{item.name}} 
+           <button v-on:click="editItem(item.id)">编辑</button>
+           <button v-on:click="deleteItem(item.id)">删除</button>  
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    new Vue({
+      el: "#root",
+      data: {
+        inputName:"zs",
+        updateId:-1,
+        listData: []
+      },
+      mounted(){
+         this.listItems();
+      },
+      methods: {
+            handleSubmit: function(){
+                M.add({name:this.inputName})
+                this.listItems()
+            },
+            listItems: function () {//列出需要的数据
+                 this.listData = M.listAll();
+            },
+            editItem:function ($id) {//编辑操作在这儿哟
+                    this.updateId=$id;
+                    M.update({id:this.updateId,name:this.inputName})
+                    this.listItems();
+                },
+            deleteItem:function ($id) {//这里可以删除数据
+                M.deleteById($id);
+                this.listItems();
+            },
+      }
+    })
+  </script>
+</body>
+</html>
