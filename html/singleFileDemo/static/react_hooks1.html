@@ -19,7 +19,7 @@
 
 
 
-const {useState,useEffect}=React;
+  const {useState,useEffect}=React;
 
 
 function ExampleHooks() {
@@ -28,6 +28,9 @@ function ExampleHooks() {
 
   useEffect(() => {
      console.log("ExampleHooks_componentDidUpdate")
+     return()=>{
+         console.log("ExampleHooks_componentWillUnMount")
+    }
   });
 
 
