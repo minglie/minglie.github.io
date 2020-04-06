@@ -15,11 +15,34 @@
 <div id="app" class="app"></div>
 
 <script type="text/babel">
+//  https://react.docschina.org/docs/hooks-intro.html
 
-const {useState}=React;
 
-function Example() {
+
+const {useState,useEffect}=React;
+
+
+function ExampleHooks() {
+  // 声明一个叫 "count" 的 state 变量
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+     console.log("ExampleHooks_componentDidUpdate")
+  });
+
+
+
+
+  useEffect(() => {
+     //发出http请求
+     console.log("ExampleHooks_componentDidMount")
+     return()=>{
+         console.log("ExampleHooks_componentWillUnMount")
+    }
+  },[]);
+
+
+  console.log("ExampleHooks_render")
 
   return (
     <div>
@@ -31,9 +54,73 @@ function Example() {
   );
 }
 
+
+
+
+class ExampleClass extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    };
+    console.log("ExampleClass_constructor") ;
+  }
+
+  componentWillMount() {
+    console.log("ExampleClass_componentWillMount") ;
+    return true;
+  }
+
+  componentDidMount() {
+    console.log("ExampleClass_componentDidMount") ;
+  }
+  componentDidUpdate() {
+    console.log("ExampleClass_componentDidMount") ;
+  }
+  componentWillUnmount () {
+    console.log("ExampleClass_componentWillUnmount ") ;
+  }
+  componentWillReceiveProps (nextProps){
+    console.log("ExampleClass_componentWillReceiveProps") ;
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    console.log("ExampleClass_shouldComponentUpdate") ;
+    return true;
+  }
+  componentWillUpdate (nextProps,nextState){
+    console.log("ExampleClass_componentWillUpdate") ;
+  }
+  componentDidUpdate(prevProps,prevState){
+    console.log("ExampleClass_componentDidUpdate") ;
+  }
+
+  componentWillUnMount() {
+    console.log("ExampleClass_componentWillUnMount") ;
+    return true;
+  }
+
+
+  render() {
+    console.log("ExampleClass_render") ;
+    return (
+      <div>
+        <p>You clicked {this.state.count} times</p>
+        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+          Click me
+        </button>
+      </div>
+    );
+  }
+}
+
+
+
+
     ReactDOM.render(
         <div>
-            <Example />
+            <ExampleHooks />
+            <br/>
+            <ExampleClass />
         </div>,
         document.getElementById('app')
     );

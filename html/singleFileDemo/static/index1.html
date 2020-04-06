@@ -1,0 +1,64 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>index</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app"><h1>网页列表</h1> <div><a href="dexie_simple_crud.html
+">dexie_simple_crud.html
+</a> <br> <br></div><div><a href="easyui_simple_crud.html
+">easyui_simple_crud.html
+</a> <br> <br></div><div><a href="index.html
+">index.html
+</a> <br> <br></div><div><a href="index1.html
+">index1.html
+</a> <br> <br></div><div><a href="promise_demo.html
+">promise_demo.html
+</a> <br> <br></div><div><a href="react_context.html
+">react_context.html
+</a> <br> <br></div><div><a href="react_hooks1.html
+">react_hooks1.html
+</a> <br> <br></div><div><a href="react_ref.html
+">react_ref.html
+</a> <br> <br></div><div><a href="react_simple_crud.html
+">react_simple_crud.html
+</a> <br> <br></div><div><a href="react_use_context.html
+">react_use_context.html
+</a> <br> <br></div><div><a href="react_use_ref.html
+">react_use_ref.html
+</a> <br> <br></div><div><a href="vue_antd_fenye.html
+">vue_antd_fenye.html
+</a> <br> <br></div><div><a href="vue_bootstrap_crud.html
+">vue_bootstrap_crud.html
+</a> <br> <br></div><div><a href="vue_bootstrap_fenye.html
+">vue_bootstrap_fenye.html
+</a> <br> <br></div><div><a href="vue_simple_crud.html
+">vue_simple_crud.html
+</a> <br> <br></div><div><a href="vue_simple_crud1.html
+">vue_simple_crud1.html
+</a> <br> <br></div></div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    list: null
+                }
+            },
+            mounted() {
+                M_this = this;
+                fetch('/pagelist').then(function (response) {
+                    return response.json();
+                }).then(function (response) {
+                    let list = response.data.split("\n");
+                    list = list.filter((d) => (d.indexOf(".html") >= 0))
+                    console.log(list)
+                    M_this.list = list
+                });
+            }
+
+        })
+    </script>
+
+</body></html>

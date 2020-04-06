@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/react/16.8.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.8.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://minglie.github.io/js/M_mock.js"></script>
+    <title>react_hooks</title>
+</head>
+
+<body>
+
+<div id="app" class="app"></div>
+
+<script type="text/babel">
+
+const {useState, useEffect, useMemo, useRef }=React;
+
+
+function App1(props){
+  const [count, setCount] = useState(0);
+
+  const doubleCount = useMemo(() => {
+    return 2 * count;
+  }, [count]);
+
+  const couterRef = useRef();
+  const inputRef = useRef();
+  useEffect(() => {
+    document.title = `The value is ${count}`;
+    console.log(couterRef.current,inputRef.current.value);
+  }, [count]);
+  
+  return (
+    <div>
+      <button ref={couterRef} onClick={() => {setCount(count + 1)}}>Count: {count}, double: {doubleCount}</button>
+      <input ref={inputRef}  ></input>
+    </div>
+  );
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function App2(props){
+  const [count, setCount] = useState(0);
+  const doubleCount = useMemo(() => {
+    return 2 * count;
+  }, [count]);
+  const timerID = useRef();
+  useEffect(() => {
+    timerID.current = setInterval(()=>{
+        setCount(count => count + 1);
+    }, 1000); 
+  }, []);
+  useEffect(()=>{
+      if(count > 10){
+          clearInterval(timerID.current);
+      }
+  });
+  return (
+    <div>
+      <button ref={timerID } onClick={() => {setCount(count + 1)}}>Count: {count}, double: {doubleCount}</button>
+    </div>
+  );
+}
+
+ReactDOM.render(
+ <div> 
+  <App1 /><br/> <App2 />
+  </div>
+  , 
+  document.querySelector("#app"));
+</script>
+
+
+
+</body>
+</html>
