@@ -171,7 +171,7 @@
         $("#resourceDataGridToolButton [name='downDate']").click(function() {
             M.doSql("select * from resource;",
                 (d)=>{
-                    M.fileDownload(JSON.stringify(d.data[0]),"data.json");
+                    M.fileDownload(JSON.stringify(d),"data.json");
                 }
             )
         });
