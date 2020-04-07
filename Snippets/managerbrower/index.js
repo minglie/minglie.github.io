@@ -161,8 +161,8 @@
         $("#resourceDataGridToolButton [name='downDate']").click(function() {
             M.Db().doSql("select * from resource;").then(d=>{
                 M.arr=[];
-                for (let i=0;i<d.rows.length;i++){
-                    M.arr.push(d.rows[i])
+                for (let i=0;i<d.length;i++){
+                    M.arr.push(d[i])
                 }
                 M.fileDownload(JSON.stringify(M.arr),"data.json");
             })
@@ -179,8 +179,8 @@
         $("#resourceDataGridToolButton [name='lookAll']").click(function() {
             M.Db().doSql("select * from resource;").then(d=>{
                 M.arr=[];
-                for (let i=0;i<d.rows.length;i++){
-                    M.arr.push(d.rows[i])
+                for (let i=0;i<d.length;i++){
+                    M.arr.push(d[i])
                 }
                 document.write(JSON.stringify(M.arr));
             })
