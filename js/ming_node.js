@@ -3,6 +3,7 @@
  * By : Minglie
  * QQ: 934031452
  * Date :2019.9.28
+ * version : 1.5.1
  */
 var http=require('http');
 var https=require('https');
@@ -91,7 +92,11 @@ M.get=function(url,callback,data,headers) {
         method:'GET',
             headers:headers
     }
-    var req=http.request(options,function(res){
+    let reqHttp=http;
+    if(url.startsWith("https")){
+        reqHttp=https;
+    }
+    var req=reqHttp.request(options,function(res){
         if(M.con_display_status_enable)console.log('STATUS:'+res.statusCode);
         if(global.debug && res.statusCode !=200){
             while(1){
@@ -147,8 +152,11 @@ M.post=function(url,callback,data,headers) {
         method:'POST',
         headers:headers
     }
-
-    var req=http.request(options, function(res) {
+    let reqHttp=http;
+    if(url.startsWith("https")){
+        reqHttp=https;
+    }
+    var req=reqHttp.request(options, function(res) {
         if(M.con_display_status_enable)console.log('STATUS:'+res.statusCode);
         if(global.debug && res.statusCode !=200){
             while(1){
