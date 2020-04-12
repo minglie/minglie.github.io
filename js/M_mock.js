@@ -3,36 +3,39 @@
  * By : Minglie
  * QQ: 934031452
  * Date :2019.9.28
+ * version :1.5.2
  */
 (function (window, undefined) {
 
     var M = {};
 
-    M.init_server_enable=true;
+    M.init_server_enable = true;
     M.host = "";
-    M.map_path="map_path";
-    M.database_path="database_path";
+    M.map_path = "map_path";
+    M.database_path = "database_path";
 
-    if ( typeof module === "object" && typeof module.exports === "object" ) {
+    if (typeof module === "object" && typeof module.exports === "object") {
         try {
-            $=require("jquery");
-        }catch (e) {
+            $ = require("jquery");
+        } catch (e) {
             delete $;
         }
     }
-    if(typeof $=="undefined"){
-        window.$={};
-        window.$.ajax=function(options){
+    if (typeof $ == "undefined") {
+        window.$ = {};
+        window.$.ajax = function (options) {
             options.beforeSend()
         }
     }
-    
+
     var App = {
         reqMap: new Map(),
         resMap: new Map(),
 
         // 缓存ajax方法
         ajax: $.ajax,
+        //key为去除rest参数的url,val为原始url
+        _rest: {},
         _get: {},
         _post: {},
         _begin: function () {
@@ -49,19 +52,26 @@
         /**
          * 注册get方法
          */
-        get (string, callback) {
-            //在M.IO上注册一个方法
-            M.IO.reg(string.replace("/", ""), "get");
-            string = M.formatUrl(string);
-            App._get[string] = callback;
+        get(url, callback) {
+            //非rest请求在M.IO上注册一个方法
+            if (!url.includes(":")) {
+                M.IO.reg(url.replace("/", ""), "get");
+            }
+            url = M.formatUrl(url);
+            let realUrl = url;
+            if (url.indexOf(":") > 0) {
+                url = url.substr(0, url.indexOf(":"));
+                App._rest[url] = realUrl;
+            }
+            App._get[url] = callback;
         },
         /**
          * 注册post方法
          */
-        post(string, callback) {
-            M.IO.reg(string.replace("/", ""), "post");
-            string = M.formatUrl(string);
-            App._post[string] = callback;
+        post(url, callback) {
+            M.IO.reg(url.replace("/", ""), "post");
+            url = M.formatUrl(url);
+            App._post[url] = callback;
         },
         doget(pureUrl, options) {
             req = {};
@@ -69,11 +79,7 @@
             req.params = App.reqMap.get("get:" + pureUrl);
             req.method = "get";
             req.pureUrl = pureUrl;
-            if (Object.keys(req.params).length) {
-                req.url = pureUrl.substr(0, pureUrl.length - 1) + "?" + M.urlStringify(req.params);
-            } else {
-                req.url = pureUrl;
-            }
+            req.url = options.url;
             res.send = function (d) {
                 this.resMap.set("get:" + pureUrl, d);
                 data = App.resMap.get(options.type + ":" + pureUrl);
@@ -89,7 +95,7 @@
             req.params = App.reqMap.get("post:" + pureUrl);
             req.method = "post";
             req.pureUrl = pureUrl;
-            req.url = pureUrl;
+            req.url = options.url;
             res.send = function (d) {
                 this.resMap.set("post:" + pureUrl, d);
                 data = App.resMap.get(options.type + ":" + pureUrl);
@@ -177,10 +183,10 @@
     /**
      *获取下划线式的对象
      */
-    M.getUnderlineObj=function (obj) {
-        var result={};
-        for(let field in obj){
-            result[field.humpToUnderline()]=obj[field]
+    M.getUnderlineObj = function (obj) {
+        var result = {};
+        for (let field in obj) {
+            result[field.humpToUnderline()] = obj[field]
         }
         return result;
     };
@@ -188,16 +194,16 @@
     /**
      *获取驼峰式的对象
      */
-    M.getHumpObj=function (obj) {
-        var result={};
-        for(let field in obj){
-            result[field.underlineToHump()]=obj[field]
+    M.getHumpObj = function (obj) {
+        var result = {};
+        for (let field in obj) {
+            result[field.underlineToHump()] = obj[field]
         }
         return result;
     };
 
-    M.randomStr=function () {
-        return  (Math.random().toString(36)+new Date().getTime()).slice(2);
+    M.randomStr = function () {
+        return (Math.random().toString(36) + new Date().getTime()).slice(2);
     };
 
 
@@ -274,9 +280,9 @@
         }
         url = M.host + url + getData;
         fetch(url, {
-                method: 'GET',
-                mode: 'cors'
-            }
+            method: 'GET',
+            mode: 'cors'
+        }
         ).then((res) => {
             return res.json()
         }).then((res) => callback(res)).catch((error) => {
@@ -302,7 +308,7 @@
             });
     };
 
-    
+
     M.fetchPostJson = function (url, callback, data) {
         fetch(M.host + url, {
             method: 'POST',
@@ -310,7 +316,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-             body: JSON.stringify(data)
+            body: JSON.stringify(data)
         }).then(function (response) {
             return response.json();
         }).then((resonseData) => {
@@ -323,25 +329,25 @@
 
 
     M.doSql = function (sql, callback) {
-      return   new Promise(function (reslove, reject) {
+        return new Promise(function (reslove, reject) {
             fetch(M.host + '/doSql', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: M.encodeURIComponentObj({sql})
+                body: M.encodeURIComponentObj({ sql })
             }).then(function (response) {
                 return response.json();
             }).then((resonseData) => {
-                if(callback){
+                if (callback) {
                     callback(resonseData);
                 }
                 reslove(resonseData)
             }).catch((error) => {
-                    console.error(error)
-                    reject(error)
-                });
+                console.error(error)
+                reject(error)
+            });
         });
     };
 
@@ -373,7 +379,7 @@
 
 
     M.getObjByFile = function (file) {
-        data = localStorage.getItem(file)||"[]";
+        data = localStorage.getItem(file) || "[]";
         var obj;
         if (data) obj = JSON.parse(data.toString());
         return obj;
@@ -390,39 +396,39 @@
             M.writeObjToFile(file, [obj]);
         }
     };
-    M.deleteObjByIdFile=function(file,id){
-        let ids=[];
-        if(!Array.isArray(id)){
+    M.deleteObjByIdFile = function (file, id) {
+        let ids = [];
+        if (!Array.isArray(id)) {
             ids.push(id)
-        }else {
-            ids=id;
+        } else {
+            ids = id;
         }
-        var d=M.getObjByFile(file);
-        var d1=M.getObjByFile(file);
-        let d_num=0;
-        for(let i=0;i<d1.length;i++){
-            if(ids.indexOf(d1[i].id)>=0){
-                d.splice(i-d_num,1);
+        var d = M.getObjByFile(file);
+        var d1 = M.getObjByFile(file);
+        let d_num = 0;
+        for (let i = 0; i < d1.length; i++) {
+            if (ids.indexOf(d1[i].id) >= 0) {
+                d.splice(i - d_num, 1);
                 d_num++;
-                if(ids.length==1)break;
+                if (ids.length == 1) break;
             }
         }
-        M.writeObjToFile(file,d);
+        M.writeObjToFile(file, d);
     };
 
-    M.deleteObjByPropFile=function(file,o){
-        let o_key=Object.keys(o)[0];
-        let o_val=o[o_key];
-        var d=M.getObjByFile(file);
-        var d1=M.getObjByFile(file);
-        let d_num=0;
-        for(let i=0;i<d1.length;i++){
-            if(d1[i][o_key]==o_val){
-                d.splice(i-d_num,1);
+    M.deleteObjByPropFile = function (file, o) {
+        let o_key = Object.keys(o)[0];
+        let o_val = o[o_key];
+        var d = M.getObjByFile(file);
+        var d1 = M.getObjByFile(file);
+        let d_num = 0;
+        for (let i = 0; i < d1.length; i++) {
+            if (d1[i][o_key] == o_val) {
+                d.splice(i - d_num, 1);
                 d_num++;
             }
         }
-        M.writeObjToFile(file,d);
+        M.writeObjToFile(file, d);
     };
 
     M.updateObjByIdFile = function (file, obj) {
@@ -436,22 +442,22 @@
         M.writeObjToFile(file, d);
     };
 
-    M.getObjByIdFile=function(file,id){
-        var d=M.getObjByFile(file);
-        for(let i=0;i<d.length;i++){
-            if(d[i].id==id){
+    M.getObjByIdFile = function (file, id) {
+        var d = M.getObjByFile(file);
+        for (let i = 0; i < d.length; i++) {
+            if (d[i].id == id) {
                 return d[i];
             }
         }
     };
 
-    M.listAllObjByPropFile=function(file,o){
-        let r_list=[];
-        let o_key=Object.keys(o)[0];
-        let o_val=o[o_key];
-        var d=M.getObjByFile(file);
-        for(let i=0;i<d.length;i++){
-            if(d[i][o_key]==o_val){
+    M.listAllObjByPropFile = function (file, o) {
+        let r_list = [];
+        let o_key = Object.keys(o)[0];
+        let o_val = o[o_key];
+        var d = M.getObjByFile(file);
+        for (let i = 0; i < d.length; i++) {
+            if (d[i][o_key] == o_val) {
                 r_list.push(d[i]);
             }
         }
@@ -462,48 +468,48 @@
     /**
      * 文件型数据库第二层封装
      */
-    M.add=function (obj) {
-        obj.id=M.randomStr();
-        M.addObjToFile(M.database_path,obj);
+    M.add = function (obj) {
+        obj.id = M.randomStr();
+        M.addObjToFile(M.database_path, obj);
         return obj;
     };
-    M.update=function (obj) {
-        M.updateObjByIdFile(M.database_path,obj);
+    M.update = function (obj) {
+        M.updateObjByIdFile(M.database_path, obj);
     };
-    M.deleteById=function (id) {
-        M.deleteObjByIdFile(M.database_path,id);
+    M.deleteById = function (id) {
+        M.deleteObjByIdFile(M.database_path, id);
     };
     /**
      * 清空所有
      */
-    M.deleteAll=function (o) {
-        if(o){
-            M.deleteObjByPropFile(M.database_path,o);
-        }else {
-            M.writeObjToFile(M.database_path,[]);
+    M.deleteAll = function (o) {
+        if (o) {
+            M.deleteObjByPropFile(M.database_path, o);
+        } else {
+            M.writeObjToFile(M.database_path, []);
         }
     };
     /**
      * 根据属性删
      * @param o
      */
-    M.deleteByProp=function (o) {
-        M.deleteObjByPropFile(M.database_path,o);
+    M.deleteByProp = function (o) {
+        M.deleteObjByPropFile(M.database_path, o);
     };
     /**
      * 根据id删
      * @param id
      */
-    M.getById=function (id) {
-        return M.getObjByIdFile(M.database_path,id);
+    M.getById = function (id) {
+        return M.getObjByIdFile(M.database_path, id);
     };
     /**
      * 查寻所有
      */
-    M.listAll=function (o) {
-        if(o){
-            return M.listAllObjByPropFile(M.database_path,o);
-        }else {
+    M.listAll = function (o) {
+        if (o) {
+            return M.listAllObjByPropFile(M.database_path, o);
+        } else {
             return M.getObjByFile(M.database_path);
         }
     };
@@ -511,23 +517,23 @@
      * 根据属性查询
      * @param o
      */
-    M.listByProp=function (o) {
-        return M.listAllObjByPropFile(M.database_path,o);
+    M.listByProp = function (o) {
+        return M.listAllObjByPropFile(M.database_path, o);
     };
     /**
      *分页查询
      */
-    M.listByPage=function (startPage,limit,caseObj) {
-        if(startPage<=0)startPage=1;
+    M.listByPage = function (startPage, limit, caseObj) {
+        if (startPage <= 0) startPage = 1;
         let rows;
-        if(caseObj){
-            rows=M.listByProp(caseObj);
-        }else {
-            rows= M.listAll();
+        if (caseObj) {
+            rows = M.listByProp(caseObj);
+        } else {
+            rows = M.listAll();
         }
-        let total=rows.length;
-        rows=rows.splice((startPage-1)*limit,limit);
-        return {rows,total}
+        let total = rows.length;
+        rows = rows.splice((startPage - 1) * limit, limit);
+        return { rows, total }
     };
 
 
@@ -536,23 +542,23 @@
      * @param k
      * @param v
      */
-    M.setAttribute=function (k,v) {
-        let a={};
-        a[k]=v;
-        a=JSON.stringify(a);
-        a=JSON.parse(a);
+    M.setAttribute = function (k, v) {
+        let a = {};
+        a[k] = v;
+        a = JSON.stringify(a);
+        a = JSON.parse(a);
         let preObj;
-        try{
-            preObj=M.getObjByFile(M.map_path)||{};
-            if(Array.isArray(preObj))preObj={};
-        }catch(e){
-            preObj={};
+        try {
+            preObj = M.getObjByFile(M.map_path) || {};
+            if (Array.isArray(preObj)) preObj = {};
+        } catch (e) {
+            preObj = {};
         }
 
-        M.writeObjToFile(M.map_path,Object.assign(preObj,a));
+        M.writeObjToFile(M.map_path, Object.assign(preObj, a));
     };
 
-    M.getAttribute=function (k) {
+    M.getAttribute = function (k) {
         return M.getObjByFile(M.map_path)[k];
     };
 
@@ -585,31 +591,53 @@
         myAudio.type = "audio/mpeg";
         myAudio.play();
     };
-
     /**
      *改写ajax方法
      */
     M.ajax = function (options) {
         d = M.urlParse(options.url);
         options.data = Object.assign(d, options.data);
+        if (options.type == "get") {
+            if (!Object.keys(App._rest).length == 0) {
+                let pathname = M.formatUrl(options.url);
+                let realPathName = pathname;
+                let mapingPath = "";
+                for (let i = 0; i < Object.keys(App._rest).length; i++) {
+                    if (M.formatUrl(options.url).startsWith(Object.keys(App._rest)[i])) {
+                        for (let i = 0; i < Object.keys(App._rest).length; i++) {
+                            if (pathname.startsWith(Object.keys(App._rest)[i])) {
+                                pathname = Object.keys(App._rest)[i];
+                                mapingPath = App._rest[pathname];
+                            }
+                        }
+                        if (!realPathName.endsWith('/')) {
+                            realPathName = realPathName + '/';
+                        }
+                        let s1 = realPathName;
+                        let s2 = mapingPath;
+                        s1 = s1.substring(s2.indexOf(":") - 1, s1.length - 1).split("/").slice(1)
+                        s2 = s2.substring(s2.indexOf(":") - 1, s2.length - 1).split("/:").slice(1)
+                        let params = {};
+                        for (let i = 0; i < s2.length; i++) { params[s2[i]] = s1[i]; }
+                        options.data = Object.assign(params, options.data);
+                        options.restUrl = pathname;
+                    }
+                }
+            }
+        }
         App.ajax({
             url: options.url,
             beforeSend(XHR) {
-                let pureUrl = M.formatUrl(options.url);
-                //往reqMap里加数据
+                let pureUrl = options.restUrl || M.formatUrl(options.url);
                 App.reqMap.set(options.type + ":" + pureUrl, options.data);
-
                 if (options.type == "get") {
                     App.doget(pureUrl, options);
                 } else {
                     App.dopost(pureUrl, options);
                 }
-
-
                 return false;
             },
             success(data) {
-
                 options.success(data)
             }
         })
@@ -636,7 +664,7 @@
     };
 
 
-    M.EventSource=function (url,callback) {
+    M.EventSource = function (url, callback) {
         if (window.EventSource) {
             // 创建 EventSource 对象连接服务器
             const source = new EventSource(url);
@@ -650,14 +678,14 @@
             }, false);
             // 自定义 EventHandler，在收到 event 字段为 slide 的消息时触发
             source.addEventListener('slide', e => {
-               callback(e);
+                callback(e);
             }, false);
             // 连接异常时会触发 error 事件并自动重连
             source.addEventListener('error', e => {
                 if (e.target.readyState === EventSource.CLOSED) {
                     console.log('Disconnected');
                 } else if (e.target.readyState === EventSource.CONNECTING) {
-                    console.log('Connecting...');
+                    console.log('ConnectinApp...');
                 }
             }, false);
             return source;
@@ -806,39 +834,39 @@
             return fmt;
         }
     };
-    M.initServer=function () {
-        app.post("/add",(req,res)=>{
-            r=M.add(req.params);
+    M.initServer = function () {
+        app.post("/add", (req, res) => {
+            r = M.add(req.params);
             res.send(M.result(r));
         });
 
-        app.get("/delete",(req,res)=>{
+        app.get("/delete", (req, res) => {
             M.deleteById(req.params.id);
             res.send(M.result("ok"));
         });
 
-        app.post("/update",(req,res)=>{
+        app.post("/update", (req, res) => {
             M.update(req.params);
             res.send(M.result("ok"));
         });
 
-        app.get("/getById",(req,res)=>{
-            r=M.getById(req.params.id);
+        app.get("/getById", (req, res) => {
+            r = M.getById(req.params.id);
             res.send(M.result(r));
         });
 
-        app.get("/listAll",(req,res)=>{
-            r=M.listAll();
+        app.get("/listAll", (req, res) => {
+            r = M.listAll();
             res.send(M.result(r));
         });
 
-        app.get("/listByParentId",(req,res)=>{
-            r=M.listByProp({parentId:req.params.parentId});
+        app.get("/listByParentId", (req, res) => {
+            r = M.listByProp({ parentId: req.params.parentId });
             res.send(M.result(r));
         });
 
-        app.get("/listByPage",(req,res)=>{
-            r=M.listByPage(req.params.startPage,req.params.limit);
+        app.get("/listByPage", (req, res) => {
+            r = M.listByPage(req.params.startPage, req.params.limit);
             res.send(M.result(r));
         })
     };
@@ -846,13 +874,13 @@
     M.init();
     window.app = App;
     window.M = M;
-    window.MIO=M.IO;
+    window.MIO = M.IO;
     $.ajax = M.ajax;
-    if(M.init_server_enable)M.initServer();
+    if (M.init_server_enable) M.initServer();
 
 
-    if ( typeof module === "object" && typeof module.exports === "object" ) {
-        module.exports = {app:App,M,MIO:M.IO}
+    if (typeof module === "object" && typeof module.exports === "object") {
+        module.exports = { app: App, M, MIO: M.IO }
     }
 
 
