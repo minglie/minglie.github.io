@@ -875,7 +875,7 @@
     window.app = App;
     window.M = M;
     window.MIO = M.IO;
-    $.ajax = M.ajax;
+    //$.ajax = M.ajax;
     if (M.init_server_enable) M.initServer();
 
 

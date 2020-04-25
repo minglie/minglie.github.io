@@ -1,5 +1,5 @@
 (function() {
-
+    $.ajax=M.ajax;
     function reloadgrid (v) {
 //查询参数直接添加在queryParams中
         var queryParams = $('#resourceDataGrid').datagrid('options').queryParams;

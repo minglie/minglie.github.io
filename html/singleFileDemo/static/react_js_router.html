@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ming_autotest</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 500000px;
+        }
+    </style>
+
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.bootcss.com/react-router-dom/4.4.0-beta.6/react-router-dom.min.js"></script>
+
+</head>
+
+<body>
+    <div id="root"></div>
+    </div>
+
+<script type="text/babel">
+
+const {HashRouter ,Router , Route, Link } = ReactRouterDOM;
+function A(props) {return <div> A</div> }
+function B(props) {return <div> B</div> }
+function C(props) {  
+    console.log(props.routes)
+    return   (
+      <div>
+          { props.routes.map((route,key)=> {console.log(route.path); return (<Link to={route.path}><br/>{route.path}</Link>)})}
+          <hr></hr>
+          { props.routes.map((route,key)=> {console.log(route.path); return (<Route   path={route.path} component={route.component} />)})}
+     </div>
+ ) 
+}
+function D(props) {return <div> D</div> }
+function E(props) {return <div> E</div> }
+function F(props) {return <div> E</div> }
+function G(props) {return <div> E</div> }
+let routes = [
+    {
+      path: "/A",
+      component: A
+  
+    },
+    {
+      path: "/B",
+      component: B
+    },
+    {
+      path: "/C",
+      component: C,  
+      routes:[
+        {
+          path: "/C/C1",
+          component: D
+        },
+        {
+          path: "/C/C2",
+          component: E
+        }
+      ]
+    }
+];
+function App() {
+      return (
+       <div> <HashRouter>
+       <div>
+           <header className="title">
+              {routes.map((route,key)=> {console.log(route.path); return (<Link to={route.path}><br/>{route.path}</Link>)})}
+           </header> 
+           <hr/>
+           {
+             routes.map((route,key)=>{
+                 if(route.exact){
+                   return 
+                   <Route key={key} exact path={route.path}                     
+                   render={props => (
+                     <route.component {...props} routes={route.routes} />
+                   )}
+                   />
+                 }else{
+                   return <Route  key={key}  path={route.path} 
+                   render={props => (
+                     <route.component {...props} routes={route.routes} />
+                   )}
+                   />
+                 }
+             })
+           }            
+       </div>
+     </HashRouter></div>
+      );
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ReactDOM.render(
+            <div>
+                <App />
+            </div>
+            ,
+            document.getElementById('root')
+        );
+    </script>
+
+</body>
+
+</html>
