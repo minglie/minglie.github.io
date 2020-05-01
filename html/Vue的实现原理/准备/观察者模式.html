@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button onclick="sell()">尾盘开售</button>
+
+<script>
+function EventHandle () {
+    var subs = [];
+    this.addSub=function(sub){
+        sub && subs.push(sub) 
+    };    
+    this.notify= function() {
+        subs.forEach(function(sub) {
+            sub.update();
+        });
+    }
+}; 
+
+var ev=new EventHandle();
+
+ev.addSub({
+    update:function(p){
+        console.log("收到")
+    }
+})
+
+
+function sell(){
+  console.log("尾盘开售")
+  ev.notify()
+}
+
+
+
+
+</script>
+
+
+    
+</body>
+</html>

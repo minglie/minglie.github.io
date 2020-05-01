@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <div id="app">
+     </div>
+     <input type="text" id="input" />
+
+<script>
+        var obj={};
+        var value="";
+        Object.defineProperty(obj,"msg",{
+              set:function(newValue){
+                  console.log("msg.set")
+                  document.querySelector("#app").innerHTML=newValue
+                  value=newValue;        
+              },
+              get:function(){
+                console.log("msg.get")
+                 return value;
+              }
+        })
+
+        document.querySelector("#input").addEventListener("input",function(e){
+            obj.msg=e.target.value
+        })
+
+
+
+</script>
+
+
+    
+</body>
+</html>
