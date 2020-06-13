@@ -2,8 +2,8 @@
  * File : M_mock.js
  * By : Minglie
  * QQ: 934031452
- * Date :2019.9.28
- * version :1.5.2
+ * Date :2020.06.12
+ * version :1.7.0
  */
 (function (window, undefined) {
 
@@ -326,6 +326,40 @@
                 console.error(error)
             });
     };
+
+
+    M.require=function(url){
+        let promise=new Promise(function (reslove, reject) {
+            fetch(url, {
+                method: 'GET',
+                mode: 'cors'
+            }
+            ).then((res) => {
+                let  url1=M.formatUrl(url).split("/")
+                url1=url1[url1.length-2];
+             
+                return res.text()
+                
+            }).then(
+                d=>{
+                    let r=""
+                    try{
+                        r=JSON.parse(d)
+                    }catch(e){
+                        try{
+                            r=eval(d); 
+                        }catch(e1){
+                            r=d;
+                        } 
+                    }
+                    reslove(r)
+                }).catch((error) => {
+                reject(error)
+            });
+        });
+    return promise;
+}
+
 
 
     M.doSql = function (sql, callback) {
