@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.bootcss.com/react/16.4.0/umd/react.development.js"></script>
+  <script src="https://cdn.bootcss.com/react-dom/16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://unpkg.com/mobx/lib/mobx.umd.js"></script>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/mobx-react/0.2.3/index.js"></script>
+
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
+
+
+<script type="text/babel">
+
+  // create State object
+  let appState = mobx.observable({ timer: 0 });
+
+  // define action
+  setInterval(
+      mobx.action(() => {
+      appState.timer += 1;
+    }),
+    1000
+  );
+
+  appState.resetTimer = mobx.action(() => {
+    appState.timer = 0;
+  });
+
+  // create observer
+  let App = observer(({ appState }) => {
+    return (
+      <div className="App">
+        <h1>Time passed : {appState.timer}</h1>
+        <button onClick={appState.resetTimer}>reset timer</button>
+      </div>
+    );
+  });
+
+  const root = document.getElementById("root");
+  ReactDOM.render(<App appState={appState} />, root);
+
+</script>
