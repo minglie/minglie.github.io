@@ -313,7 +313,19 @@
         "res_url": "https://minglie.gitee.io/mingpage/static/",
         "parent_id": 312,
         "description": ""
+    },
+    {
+        "id": 322,
+        "name": "数学",
+        "res_url": "",
+        "parent_id": -1,
+        "description": "0"
+    },{
+        "id": 323,
+        "name": "电枢公式",
+        "res_url": "https://www.yuque.com/docs/share/07cd6672-63c3-47ac-9b4b-2253c13f5e4f?# 《电枢公式》",
+        "parent_id": 322,
+        "description": "0"
     }
-
 
 ]
