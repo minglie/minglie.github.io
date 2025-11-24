@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>计算器</title>
+    <script src="https://langjie.oss-cn-hangzhou.aliyuncs.com/space/root/project/viphelp/js/lib/jquery/zepto.min.js"></script>
+    <script src="https://langjie.oss-cn-hangzhou.aliyuncs.com/space/root/project/viphelp/js/lib/monacoeditor/min/vs/loader.js"></script>
+    <script src="./ming_mock_calc.js"> </script>
+    <script src="./calc.js"> </script>
+    <style>
+        * {
+            touch-action: none;
+        }
+        header{
+            display: flex;
+            height: 50px;
+            justify-content: left;
+        }
+        header button{
+            width: 30vw;
+            margin-right: 2vw;
+        }
+        .wrap {
+            display: flex;
+        }
+        #right{
+            height: 100vh;
+            width: 30vw;
+            background-color: black;
+            color: white;
+        }
+        #right2{
+            height: 100vh;
+            width: 30vw;
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<script>
+
+</script>
+
+
+
+<body>
+<div id="app">
+    <header >
+        <button id="btn" onclick="btnOnclick(this)"   class="btn btn-success ">运行</button>
+        <button id="btn3" onclick="btn3Onclick(this)"   class="btn btn-success">清除</button>
+        <select id="funcSelectId" class="form-control" style="width:50%; float: left;" onchange="selectChange(this)"></select>
+    </header>
+    <div id="resultId"></div>
+
+    <div class="wrap">
+        <div id="container" style="width:55vw;height:100vh;float:left; border:1px solid grey"></div>
+        <div id="resize"></div>
+        <pre id="right"></pre>
+        <pre id="right2"></pre>
+    </div>
+
+
+</div>
+
+
+
+
+<script>
+    M.htmlResult1=(resutHtml)=>{
+        document.querySelector("#resultId").innerHTML=resutHtml;
+    }
+    M.htmlResult=(resutHtml)=>{
+        document.querySelector("#resultId").innerHTML=resutHtml;
+    }
+
+    function myConsoleLn(s){
+        document.getElementById("right").innerHTML=document.getElementById("right").innerHTML+s+"\n";
+    }
+
+    function myConsoleLn1(s){
+        document.getElementById("right2").innerHTML=document.getElementById("right2").innerHTML+s+"\n";
+    }
+
+    console.log=myConsoleLn;
+    console.log2=myConsoleLn1;
+
+    require.config({
+        baseUrl: 'https://langjie.oss-cn-hangzhou.aliyuncs.com/space/root/project/viphelp/js/lib/monacoeditor/', paths: { 'vs': 'min/vs' }
+    });
+
+    btnOnclick =async function () {
+       // document.getElementById("right").innerHTML="";
+        const selectedValue = document.querySelector('select').value;
+        eval(
+            "async   function v2main(){"+
+            M.editor.getValue()+
+            "}  v2main();"
+        )
+    }
+    btn3Onclick=function (){
+        document.querySelector("#right").innerHTML="";
+        document.querySelector("#right2").innerHTML="";
+    }
+    async function selectChange(){
+        var selectedValue = document.querySelector('select').value;
+        console.log2('准备'+selectedValue);
+        $("#container").children().remove();
+        require(['vs/editor/editor.main'], function () {
+                var editor = monaco.editor.create(document.getElementById('container'), {
+                    value: [
+                        calcCode[selectedValue]
+                    ].join('\n'),
+                    language: "javascript",
+                    theme: M.theme,
+                    automaticLayout: true,
+                    scrollbar: {
+                        useShadows: false,
+                        vertical: 'visible',
+                        horizontal: 'visible',
+                        horizontalSliderSize: 5,
+                        verticalSliderSize: 5,
+                        horizontalScrollbarSize: 15,
+                        verticalScrollbarSize: 15,
+                    },
+                    quickSuggestions: true,
+                    overviewRulerBorder: true,
+                    minimap: {
+                        enabled: false
+                    }
+                });
+                monaco.editor.setTheme("vs-dark");
+                M.editor = editor;
+            }
+        );
+    }
+</script>
+
+
+<script async type="module">
+
+    import calcCode from "./calcCode.js";
+    window.calcCode=calcCode;
+    let fileList=Object.keys(calcCode).map(u=>{
+        return  `<option>${u}</option>`
+    })
+    let fileListStr=fileList.toLocaleString().replace(/,/g,"");
+    document.getElementById("funcSelectId").innerHTML=fileListStr;
+
+    require(['vs/editor/editor.main'], function () {
+            var editor = monaco.editor.create(document.getElementById('container'), {
+                value: [
+                   `console.log(Int32.from(4292407296));`
+                ].join('\n'),
+                language: "javascript",
+                theme: M.theme,
+                automaticLayout: true,
+                scrollbar: {
+                    useShadows: false,
+                    vertical: 'visible',
+                    horizontal: 'visible',
+                    horizontalSliderSize: 5,
+                    verticalSliderSize: 5,
+                    horizontalScrollbarSize: 15,
+                    verticalScrollbarSize: 15,
+                },
+                quickSuggestions: true,
+                overviewRulerBorder: true,
+                minimap: {
+                    enabled: false
+                }
+            });
+            monaco.editor.setTheme("vs-dark");
+            M.editor = editor;
+        }
+    );
+
+</script>
+
+</body>
+
+</html>
+

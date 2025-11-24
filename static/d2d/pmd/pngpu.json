@@ -1,0 +1,236 @@
+{
+  "configuration": {
+    "product": {
+      "class": "Product.D710",
+      "model": 1710,
+      "rev": 0,
+      "osver": 0.12,
+      "sn": 1880000,
+      "client": 0,
+      "manufacturer": "LANGJIE",
+      "device": "my_t
+      c
+      ","
+      drawers
+      ":{"
+      0
+      ":{"
+      class
+      ":"
+      Drawer
+      ","
+      owner
+      ":"
+      #
+      0Drawer
+      ","
+      params
+      ":[0,1,2,3,4,5,6,7,8,9,10]}}},"
+      communication
+      ":{"
+      modbusSlaverAddress
+      ":1},"
+      input
+      ":{"
+      pipeS
+      pec
+      ":"
+      assemble
+      ","
+      timeInPipe
+      ":false,"
+      vinChnls
+      ":{"
+      0
+      ":{"
+      class
+      ":"
+      VinChnl.AdChnl
+      ","
+      tag
+      ":"
+      #
+      0Vin
+      ","
+      installed
+      ":true,"
+      inPipe
+      ":true,"
+      minScale
+      ":0,"
+      maxScale
+      ":100,
+      "dot": 2,
+      "unitCode": 1001,
+      "delay": 0,
+      "vCol": [
+        0,
+        0.1,
+        0.2,
+        0.5,
+        1,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100
+      ],
+      "adCol": [
+        0,
+        100,
+        200,
+        500,
+        1000,
+        2000,
+        5000,
+        10000,
+        20000,
+        50000,
+        100000
+      ]
+    },
+    "1": {
+      "c
+      lass
+      ":"
+      VinChnl.AdChnl
+      ","
+      tag
+      ":"
+      #
+      0Vin
+      ","
+      installed
+      ":true,"
+      inPipe
+      ":true,"
+      minScale
+      ":0,"
+      maxScale
+      ":100,"
+      dot
+      ":2,"
+      unitCode
+      ":1001,"
+      delay
+      ":0,"
+      vCol
+      ":[0,0.1,0.2,0
+      .5,
+      1,
+      2,
+      5,
+      10,
+      20,
+      50,
+      100
+    ],
+      "adCol": [
+        0,
+        100,
+        200,
+        500,
+        1000,
+        2000,
+        5000,
+        10000,
+        20000,
+        50000,
+        100000
+      ]
+    },
+    "2": {
+      "class": "VinChnl.AcChnl",
+      "tag": "#2Vin",
+      "installed": true,
+      "inPipe": true,
+      "minScale": 0,
+      "maxScale": 100,
+      "dot": 2,
+      "unitCode": 1001,
+      "delay": 0,
+      "res": 0.01,
+      "zero": 0,
+      "code": 0
+    },
+    "3": {
+      "class": "VinChnl.IcChnl",
+      "tag": "#3Vin",
+      "installed": true,
+      "inPipe": true,
+      "minScale": 0,
+      "maxScale": 100,
+      "dot": 2,
+      "unitCode": 1001,
+      "delay": 0,
+      "res": 0.01
+    }
+  },
+  "digitalInPipe": true,
+  "dinChnls": {
+    "0": {
+      "cla
+      ss
+      ":"
+      DinChnl
+      ","
+      tag
+      ":"
+      #
+      0Din
+      ","
+      bitShift
+      ":0},"
+      1
+      ":{"
+      class
+      ":"
+      DinChnl
+      ","
+      tag
+      ":"
+      #
+      0Din
+      ","
+      bitShift
+      ":0},"
+      2
+      ":{"
+      class
+      ":"
+      DinChnl
+      ","
+      tag
+      ":"
+      #
+      0Din
+      ","
+      bitShift
+      ":0},"
+      3
+      ":{
+      "class": "DinChnl",
+      "tag": "#0Din",
+      "bitShift": 0
+    }
+  },
+  "acqRate": 10000
+},"output": {"doutChnls": {"0": {"class": "DoutChnl", "tag": "#0Dout", "bitShift": 0, "safeLevel
+":0,"validLevel":1},"1":{"class":"DoutChnl","tag":"#0Dout","bitShift":0,"safeLevel":0,"validLevel":1},"2":{"class":"DoutChnl","tag":"#0Dout","bitShif
+t":0,"safeLevel":0,"validLevel":1},"3":{"class":"DoutChnl","tag":"#0Dout","bitShift":0,"safeLevel":0,"validLevel":1}},"coutChnls":{"0":{"class":"Cout
+Chnl.DaServo","tag":"#0Cout","uMin":-30000,"uMax":30000,"uZero":0,"vibFreq":100,"vibAmp":0,"moveP":1000,"manRes":100,"overPowerTime":1},"1":{"class":
+"CoutChnl.DaServo", "tag": "#0Cout", "uMin": -30000, "uMax": 30000, "uZero": 0, "vibFreq": 100, "vibAmp": 0, "moveP": 1000, "manRes": 100, "overPowerTime": 1}}}, "contr
+oller":{"dispChnl":0,"closedCtrls":{"0":{"class":"ClosedCtrl.KidCtrl","plusDir":1,"manRes":0.01,"errorGate":10,"rectifyTime":0.1,"k":10,"i":0.4,"d":0
+}}}}, "runtime": {"input": {"highPressure": false, "disp": 1.23, "extCommandRefEnabled":false, "extCommandRef": 1.24}, "output": {"pumpPowerOn": false, "highPress
+ureEnbled":false,"dispLost":false,"extCommandLost":false},"controller":{"refType":0,"ctrlMode":1,"time":1001,"ref":1.24,"feed":1.23,"u":0,"options":{
+"refType":[0, 160, 240], "ctrlMode":[1, 3, 5, 16, 24,32, 48]}}}, "log": {"count": 0, "head": 0, "history": {"0":{"class": "LogEvent", "time": 0, "eventCode": 16
+}, "1": {
+"c
+lass":"LogEvent","time":0,"eventCode":16},"2":{"class":"LogEvent","time":0,"eventCode":16},"3":{"class":"LogEvent","time":0,"eventCode":16},"4":{"cla
+ss":"LogEvent","time":0,"eventCode":16},"5":{"class":"LogEvent","time":0,"eventCode":16},"6":{"class":"LogEvent","time":0,"eventCode":16},"7":{"class
+":"LogEvent","time":0,"eventCode":16},"8":{"class":"LogEvent","time":0,"eventCode":16},"9":{"class":"LogEvent","time":0,"eventCode":16},"10":{"class": "LogEvent", "time": 0, "eventCode":16}, "11": {"class": "LogEvent","time": 0, "eventCode": 16}, "12": {"class": "LogEvent", "time": 0,"eventCode": 16
+}, "13": {
+"class
+":"LogEvent","time":0,"eventCode":16},"14":{"class":"LogEvent","time":0,"eventCode":16},"15":{"class":"LogEvent","time":0,"eventCode":16}}}}
+

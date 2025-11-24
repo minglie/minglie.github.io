@@ -1,0 +1,28 @@
+<html>
+<head>
+
+    <script src="https://ming-bucket-01.oss-cn-beijing.aliyuncs.com/static/public/ejs.min.js"></script>
+
+</head>
+<body>
+<div class="v2main">
+    <script id="main_template" type="text/template">
+        <% if (names.length) { %>
+        <ul>
+            <% names.forEach(function(name){ %>
+            <li><%= name %></li>
+            <% }) %>
+        </ul>
+        <% } %>
+    </script>
+</div>
+</body>
+</html>
+<script>
+    onload = function(){
+
+        var names = ['loki', 'tobi', 'jane'];
+        var  html= ejs.render( $("#main_template").html(), { names: names });
+
+    }
+</script>

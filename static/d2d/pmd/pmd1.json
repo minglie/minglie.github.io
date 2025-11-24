@@ -1,0 +1,221 @@
+{
+  "class": "Pmd.D710",
+  "definition": {
+    "Product": {
+      "class": "Product",
+      "model": 1710,
+      "rev": 0,
+      "osver": 0.60,
+      "sn": 1880000,
+      "client": 0,
+      "manufacturer": "LANGJIE",
+      "device": "my_d710"
+    },
+    "Drawer": {
+      "class": "Drawer",
+      "params": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -0 ]
+    },
+    "Modbus": {
+      "class": "Modbus",
+      "address": 1,
+      "baudrate": 115200,
+      "x1": 0,
+      "x2": 0
+    },
+    "Vin": {
+      "class": "Vin",
+      "tag": "#%Vin",
+      "minScale": 0,
+      "maxScale": 100,
+      "dot": 2,
+      "unitCode": 1001,
+      "delay": 0,
+      "runtime": {
+        "binary": 0,
+        "posi": 0.0,
+        "velo": 0.0,
+        "tare": 0.0,
+        "userPosi": 0.0
+      }
+    },
+    "AdChnl": {
+      "class": "Vin.AdChnl",
+      "vCol": [ 0, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, -0 ],
+      "adCol": [ 0, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, -0 ]
+    },
+    "AcChnl": {
+      "class": "Vin.AcChnl",
+      "res": 0.01,
+      "zero": 0,
+      "code": 0
+    },
+    "IcChnl": {
+      "class": "Vin.IcChnl",
+      "res": 0.01
+    },
+    "Din": {
+      "class": "Din",
+      "tag": "#%Din",
+      "runtime": {
+        "state": false
+      }
+    },
+    "Digital": {
+      "class": "Din.Digital",
+      "bitShift": 0
+    },
+    "Dout": {
+      "class": "Dout",
+      "tag": "#%Dout",
+      "runtime": {
+        "state": true
+      }
+    },
+    "Switch": {
+      "class": "Dout.Switch",
+      "bitShift": 0,
+      "safeLevel": false,
+      "validLevel": true
+    },
+    "Vout": {
+      "class": "Vout",
+      "tag": "#%Vout",
+      "runtime": {
+        "outFeed": 0.0
+      }
+    },
+    "Actuator": {
+      "class": "Vout.Actuator",
+      "motiWays": [ 0, 1, -1, -2, -0 ],
+      "duMin": -30000,
+      "duMax": 30000,
+      "duExceedTime": 3.0,
+      "runtime": {
+        "stateWay": 0,
+        "du": 0,
+        "duExceedProtected": false,
+        "simuPosi": 0.0
+      }
+    },
+    "ServoCylinder": {
+      "class": "Vout.Actuator.ServoCylinder",
+      "duZero": 0,
+      "vibFreq": 100,
+      "vibAmp": 0,
+      "moveP": 1000
+    },
+    "DaFeed": {
+      "class": "Vout.DaFeed",
+      "duZero": 0,
+      "gain": 1.0,
+      "runtime": {
+        "da": 0
+      }
+    },
+    "ClosedCtrl": {
+      "class": "ClosedCtrl",
+      "feedChnl": 0,
+      "plusDir": 1,
+      "errorGate": 10.0,
+      "errorExceedTime": 1.0
+    },
+    "KidCtrl": {
+      "class": "ClosedCtrl.KidCtrl",
+      "kMode": 1,
+      "rectifyTime": 0.1,
+      "k": 1.0,
+      "i": 0.3,
+      "d": 0,
+      "runtime": {
+        "instGain": 1.0,
+        "instK": 1.0
+      }
+    },
+    "Controller": {
+      "class": "Controller",
+      "actuatorVoutIndex": 0,
+      "dispVinIndex": 0,
+      "closedCtrlIndices": [ 0, 1, 2, 3, 4, 5, -0 ],
+      "runtime": {
+        "ctrlMode": 1,
+        "refType": 0,
+        "ref": 1.24,
+        "refVelo": 0.0,
+        "feed": 1.23,
+        "feedVelo": 0.0,
+        "xfu": 0,
+        "mfu": 0,
+        "cpu": 0,
+        "cvu": 0,
+        "u": 0,
+        "duration": 0,
+        "trackId": 0,
+        "inWave": false,
+        "setWaveFreq": 10.0,
+        "setWaveMin": -1.0,
+        "setWaveMax": 1.0,
+        "waveMin": -1.0,
+        "waveMax": 1.0,
+        "setWaveNum": 100000,
+        "waveCount": 0,
+        "setCycleNum": 0,
+        "cycleCount": 0,
+        "x1": 0,
+        "x2": 0
+      }
+    },
+    "Pipe": {
+      "class": "Pipe",
+      "timeInPipe": false,
+      "rfuInPipe": false,
+      "acqRate": 10000,
+      "uploadRate": 1000,
+      "x1": 0,
+      "x2": 0,
+      "runtime": {
+        "uploading": false
+      }
+    },
+    "LogEvent": {
+      "class": "LogEvent",
+      "readFlag": false,
+      "time": 0,
+      "eventCode": 16
+    }
+  },
+  "configuration": {
+    "product": "$Product",
+    "drawer":  "$Drawer",
+    "modbus": "$Modbus",
+    "vin": {
+        "disp": "$AdChnl",
+        "extRef": "$AdChnl"
+    },
+    "din": {
+         "extRefEnabled": "$Din",
+         "dispLost": "$Digital",
+         "extRefLost": "$Digital"
+      },
+    "dout": {
+      "pumpPowerOn" : "$Switch",
+      "highPressureEnbled": "$Switch"
+    },
+    "vout": {
+       "mainCylinder": "$ServoCylinder",
+       "ctrlOutFeed": "$DaFeed"
+    },
+    "closedCtrl": [ "$KidCtrl" ],
+    "controller": [ "$Controller" ],
+    "pipe": "$Pipe",
+    "logEvent": {
+      "0": "$LogEvent",
+      "1":"$LogEvent",
+      "2":"$LogEvent",
+      "3":"$LogEvent",
+      "4":"$LogEvent",
+      "5":"$LogEvent",
+      "6":"$LogEvent",
+      "7": "$LogEvent"
+    }
+  }
+}
