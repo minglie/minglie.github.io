@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电枢游戏</title>
+        <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f7f6;
+            --card: #ffffff;
+            --ink: #13201e;
+            --muted: #60706d;
+            --line: #d8e2df;
+            --soft: #eef4f2;
+            --red: #d93c32;
+            --red-dark: #a82a24;
+            --gold: #f0b13d;
+            --green: #1f8769;
+            --blue: #356bb3;
+            --shadow: 0 18px 42px rgba(20, 32, 31, 0.10);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 8%, rgba(53, 107, 179, 0.12), transparent 28rem),
+                linear-gradient(135deg, #fbfcfb 0%, var(--bg) 100%);
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app {
+            width: min(1440px, calc(100vw - 28px));
+            margin: 0 auto;
+            padding: 22px 0 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(26px, 4vw, 44px);
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .global-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .save-status {
+            flex-basis: 100%;
+            min-height: 18px;
+            color: var(--green);
+            font-size: 13px;
+            text-align: right;
+        }
+
+        .reference-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .reference-links::before {
+            content: "资料链接：";
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .reference-links a {
+            color: var(--blue);
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .reference-links a:hover {
+            color: #1f4f91;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 16px;
+            align-items: start;
+        }
+
+        .armature-card {
+            min-width: 0;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 12px;
+            padding: 14px 14px 10px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .card-title {
+            min-width: 0;
+        }
+
+        .card-title h2 {
+            margin: 0;
+            font-size: 20px;
+            line-height: 1.15;
+            overflow-wrap: anywhere;
+        }
+
+        .formula-badge {
+            display: inline-block;
+            margin-top: 6px;
+            max-width: 100%;
+            color: var(--muted);
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .body {
+            padding: 14px;
+        }
+
+        .setup {
+            display: grid;
+            grid-template-columns: 88px minmax(0, 1fr);
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            height: 38px;
+            border: 1px solid #cbd8d5;
+            border-radius: 8px;
+            padding: 0 10px;
+            color: var(--ink);
+            background: #fff;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(53, 107, 179, 0.13);
+        }
+
+        .formula-row {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr);
+            gap: 7px;
+            align-items: center;
+        }
+
+        .prefix {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .preset-row {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .preset-row button {
+            min-height: 30px;
+            padding: 0 9px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .disk-area {
+            position: relative;
+            min-height: 350px;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(244, 247, 246, 0.86)),
+                repeating-radial-gradient(circle at center, rgba(19, 32, 30, 0.04) 0 1px, transparent 1px 28px);
+            overflow: hidden;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: 350px;
+        }
+
+        .wire {
+            fill: none;
+            stroke: rgba(217, 60, 50, 0.28);
+            stroke-width: 2.4;
+            stroke-linecap: round;
+        }
+
+        .wire.latest {
+            stroke: var(--red);
+            stroke-width: 4.2;
+        }
+
+        .slot {
+            transition: fill 170ms ease, stroke 170ms ease, transform 170ms ease;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .slot:hover {
+            transform: scale(1.12);
+        }
+
+        .slot-label {
+            fill: #263331;
+            font-weight: 700;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .current-ring {
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 4.6;
+            filter: drop-shadow(0 2px 8px rgba(240, 177, 61, 0.55));
+        }
+
+        .center {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            translate: -50% -50%;
+            width: 132px;
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(216, 226, 223, 0.9);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.74);
+            backdrop-filter: blur(4px);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .center strong {
+            display: block;
+            color: var(--red);
+            font-size: 42px;
+            line-height: 0.95;
+        }
+
+        .center span {
+            display: block;
+            max-width: 116px;
+            color: var(--muted);
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .metric {
+            min-width: 0;
+        }
+
+        .metric span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .metric b {
+            display: block;
+            margin-top: 2px;
+            font-size: 18px;
+            overflow-wrap: anywhere;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 1fr 44px 44px 44px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .speed-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 76px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--green);
+        }
+
+        .theory {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 7px 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--line);
+            font-size: 13px;
+        }
+
+        .theory span {
+            color: var(--muted);
+        }
+
+        .theory b {
+            display: block;
+            margin-top: 1px;
+            overflow-wrap: anywhere;
+        }
+
+        .visited {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-content: start;
+            min-height: 32px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--line);
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 7px;
+            border-radius: 999px;
+            background: #ffe7e4;
+            color: var(--red-dark);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .error {
+            min-height: 20px;
+            margin: 8px 0 0;
+            color: var(--red-dark);
+            font-size: 13px;
+        }
+
+        .primary,
+        .secondary,
+        .icon-btn {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+            min-height: 40px;
+            transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+        }
+
+        .primary {
+            border-color: var(--red-dark);
+            background: var(--red);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .secondary:hover,
+        .icon-btn:hover,
+        .preset-row button:hover {
+            border-color: #b6c7c3;
+            background: #f8fbfa;
+        }
+
+        .primary:hover {
+            background: #c7352d;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .icon-btn {
+            width: 40px;
+            padding: 0;
+            display: inline-grid;
+            place-items: center;
+            font-size: 18px;
+        }
+
+        .secondary {
+            padding: 0 12px;
+            font-weight: 700;
+        }
+
+        .empty-note {
+            display: none;
+            padding: 28px;
+            border: 1px dashed var(--line);
+            border-radius: 8px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        @media (max-width: 780px) {
+            .topbar {
+                display: block;
+            }
+
+            .global-actions {
+                justify-content: flex-start;
+                margin-top: 14px;
+            }
+
+            .save-status {
+                text-align: left;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .app {
+                width: min(100vw - 18px, 1440px);
+                padding-top: 14px;
+            }
+
+            .setup {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics,
+            .theory {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .control-row {
+                grid-template-columns: 1fr 42px 42px 42px;
+            }
+
+            .disk-area,
+            svg {
+                min-height: 320px;
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="app">
+    <header class="topbar">
+        <div>
+            <h1>电枢游戏</h1>
+            <p class="subtitle">0 在最上方，槽号沿顺时针增加；第 t 步点亮 f(t) mod n 的槽。</p>
+        </div>
+        <div class="global-actions">
+            <button class="secondary" data-global="add">新增电枢</button>
+            <button class="secondary" data-global="play-all">全部开始</button>
+            <button class="secondary" data-global="pause-all">全部暂停</button>
+            <button class="secondary" data-global="reset-all">全部重置</button>
+            <button class="secondary" data-global="save-state">保存状态</button>
+            <button class="secondary" data-global="load-state">读取保存</button>
+            <button class="secondary" data-global="export-state">导出状态</button>
+            <button class="secondary" data-global="import-state">导入状态</button>
+            <span class="save-status" id="saveStatus" aria-live="polite"></span>
+        </div>
+    </header>
+
+    <nav class="reference-links" aria-label="资料链接">
+        <a href="https://blog.csdn.net/qq_26074053/article/details/160699312" target="_blank" rel="noopener noreferrer">剩余定理的电枢语言描述</a>
+        <a href="https://blog.csdn.net/qq_26074053/article/details/156461767" target="_blank" rel="noopener noreferrer">电枢公式：电枢绕线的规律</a>
+    </nav>
+
+    <section class="cards" id="cards"></section>
+    <div class="empty-note" id="emptyNote">还没有电枢卡片</div>
+    <input id="stateFile" type="file" accept="application/json,.json" hidden>
+</main>
+
+<script>
+    const state = {
+        nextId: 1,
+        cards: []
+    };
+
+    const presets = ["3t", "5t", "t^2", "t^2+1", "2t+1"];
+    const cardsEl = document.querySelector("#cards");
+    const emptyNote = document.querySelector("#emptyNote");
+    const stateFileInput = document.querySelector("#stateFile");
+    const saveStatus = document.querySelector("#saveStatus");
+    const STORAGE_KEY = "armature-game-state-v1";
+    let saveStatusTimer = null;
+    let autoSaveTimer = null;
+    let suppressToggleClick = null;
+
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (char) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#039;"
+        })[char]);
+    }
+
+    function setSaveStatus(message) {
+        if (!saveStatus) {
+            return;
+        }
+        saveStatus.textContent = message;
+        if (saveStatusTimer) {
+            clearTimeout(saveStatusTimer);
+        }
+        if (message) {
+            saveStatusTimer = setTimeout(() => {
+                saveStatus.textContent = "";
+            }, 2600);
+        }
+    }
+
+    function serializeState() {
+        return {
+            version: 1,
+            savedAt: new Date().toISOString(),
+            nextId: state.nextId,
+            cards: state.cards.map((card) => ({
+                title: card.title,
+                n: card.n,
+                formulaText: card.formulaText,
+                speed: card.speed,
+                stepIndex: Math.max(0, card.stepIndex)
+            }))
+        };
+    }
+
+    function saveStateToLocalStorage(showMessage = true) {
+        if (typeof localStorage === "undefined") {
+            if (showMessage) {
+                setSaveStatus("当前浏览器不支持本地保存");
+            }
+            return false;
+        }
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeState()));
+            if (showMessage) {
+                setSaveStatus("已保存到本地");
+            }
+            return true;
+        } catch (error) {
+            if (showMessage) {
+                setSaveStatus(`保存失败：${error.message}`);
+            }
+            return false;
+        }
+    }
+
+    function scheduleAutoSave() {
+        if (typeof localStorage === "undefined") {
+            return;
+        }
+        if (autoSaveTimer) {
+            clearTimeout(autoSaveTimer);
+        }
+        autoSaveTimer = setTimeout(() => saveStateToLocalStorage(false), 650);
+    }
+
+    function restoreSnapshot(snapshot) {
+        if (!snapshot || !Array.isArray(snapshot.cards) || !snapshot.cards.length) {
+            throw new Error("状态文件里没有电枢卡片");
+        }
+        const oldNextId = state.nextId;
+        const newCards = [];
+        state.nextId = 1;
+        try {
+            snapshot.cards.forEach((item, index) => {
+                const card = createCard({
+                    title: String(item.title || `电枢 ${index + 1}`).slice(0, 40),
+                    n: item.n,
+                    formulaText: item.formulaText || "3t",
+                    speed: item.speed
+                });
+                const targetStep = Math.max(0, Math.min(5000, Math.round(Number(item.stepIndex) || 0)));
+                while (card.stepIndex < targetStep) {
+                    stepCard(card, { silent: true });
+                }
+                newCards.push(card);
+            });
+            state.cards.forEach(stopCard);
+            state.cards = newCards;
+            state.nextId = Math.max(state.nextId, Math.round(Number(snapshot.nextId) || 0), newCards.length + 1);
+            suppressToggleClick = null;
+        } catch (error) {
+            newCards.forEach(stopCard);
+            state.nextId = oldNextId;
+            throw error;
+        }
+        render();
+    }
+
+    function loadStateFromLocalStorage(showMessage = true) {
+        if (typeof localStorage === "undefined") {
+            if (showMessage) {
+                setSaveStatus("当前浏览器不支持本地保存");
+            }
+            return false;
+        }
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) {
+                if (showMessage) {
+                    setSaveStatus("没有本地保存");
+                }
+                return false;
+            }
+            restoreSnapshot(JSON.parse(raw));
+            if (showMessage) {
+                setSaveStatus("已读取本地保存");
+            }
+            return true;
+        } catch (error) {
+            if (showMessage) {
+                setSaveStatus(`读取失败：${error.message}`);
+            }
+            return false;
+        }
+    }
+
+    function exportState() {
+        const data = JSON.stringify(serializeState(), null, 2);
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `armature-game-state-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.json`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 200);
+        setSaveStatus("已导出状态文件");
+    }
+
+    function importStateFile(file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                restoreSnapshot(JSON.parse(reader.result));
+                saveStateToLocalStorage(false);
+                setSaveStatus("已导入并保存");
+            } catch (error) {
+                setSaveStatus(`导入失败：${error.message}`);
+            }
+        };
+        reader.onerror = () => setSaveStatus("导入失败：文件读取错误");
+        reader.readAsText(file, "utf-8");
+    }
+
+    function loadDefaultCards() {
+        state.cards = [
+            createCard({ title: "电枢 A", n: 12, formulaText: "3t", speed: 520 }),
+            createCard({ title: "电枢 B", n: 12, formulaText: "5t", speed: 520 }),
+            createCard({ title: "电枢 C", n: 12, formulaText: "t^2", speed: 520 })
+        ];
+        render();
+    }
+
+    function gcd(a, b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+        while (b) {
+            [a, b] = [b, a % b];
+        }
+        return a;
+    }
+
+    function mod(value, n) {
+        return ((value % n) + n) % n;
+    }
+
+    function normalizeFormula(text) {
+        let formula = text.toLowerCase().replace(/\s+/g, "");
+        formula = formula.replace(/（/g, "(").replace(/）/g, ")");
+        formula = formula.replace(/×/g, "*").replace(/÷/g, "/");
+        formula = formula.replace(/\bmod\b/g, "%");
+        formula = formula.replace(/(\d)(t|\()/g, "$1*$2");
+        formula = formula.replace(/(t|\))(\d|\()/g, "$1*$2");
+        formula = formula.replace(/\)(t)/g, ")*$1");
+        formula = formula.replace(/\^/g, "**");
+        return formula;
+    }
+
+    function compileFormula(text) {
+        const normalized = normalizeFormula(text);
+        if (!normalized) {
+            throw new Error("请输入绕法公式");
+        }
+        if (!/^[0-9t+\-*/%().*]+$/.test(normalized)) {
+            throw new Error("公式只能使用 t、数字、+ - * / % ^ 和括号");
+        }
+        if (/\*\*\*/.test(normalized)) {
+            throw new Error("指数符号写法有误");
+        }
+        const fn = new Function("t", `"use strict"; return (${normalized});`);
+        const test = fn(0);
+        if (!Number.isFinite(test)) {
+            throw new Error("公式在 t=0 时不是有效数字");
+        }
+        return {
+            normalized,
+            eval(t) {
+                const value = fn(t);
+                if (!Number.isFinite(value)) {
+                    throw new Error(`f(${t}) 不是有效数字`);
+                }
+                if (!Number.isInteger(value)) {
+                    throw new Error(`f(${t})=${value}，不是整数槽号`);
+                }
+                if (Math.abs(value) > Number.MAX_SAFE_INTEGER) {
+                    throw new Error(`f(${t}) 太大，浏览器无法安全计算`);
+                }
+                return value;
+            }
+        };
+    }
+
+    function createCard(options = {}) {
+        const id = state.nextId++;
+        const card = {
+            id,
+            title: options.title || `电枢 ${id}`,
+            n: options.n || 12,
+            formulaText: options.formulaText || "3t",
+            speed: options.speed || 500,
+            compiled: null,
+            error: "",
+            playing: false,
+            timer: null,
+            stepIndex: -1,
+            records: [],
+            visited: new Set(),
+            wires: []
+        };
+        compileCard(card);
+        resetCard(card, { keepError: true });
+        return card;
+    }
+
+    function compileCard(card) {
+        card.n = Math.max(3, Math.min(96, Math.round(Number(card.n) || 12)));
+        card.formulaText = String(card.formulaText || "0").trim();
+        card.compiled = compileFormula(card.formulaText);
+        card.error = "";
+    }
+
+    function resetCard(card, options = {}) {
+        stopCard(card);
+        compileCard(card);
+        card.stepIndex = -1;
+        card.records = [];
+        card.visited = new Set();
+        card.wires = [];
+        stepCard(card, { silent: true });
+        if (!options.keepError) {
+            card.error = "";
+        }
+    }
+
+    function stopCard(card) {
+        card.playing = false;
+        if (card.timer) {
+            clearInterval(card.timer);
+            card.timer = null;
+        }
+    }
+
+    function startCard(card) {
+        if (card.playing) {
+            return;
+        }
+        try {
+            compileCard(card);
+        } catch (error) {
+            card.error = error.message;
+            render();
+            return;
+        }
+        card.playing = true;
+        card.timer = setInterval(() => {
+            try {
+                stepCard(card);
+                render();
+            } catch (error) {
+                stopCard(card);
+                card.error = error.message;
+                render();
+            }
+        }, card.speed);
+        render();
+    }
+
+    function stepCard(card, options = {}) {
+        if (!card.compiled) {
+            compileCard(card);
+        }
+        const nextT = card.stepIndex + 1;
+        const value = card.compiled.eval(nextT);
+        const slot = mod(value, card.n);
+        const previous = card.records.at(-1);
+        const isNew = !card.visited.has(slot);
+        if (previous) {
+            card.wires.push({ from: previous.slot, to: slot });
+        }
+        card.stepIndex = nextT;
+        card.visited.add(slot);
+        card.records.push({ t: nextT, value, slot, isNew });
+        card.error = "";
+        if (!options.silent) {
+            render();
+        }
+    }
+
+    function stepBack(card) {
+        stopCard(card);
+        if (card.records.length <= 1) {
+            resetCard(card);
+            render();
+            return;
+        }
+        card.records.pop();
+        card.wires.pop();
+        card.stepIndex -= 1;
+        card.visited = new Set(card.records.map((record) => record.slot));
+        render();
+    }
+
+    function slotPoint(card, index, radius = 126) {
+        const angle = -Math.PI / 2 + (Math.PI * 2 * index) / card.n;
+        return {
+            x: 180 + radius * Math.cos(angle),
+            y: 180 + radius * Math.sin(angle)
+        };
+    }
+
+    function arcPath(card, from, to) {
+        const start = slotPoint(card, from, 140);
+        const end = slotPoint(card, to, 140);
+        const delta = mod(to - from, card.n);
+        const largeArc = delta > card.n / 2 ? 1 : 0;
+        if (from === to) {
+            const p = slotPoint(card, from, 140);
+            return `M ${p.x} ${p.y} m -12 0 a 12 12 0 1 1 24 0 a 12 12 0 1 1 -24 0`;
+        }
+        return `M ${start.x} ${start.y} A 140 140 0 ${largeArc} 1 ${end.x} ${end.y}`;
+    }
+
+    function renderSvg(card) {
+        const current = card.records.at(-1);
+        const currentSlot = current ? current.slot : null;
+        const arrowId = `arrow-${card.id}`;
+        const parts = [
+            `<defs>
+                <marker id="${arrowId}" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#d93c32"></path>
+                </marker>
+            </defs>`,
+            `<circle cx="180" cy="180" r="126" fill="none" stroke="#cdd9d6" stroke-width="1.6"></circle>`,
+            `<circle cx="180" cy="180" r="140" fill="none" stroke="#e2eae8" stroke-width="1" stroke-dasharray="3 8"></circle>`
+        ];
+        card.wires.slice(-24).forEach((wire, index, wires) => {
+            const latest = index === wires.length - 1 ? " latest" : "";
+            const marker = latest ? ` marker-end="url(#${arrowId})"` : "";
+            parts.push(`<path class="wire${latest}" d="${arcPath(card, wire.from, wire.to)}"${marker}></path>`);
+        });
+        for (let i = 0; i < card.n; i += 1) {
+            const p = slotPoint(card, i);
+            const visited = card.visited.has(i);
+            const isCurrent = i === currentSlot;
+            const radius = card.n > 70 ? 5.8 : card.n > 48 ? 7 : 10;
+            const labelSize = card.n > 48 ? 7 : card.n > 32 ? 8 : 10;
+            const fill = visited ? "#d93c32" : "#ffffff";
+            const stroke = isCurrent ? "#f0b13d" : "#8ea09c";
+            const labelFill = visited ? "#ffffff" : "#263331";
+            if (isCurrent) {
+                parts.push(`<circle class="current-ring" cx="${p.x}" cy="${p.y}" r="${radius + 5.5}"></circle>`);
+            }
+            parts.push(`<circle class="slot" cx="${p.x}" cy="${p.y}" r="${radius}" fill="${fill}" stroke="${stroke}" stroke-width="1.7"></circle>`);
+            if (card.n <= 64) {
+                parts.push(`<text class="slot-label" x="${p.x}" y="${p.y + labelSize * 0.36}" text-anchor="middle" style="font-size:${labelSize}px;fill:${labelFill}">${i}</text>`);
+            }
+        }
+        return parts.join("");
+    }
+
+    function detectLinear(card) {
+        try {
+            const f0 = card.compiled.eval(0);
+            const f1 = card.compiled.eval(1);
+            const f2 = card.compiled.eval(2);
+            const k = f1 - f0;
+            if (f0 === 0 && f2 - f1 === k) {
+                const d = gcd(card.n, k);
+                return { linear: true, k, d, period: card.n / d, reachable: card.n / d };
+            }
+        } catch (error) {
+            return { linear: false };
+        }
+        return { linear: false };
+    }
+
+    function renderTheory(card) {
+        const info = detectLinear(card);
+        if (info.linear) {
+            const reach = info.d === 1 ? `全达 ${card.n}` : `${info.reachable} 个槽`;
+            return `
+                <div><span>线性绕法</span><b>k=${info.k}</b></div>
+                <div><span>最大公约数</span><b>(n,k)=${info.d}</b></div>
+                <div><span>首次回到 0</span><b>${info.period} 步</b></div>
+                <div><span>可达槽</span><b>${reach}</b></div>
+            `;
+        }
+        return `
+            <div><span>绕法类型</span><b>非线性</b></div>
+            <div><span>判定方式</span><b>逐步观察</b></div>
+            <div><span>当前可见</span><b>${card.visited.size} 个槽</b></div>
+            <div><span>最近状态</span><b>${card.records.at(-1)?.isNew ? "新槽" : "重复"}</b></div>
+        `;
+    }
+
+    function renderCard(card) {
+        const current = card.records.at(-1) || { t: 0, value: 0, slot: 0 };
+        const chips = [...card.visited]
+            .sort((a, b) => a - b)
+            .slice(0, 48)
+            .map((slot) => `<span class="chip">${slot}</span>`)
+            .join("");
+        const hiddenCount = Math.max(0, card.visited.size - 48);
+        const presetButtons = presets
+            .map((formula) => `<button data-action="preset" data-id="${card.id}" data-formula="${escapeHtml(formula)}">${escapeHtml(formula)}</button>`)
+            .join("");
+        return `
+            <article class="armature-card" data-card="${card.id}">
+                <div class="card-head">
+                    <div class="card-title">
+                        <h2>${escapeHtml(card.title)}</h2>
+                        <span class="formula-badge">f(t)=${escapeHtml(card.formulaText)}，n=${card.n}</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="icon-btn" title="复制" aria-label="复制" data-action="duplicate" data-id="${card.id}">⧉</button>
+                        <button class="icon-btn" title="删除" aria-label="删除" data-action="delete" data-id="${card.id}">×</button>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="setup">
+                        <div>
+                            <label for="n-${card.id}">总槽数 n</label>
+                            <input id="n-${card.id}" type="number" min="3" max="96" step="1" value="${card.n}" data-field="n" data-id="${card.id}">
+                        </div>
+                        <div>
+                            <label for="formula-${card.id}">绕法公式</label>
+                            <div class="formula-row">
+                                <span class="prefix">f(t)=</span>
+                                <input id="formula-${card.id}" type="text" value="${escapeHtml(card.formulaText)}" autocomplete="off" spellcheck="false" data-field="formula" data-id="${card.id}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preset-row">${presetButtons}</div>
+                    <div class="disk-area">
+                        <svg viewBox="0 0 360 360" role="img" aria-label="${escapeHtml(card.title)}圆盘">${renderSvg(card)}</svg>
+                        <div class="center">
+                            <div>
+                                <span>当前槽</span>
+                                <strong>${current.slot}</strong>
+                                <span>f(${current.t})=${escapeHtml(current.value)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric"><span>当前 t</span><b>${current.t}</b></div>
+                        <div class="metric"><span>f(t)</span><b>${escapeHtml(current.value)}</b></div>
+                        <div class="metric"><span>落槽</span><b>${current.slot}</b></div>
+                        <div class="metric"><span>已点亮</span><b>${card.visited.size}/${card.n}</b></div>
+                    </div>
+                    <div class="control-row">
+                        <button class="primary" data-action="toggle" data-id="${card.id}">${card.playing ? "暂停" : "开始"}</button>
+                        <button class="icon-btn" title="退一步" aria-label="退一步" data-action="back" data-id="${card.id}">↶</button>
+                        <button class="icon-btn" title="走一步" aria-label="走一步" data-action="step" data-id="${card.id}">↷</button>
+                        <button class="icon-btn" title="重置" aria-label="重置" data-action="reset" data-id="${card.id}">⟲</button>
+                    </div>
+                    <div class="speed-row">
+                        <input type="range" min="120" max="1200" step="20" value="${card.speed}" data-field="speed" data-id="${card.id}">
+                        <input type="number" min="120" max="1200" step="20" value="${card.speed}" data-field="speed" data-id="${card.id}" aria-label="速度">
+                    </div>
+                    <div class="theory">${renderTheory(card)}</div>
+                    <div class="visited">${chips}${hiddenCount ? `<span class="chip">+${hiddenCount}</span>` : ""}</div>
+                    <p class="error">${escapeHtml(card.error)}</p>
+                </div>
+            </article>
+        `;
+    }
+
+    function render() {
+        cardsEl.innerHTML = state.cards.map(renderCard).join("");
+        emptyNote.style.display = state.cards.length ? "none" : "block";
+        scheduleAutoSave();
+    }
+
+    function findCard(id) {
+        return state.cards.find((card) => card.id === Number(id));
+    }
+
+    function addCard(options = {}) {
+        const card = createCard(options);
+        state.cards.push(card);
+        render();
+    }
+
+    function duplicateCard(card) {
+        const index = state.cards.indexOf(card);
+        const copy = createCard({
+            title: `${card.title} 副本`,
+            n: card.n,
+            formulaText: card.formulaText,
+            speed: card.speed
+        });
+        state.cards.splice(index + 1, 0, copy);
+        render();
+    }
+
+    function deleteCard(card) {
+        stopCard(card);
+        state.cards = state.cards.filter((item) => item !== card);
+        if (!state.cards.length) {
+            addCard({ title: "电枢 1", n: 12, formulaText: "3t" });
+            return;
+        }
+        render();
+    }
+
+    function applyCardChange(card, field, value) {
+        stopCard(card);
+        if (field === "n") {
+            card.n = value;
+        } else if (field === "formula") {
+            card.formulaText = value;
+        } else if (field === "speed") {
+            card.speed = Math.max(120, Math.min(1200, Math.round(Number(value) || 500)));
+            render();
+            return;
+        }
+        try {
+            resetCard(card);
+        } catch (error) {
+            card.error = error.message;
+        }
+        render();
+    }
+
+    document.addEventListener("pointerdown", (event) => {
+        const pauseAll = event.target.closest('[data-global="pause-all"]');
+        if (pauseAll) {
+            state.cards.forEach(stopCard);
+            render();
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
+
+        const button = event.target.closest('[data-action="toggle"]');
+        if (!button) {
+            return;
+        }
+        const card = findCard(button.dataset.id);
+        if (!card || !card.playing) {
+            return;
+        }
+        suppressToggleClick = { id: card.id, time: Date.now() };
+        stopCard(card);
+        render();
+        event.preventDefault();
+        event.stopPropagation();
+    }, true);
+    document.addEventListener("click", (event) => {
+        const global = event.target.closest("[data-global]");
+        if (global) {
+            const action = global.dataset.global;
+            if (action === "add") {
+                addCard({ title: `电枢 ${state.nextId}`, n: 12, formulaText: "3t" });
+            }
+            if (action === "play-all") {
+                state.cards.forEach(startCard);
+            }
+            if (action === "pause-all") {
+                state.cards.forEach(stopCard);
+                render();
+            }
+            if (action === "reset-all") {
+                state.cards.forEach((card) => {
+                    try {
+                        resetCard(card);
+                    } catch (error) {
+                        card.error = error.message;
+                    }
+                });
+                render();
+            }
+            if (action === "save-state") {
+                saveStateToLocalStorage(true);
+            }
+            if (action === "load-state") {
+                loadStateFromLocalStorage(true);
+            }
+            if (action === "export-state") {
+                exportState();
+            }
+            if (action === "import-state") {
+                stateFileInput.value = "";
+                stateFileInput.click();
+            }
+            return;
+        }
+
+        const button = event.target.closest("[data-action]");
+        if (!button) {
+            return;
+        }
+        const card = findCard(button.dataset.id);
+        if (!card) {
+            return;
+        }
+        const action = button.dataset.action;
+        if (action === "toggle" && suppressToggleClick && suppressToggleClick.id === card.id && Date.now() - suppressToggleClick.time < 600) {
+            suppressToggleClick = null;
+            event.preventDefault();
+            return;
+        }
+        if (action === "toggle") {
+            card.playing ? (stopCard(card), render()) : startCard(card);
+        }
+        if (action === "step") {
+            stopCard(card);
+            try {
+                compileCard(card);
+                stepCard(card);
+            } catch (error) {
+                card.error = error.message;
+                render();
+            }
+        }
+        if (action === "back") {
+            stepBack(card);
+        }
+        if (action === "reset") {
+            try {
+                resetCard(card);
+            } catch (error) {
+                card.error = error.message;
+            }
+            render();
+        }
+        if (action === "duplicate") {
+            duplicateCard(card);
+        }
+        if (action === "delete") {
+            deleteCard(card);
+        }
+        if (action === "preset") {
+            card.formulaText = button.dataset.formula;
+            try {
+                resetCard(card);
+            } catch (error) {
+                card.error = error.message;
+            }
+            render();
+        }
+    });
+
+    document.addEventListener("change", (event) => {
+        const input = event.target.closest("[data-field]");
+        if (!input) {
+            return;
+        }
+        const card = findCard(input.dataset.id);
+        if (!card) {
+            return;
+        }
+        applyCardChange(card, input.dataset.field, input.value);
+    });
+
+    document.addEventListener("input", (event) => {
+        const input = event.target.closest('input[type="range"][data-field="speed"]');
+        if (!input) {
+            return;
+        }
+        const card = findCard(input.dataset.id);
+        if (!card) {
+            return;
+        }
+        card.speed = Math.max(120, Math.min(1200, Math.round(Number(input.value) || 500)));
+        scheduleAutoSave();
+    });
+
+    stateFileInput.addEventListener("change", (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (file) {
+            importStateFile(file);
+        }
+        event.target.value = "";
+    });
+
+    window.addEventListener("beforeunload", () => {
+        saveStateToLocalStorage(false);
+        state.cards.forEach(stopCard);
+    });
+
+    if (!loadStateFromLocalStorage(false)) {
+        loadDefaultCards();
+    } else {
+        setSaveStatus("已读取本地保存");
+    }
+</script>
+</body>
+</html>
