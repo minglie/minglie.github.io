@@ -521,6 +521,7 @@
             <button class="secondary" data-global="play-all">全部开始</button>
             <button class="secondary" data-global="pause-all">全部暂停</button>
             <button class="secondary" data-global="reset-all">全部重置</button>
+              <button class="secondary" data-global="nestStep-all">全部下一步</butto1n>
             <button class="secondary" data-global="save-state">保存状态</button>
             <button class="secondary" data-global="load-state">读取保存</button>
             <button class="secondary" data-global="export-state">导出状态</button>
@@ -1164,6 +1165,19 @@
                 });
                 render();
             }
+               if (action === "nestStep-all") {
+                state.cards.forEach((card) => {
+
+                        stopCard(card);
+                        try {
+                            compileCard(card);
+                            stepCard(card);
+                        } catch (error) {
+                            card.error = error.message;
+                        }
+                });
+                render();
+            }
             if (action === "save-state") {
                 saveStateToLocalStorage(true);
             }
@@ -1281,3 +1295,5 @@
 </script>
 </body>
 </html>
+
+
